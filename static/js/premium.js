@@ -37,6 +37,7 @@ function initApp() {
     initGradientAnimation();
     initButtons();
     initSwiper();
+    initAssessmentChecklist();
     
     console.log('HUMISENSE Premium JS initialized');
 }
@@ -540,3 +541,79 @@ window.addEventListener('beforeunload', () => {
     // Reset body opacity before leaving
     document.body.style.opacity = '1';
 });
+
+/**
+ * Initialize Interactive Assessment Checklist
+ */
+function initAssessmentChecklist() {
+    const checkboxes = document.querySelectorAll('[data-check]');
+    const resultBox = document.getElementById('checklistResult');
+    const resultText = document.getElementById('resultText');
+    
+    if (!checkboxes.length || !resultBox) return;
+    
+    // Recommendations based on selection
+    const recommendations = {
+        manual: "Automation could significantly reduce manual workload and free up your team for higher-value tasks.",
+        slow: "Streamlined workflows and AI-powered processes can dramatically improve response times.",
+        modernize: "Modern digital tools can enhance customer experience and operational efficiency.",
+        ai: "An AI consultation can help identify specific opportunities where AI adds the most value.",
+        experience: "AI-powered customer engagement tools can ensure consistent, high-quality interactions."
+    };
+    
+    const checkboxMap = {
+        0: 'manual',
+        1: 'slow',
+        2: 'modernize',
+        3: 'ai',
+        4: 'experience'
+    };
+    
+    function updateResult() {
+        const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+        
+        if (checkedCount === 0) {
+            resultBox.classList.remove('visible');
+            return;
+        }
+        
+        resultBox.classList.add('visible');
+        
+        // Build recommendation message
+        const selectedIssues = Array.from(checkboxes)
+            .map((cb, i) => cb.checked ? checkboxMap[i] : null)
+            .filter(Boolean);
+        
+        let message = '';
+        
+        if (checkedCount === 1) {
+            message = `Based on your selection, ${recommendations[selectedIssues[0]]} A brief consultation can help you understand the full scope of opportunities.`;
+        } else if (checkedCount <= 3) {
+            const issueNames = selectedIssues.map(issue => {
+                const names = {
+                    manual: 'manual processes',
+                    slow: 'slow response times',
+                    modernize: 'digital modernization',
+                    ai: 'AI adoption',
+                    experience: 'customer experience'
+                };
+                return names[issue];
+            });
+            message = `You've identified opportunities in ${issueNames.slice(0, -1).join(', ')} and ${issueNames.slice(-1)}. An AI & Digital Transformation consultation can help you prioritize and create an actionable roadmap.`;
+        } else {
+            message = `You've identified several areas where improvement is possible. Our team has helped many organizations address similar challenges. A comprehensive consultation can help you understand the full potential of modernizing your operations with AI, automation, and improved digital workflows.`;
+        }
+        
+        resultText.textContent = message;
+        
+        // Animate the result box
+        gsap.fromTo(resultBox, 
+            { opacity: 0, y: 10 },
+            { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
+        );
+    }
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateResult);
+    });
+}
