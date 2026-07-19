@@ -83,14 +83,29 @@ init_admin_user()
 # Page Routes
 @app.route('/')
 def home():
-    """Home page."""
+    """Home page - Premium enterprise sales experience."""
     stats = [
         {'value': 500, 'suffix': '+', 'label': 'AI Models Deployed'},
         {'value': 98, 'suffix': '%', 'label': 'Customer Satisfaction'},
         {'value': 50, 'suffix': '+', 'label': 'Enterprise Clients'},
         {'value': 10, 'suffix': 'M+', 'label': 'API Calls Monthly'}
     ]
-    return render_template('home.html', 
+    return render_template('home-premium.html', 
+                         products=products_data[:3],
+                         stats=stats,
+                         testimonials=testimonials_data[:6])
+
+
+@app.route('/premium')
+def home_premium():
+    """Premium home page route for testing."""
+    stats = [
+        {'value': 500, 'suffix': '+', 'label': 'AI Models Deployed'},
+        {'value': 98, 'suffix': '%', 'label': 'Customer Satisfaction'},
+        {'value': 50, 'suffix': '+', 'label': 'Enterprise Clients'},
+        {'value': 10, 'suffix': 'M+', 'label': 'API Calls Monthly'}
+    ]
+    return render_template('home-premium.html', 
                          products=products_data[:3],
                          stats=stats,
                          testimonials=testimonials_data[:6])
