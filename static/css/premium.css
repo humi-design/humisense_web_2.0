@@ -2152,3 +2152,356 @@ a {
     border-radius: var(--radius-sm);
     color: var(--color-text-secondary);
 }
+
+/* =====================================================
+   BUSINESS ASSESSMENT SECTION
+   ===================================================== */
+.assessment-section {
+    position: relative;
+    padding: var(--space-5xl) 0;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    overflow: hidden;
+}
+
+.assessment-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.assessment-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+}
+
+.assessment-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+.assessment-section .section-container {
+    position: relative;
+    z-index: 10;
+}
+
+.assessment-section .section-header {
+    margin-bottom: var(--space-4xl);
+}
+
+.assessment-section .section-title {
+    color: white;
+}
+
+.assessment-section .section-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.assessment-label {
+    background: rgba(79, 70, 229, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Assessment Grid */
+.assessment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-lg);
+    margin-bottom: var(--space-4xl);
+}
+
+.assessment-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-2xl);
+    transition: all var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.assessment-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-smooth);
+}
+
+.assessment-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(79, 70, 229, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.assessment-card:hover::before {
+    transform: scaleX(1);
+}
+
+.assessment-card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(79, 70, 229, 0.15);
+    color: var(--color-accent-primary-light);
+    margin-bottom: var(--space-lg);
+    transition: all var(--transition-smooth);
+}
+
+.assessment-card:hover .assessment-card-icon {
+    background: rgba(79, 70, 229, 0.25);
+    transform: scale(1.1);
+}
+
+.assessment-card-title {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: white;
+    margin-bottom: var(--space-sm);
+}
+
+.assessment-card-text {
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Interactive Checklist */
+.assessment-checklist {
+    margin-bottom: var(--space-4xl);
+}
+
+.checklist-container {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-2xl);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.checklist-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: white;
+    margin-bottom: var(--space-sm);
+}
+
+.checklist-title svg {
+    color: var(--color-accent-emerald);
+}
+
+.checklist-subtitle {
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: var(--space-xl);
+}
+
+.checklist-items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.checklist-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.checklist-item:has(input:checked) {
+    background: rgba(79, 70, 229, 0.1);
+    border-color: rgba(79, 70, 229, 0.3);
+}
+
+.checklist-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.checklist-mark {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.checklist-mark::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 6px;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(-45deg) translateY(-2px);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.checklist-item:has(input:checked) .checklist-mark {
+    background: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+}
+
+.checklist-item:has(input:checked) .checklist-mark::after {
+    opacity: 1;
+}
+
+.checklist-text {
+    font-size: var(--text-base);
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+    transition: color var(--transition-fast);
+}
+
+.checklist-item:has(input:checked) .checklist-text {
+    color: white;
+}
+
+/* Checklist Result */
+.checklist-result {
+    margin-top: var(--space-xl);
+    padding: var(--space-lg);
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: var(--radius-xl);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all var(--transition-smooth);
+}
+
+.checklist-result.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.checklist-result-content {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+}
+
+.result-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--color-accent-emerald);
+}
+
+.result-text {
+    font-size: var(--text-base);
+    color: white;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Assessment CTA */
+.assessment-cta {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.assessment-cta-title {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: white;
+    margin-bottom: var(--space-lg);
+    line-height: 1.2;
+}
+
+.assessment-cta-text {
+    font-size: var(--text-lg);
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+    margin-bottom: var(--space-2xl);
+}
+
+.assessment-cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-md);
+}
+
+.btn-outline-light {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: var(--space-md) var(--space-xl);
+    font-size: var(--text-base);
+    font-weight: 600;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-smooth);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+}
+
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .assessment-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .checklist-container {
+        padding: var(--space-lg);
+    }
+    
+    .assessment-cta-buttons {
+        flex-direction: column;
+    }
+    
+    .assessment-cta-buttons .btn,
+    .assessment-cta-buttons .btn-outline-light {
+        width: 100%;
+    }
+}
