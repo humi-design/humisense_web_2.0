@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - HUMISENSE{% endblock %}
+
+{% block content %}
+<!-- Breadcrumbs -->
+<div class="section-container pt-32">
+    <nav class="breadcrumbs">
+        <a href="{{ url_for('home') }}">Home</a>
+        <span class="breadcrumbs-separator">/</span>
+        <a href="{{ url_for('products') }}">Products</a>
+        <span class="breadcrumbs-separator">/</span>
+        <span class="text-primary">{{ product.name }}</span>
+    </nav>
+</div>
+
+<!-- Product Hero -->
+<section class="section pt-0">
+    <div class="section-container">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4xl items-center">
+            <!-- Product Info -->
+            <div data-animate>
+                <span class="hero-tagline">MAKE IT HAPPEN</span>
+                <div class="flex items-center gap-lg mt-lg mb-lg">
+                    <div class="product-icon-lg" style="background: {{ product.color }}20; color: {{ product.color }}">
+                        {% if product.icon == 'mic' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                            <line x1="12" x2="12" y1="19" y2="22"/>
+                        </svg>
+                        {% elif product.icon == 'message-circle' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+                        </svg>
+                        {% elif product.icon == 'bot' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
+                        </svg>
+                        {% elif product.icon == 'bar-chart-2' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/>
+                        </svg>
+                        {% elif product.icon == 'book-open' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <span class="product-category">{{ product.category }}</span>
+                        <h1 class="text-4xl lg:text-5xl font-bold mt-sm">{{ product.name }}</h1>
+                    </div>
+                </div>
+                <p class="text-xl text-secondary mb-lg">{{ product.tagline }}</p>
+                <p class="text-lg text-tertiary mb-2xl">{{ product.description }}</p>
+                <p class="text-lg font-semibold text-accent mb-2xl">{{ product.pricing }}</p>
+                
+                <div class="flex flex-wrap gap-md">
+                    <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+                        <span class="flex items-center gap-2">
+                            Request Demo
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                            </svg>
+                        </span>
+                    </a>
+                    <a href="#api" class="btn btn-secondary btn-lg">
+                        View API Docs
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Product Visual -->
+            <div class="relative" data-animate data-delay="200">
+                <div class="card p-2xl bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
+                    <div class="aspect-video rounded-xl bg-tertiary flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="w-20 h-20 mx-auto mb-lg rounded-2xl flex items-center justify-center" style="background: {{ product.color }}30; color: {{ product.color }}">
+                                {% if product.icon == 'mic' %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                    <line x1="12" x2="12" y1="19" y2="22"/>
+                                </svg>
+                                {% else %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/>
+                                </svg>
+                                {% endif %}
+                            </div>
+                            <p class="text-lg font-semibold">{{ product.name }}</p>
+                            <p class="text-sm text-muted">Interactive Demo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features & Details Tabs -->
+<section class="section bg-secondary">
+    <div class="section-container">
+        <div class="tabs">
+            <button class="tab active" data-tab="features">Features</button>
+            <button class="tab" data-tab="benefits">Benefits</button>
+            <button class="tab" data-tab="usecases">Use Cases</button>
+            <button class="tab" data-tab="api">API</button>
+        </div>
+        
+        <!-- Features Tab -->
+        <div id="features" class="tab-content active">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+                {% for feature in product.features %}
+                <div class="card flex items-start gap-md">
+                    <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-accent-primary flex-shrink-0 mt-xs">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <p class="text-sm">{{ feature }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Benefits Tab -->
+        <div id="benefits" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
+                {% for benefit in product.benefits %}
+                <div class="card flex items-start gap-lg">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-accent-emerald flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold mb-xs">{{ benefit }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Use Cases Tab -->
+        <div id="usecases" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
+                {% for use_case in product.use_cases %}
+                <div class="card">
+                    <h4 class="text-lg font-semibold mb-sm">{{ use_case.title }}</h4>
+                    <p class="text-secondary">{{ use_case.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- API Tab -->
+        <div id="api" class="tab-content">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-title">{{ product.api_example.endpoint }}</span>
+                    <button class="code-copy">Copy</button>
+                </div>
+                <div class="code-content">
+                    <pre><code>{{ product.api_example.code }}</code></pre>
+                </div>
+            </div>
+            
+            <div class="mt-2xl">
+                <h4 class="text-lg font-semibold mb-lg">API Details</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+                    <div class="card">
+                        <span class="text-sm text-muted mb-sm block">Method</span>
+                        <span class="font-semibold">{{ product.api_example.method }}</span>
+                    </div>
+                    <div class="card">
+                        <span class="text-sm text-muted mb-sm block">Endpoint</span>
+                        <span class="font-semibold font-mono text-sm">{{ product.api_example.endpoint }}</span>
+                    </div>
+                    <div class="card">
+                        <span class="text-sm text-muted mb-sm block">Authentication</span>
+                        <span class="font-semibold">Bearer Token</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Architecture Section -->
+<section class="section">
+    <div class="section-container">
+        <div class="section-header" data-animate>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
+                </svg>
+                Architecture
+            </span>
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">
+                Simple integration, powerful results. Our API-first architecture ensures seamless integration with your existing systems.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-xl stagger-children">
+            <div class="card text-center">
+                <div class="w-12 h-12 mx-auto mb-lg rounded-xl bg-primary/10 flex items-center justify-center text-accent-primary font-bold text-lg">1</div>
+                <h4 class="text-lg font-semibold mb-sm">Integrate</h4>
+                <p class="text-sm text-secondary">Add our SDK to your application with just a few lines of code.</p>
+            </div>
+            <div class="card text-center">
+                <div class="w-12 h-12 mx-auto mb-lg rounded-xl bg-secondary/10 flex items-center justify-center text-accent-secondary font-bold text-lg">2</div>
+                <h4 class="text-lg font-semibold mb-sm">Configure</h4>
+                <p class="text-sm text-secondary">Customize the AI behavior to match your specific requirements.</p>
+            </div>
+            <div class="card text-center">
+                <div class="w-12 h-12 mx-auto mb-lg rounded-xl bg-cyan-500/10 flex items-center justify-center text-accent-cyan font-bold text-lg">3</div>
+                <h4 class="text-lg font-semibold mb-sm">Deploy</h4>
+                <p class="text-sm text-secondary">Launch to production with our scalable, reliable infrastructure.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-bg">
+        <div class="cta-gradient"></div>
+    </div>
+    <div class="cta-content" data-animate>
+        <h2 class="cta-title">
+            Ready to <span class="gradient-text">Get Started</span>?
+        </h2>
+        <p class="cta-subtitle">
+            Schedule a demo to see {{ product.name }} in action.
+        </p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+                Request Demo
+            </a>
+            <a href="{{ url_for('products') }}" class="btn btn-secondary btn-lg">
+                View All Products
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+.product-icon-lg {
+    width: 80px;
+    height: 80px;
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+{% endblock %}

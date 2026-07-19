@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Academy - HUMISENSE{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="page-header-bg">
+        <div class="page-header-gradient"></div>
+    </div>
+    <div class="page-header-content">
+        <span class="hero-tagline">MAKE IT HAPPEN</span>
+        <h1 class="page-header-title">AI Academy</h1>
+        <p class="page-header-subtitle">
+            Master AI technologies with hands-on courses taught by industry experts. From Python to LLMs, build the skills of tomorrow.
+        </p>
+    </div>
+</section>
+
+<!-- Learning Paths -->
+<section class="section">
+    <div class="section-container">
+        <div class="section-header" data-animate>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+                Learning Paths
+            </span>
+            <h2 class="section-title">Structured Learning Journeys</h2>
+            <p class="section-subtitle">
+                Follow curated learning paths designed to take you from beginner to expert in AI.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-xl stagger-children">
+            <div class="card p-2xl bg-gradient-to-br from-primary/5 to-transparent">
+                <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-accent-primary mb-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-sm">AI Foundations</h3>
+                <p class="text-secondary mb-lg">Start your AI journey with Python fundamentals and basic machine learning concepts.</p>
+                <div class="flex flex-wrap gap-sm mb-lg">
+                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Beginner</span>
+                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary">6 courses</span>
+                </div>
+                <a href="{{ url_for('course_detail', course_id='python-ai') }}" class="btn btn-primary w-full justify-center">
+                    Start Path
+                </a>
+            </div>
+            
+            <div class="card p-2xl bg-gradient-to-br from-secondary/5 to-transparent">
+                <div class="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-accent-secondary mb-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-sm">ML Engineering</h3>
+                <p class="text-secondary mb-lg">Deep dive into machine learning algorithms, model training, and production deployment.</p>
+                <div class="flex flex-wrap gap-sm mb-lg">
+                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Intermediate</span>
+                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary">8 courses</span>
+                </div>
+                <a href="{{ url_for('course_detail', course_id='machine-learning') }}" class="btn btn-primary w-full justify-center">
+                    Start Path
+                </a>
+            </div>
+            
+            <div class="card p-2xl bg-gradient-to-br from-cyan-500/5 to-transparent">
+                <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-accent-cyan mb-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-sm">GenAI Mastery</h3>
+                <p class="text-secondary mb-lg">Master generative AI, LLMs, and build production-ready AI applications.</p>
+                <div class="flex flex-wrap gap-sm mb-lg">
+                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Advanced</span>
+                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary">10 courses</span>
+                </div>
+                <a href="{{ url_for('course_detail', course_id='generative-ai') }}" class="btn btn-primary w-full justify-center">
+                    Start Path
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- All Courses -->
+<section class="section bg-secondary">
+    <div class="section-container">
+        <div class="section-header" data-animate>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                </svg>
+                All Courses
+            </span>
+            <h2 class="section-title">Explore Our Courses</h2>
+            <p class="section-subtitle">
+                Comprehensive courses covering all aspects of AI development and deployment.
+            </p>
+        </div>
+        
+        <div class="courses-grid stagger-children">
+            {% for course in courses %}
+            <div class="course-card">
+                <div class="course-header">
+                    <div class="course-icon" style="background: {{ course.color }}15; color: {{ course.color }};">
+                        {% if course.icon == 'code' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                        </svg>
+                        {% elif course.icon == 'brain' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
+                        </svg>
+                        {% elif course.icon == 'layers' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/>
+                        </svg>
+                        {% elif course.icon == 'sparkles' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+                        </svg>
+                        {% elif course.icon == 'cpu' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/>
+                        </svg>
+                        {% elif course.icon == 'bot' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/>
+                        </svg>
+                        {% elif course.icon == 'database' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/>
+                        </svg>
+                        {% elif course.icon == 'pie-chart' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>
+                        </svg>
+                        {% elif course.icon == 'server' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/>
+                        </svg>
+                        {% elif course.icon == 'settings' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                        {% endif %}
+                    </div>
+                    <div class="course-info">
+                        <span class="course-level {{ course.level|lower }}">{{ course.level }}</span>
+                        <h3 class="course-name">{{ course.name }}</h3>
+                        <div class="course-meta">
+                            <span class="course-meta-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                                {{ course.duration }}
+                            </span>
+                            <span class="course-meta-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                                </svg>
+                                {{ course.modules }} modules
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <p class="course-description">{{ course.description }}</p>
+                <div class="course-footer">
+                    <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-primary btn-sm">
+                        View Course
+                    </a>
+                    <span class="text-sm text-muted">Certificate included</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Why Learn With Us -->
+<section class="section">
+    <div class="section-container">
+        <div class="section-header" data-animate>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+                </svg>
+                Why Choose Us
+            </span>
+            <h2 class="section-title">Learn from Industry Experts</h2>
+            <p class="section-subtitle">
+                Our courses are designed by practitioners who've built AI systems at scale.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-xl stagger-children">
+            <div class="card text-center">
+                <div class="w-14 h-14 mx-auto mb-lg rounded-2xl bg-primary/10 flex items-center justify-center text-accent-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                    </svg>
+                </div>
+                <h4 class="text-lg font-semibold mb-sm">Hands-on Projects</h4>
+                <p class="text-sm text-secondary">Build real AI applications, not just tutorials. Every course includes practical projects.</p>
+            </div>
+            
+            <div class="card text-center">
+                <div class="w-14 h-14 mx-auto mb-lg rounded-2xl bg-secondary/10 flex items-center justify-center text-accent-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
+                <h4 class="text-lg font-semibold mb-sm">Expert Instructors</h4>
+                <p class="text-sm text-secondary">Learn from AI practitioners who've built production systems at leading companies.</p>
+            </div>
+            
+            <div class="card text-center">
+                <div class="w-14 h-14 mx-auto mb-lg rounded-2xl bg-cyan-500/10 flex items-center justify-center text-accent-cyan">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+                    </svg>
+                </div>
+                <h4 class="text-lg font-semibold mb-sm">Career Support</h4>
+                <p class="text-sm text-secondary">Get resume reviews, interview prep, and job referrals to top AI companies.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-bg">
+        <div class="cta-gradient"></div>
+    </div>
+    <div class="cta-content" data-animate>
+        <h2 class="cta-title">
+            Start Your <span class="gradient-text">AI Journey</span> Today
+        </h2>
+        <p class="cta-subtitle">
+            Join thousands of students who've transformed their careers with HUMISENSE Academy.
+        </p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+                Enroll Now
+            </a>
+            <a href="{{ url_for('contact') }}" class="btn btn-secondary btn-lg">
+                Request Syllabus
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

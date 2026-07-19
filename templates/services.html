@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Services - HUMISENSE{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="page-header-bg">
+        <div class="page-header-gradient"></div>
+    </div>
+    <div class="page-header-content">
+        <span class="hero-tagline">MAKE IT HAPPEN</span>
+        <h1 class="page-header-title">AI Services</h1>
+        <p class="page-header-subtitle">
+            From strategy to implementation, our team of AI experts helps you build, deploy, and scale intelligent solutions that drive business outcomes.
+        </p>
+    </div>
+</section>
+
+<!-- Services Grid -->
+<section class="section">
+    <div class="section-container">
+        <div class="services-grid stagger-children" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+            {% for service in services %}
+            <div class="service-card" style="padding: 2rem;">
+                <div class="service-icon" style="background: {{ service.color }}15; color: {{ service.color }}; width: 56px; height: 56px; border-radius: 1rem;">
+                    {% if service.icon == 'globe' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>
+                    </svg>
+                    {% elif service.icon == 'smartphone' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>
+                    </svg>
+                    {% elif service.icon == 'cpu' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/>
+                    </svg>
+                    {% elif service.icon == 'bot' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
+                    </svg>
+                    {% elif service.icon == 'users' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    {% elif service.icon == 'brain' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
+                    </svg>
+                    {% elif service.icon == 'database' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/>
+                    </svg>
+                    {% elif service.icon == 'pie-chart' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>
+                    </svg>
+                    {% elif service.icon == 'bar-chart' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/>
+                    </svg>
+                    {% elif service.icon == 'lightbulb' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>
+                    </svg>
+                    {% elif service.icon == 'cloud' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+                    </svg>
+                    {% elif service.icon == 'settings' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>
+                    </svg>
+                    {% endif %}
+                </div>
+                <h3 class="service-name text-xl">{{ service.name }}</h3>
+                <p class="service-description mb-lg">{{ service.description }}</p>
+                <ul class="product-features mb-lg">
+                    {% for feature in service.features[:5] %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+                <div class="flex flex-wrap gap-sm mb-lg">
+                    {% for tech in service.technologies[:4] %}
+                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary text-secondary">{{ tech }}</span>
+                    {% endfor %}
+                </div>
+                <p class="text-sm font-semibold text-accent">{{ service.starting_price }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Process Section -->
+<section class="section bg-secondary">
+    <div class="section-container">
+        <div class="section-header" data-animate>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+                Our Process
+            </span>
+            <h2 class="section-title">How We Work</h2>
+            <p class="section-subtitle">
+                A structured approach to delivering AI solutions that drive measurable business outcomes.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-xl stagger-children">
+            <div class="card text-center">
+                <div class="w-14 h-14 mx-auto mb-lg rounded-2xl bg-primary/10 flex items-center justify-center text-accent-primary font-bold text-xl">1</div>
+                <h4 class="text-lg font-semibold mb-sm">Discovery</h4>
+                <p class="text-sm text-secondary">Deep dive into your business goals, data, and challenges.</p>
+            </div>
+            <div class="card text-center">
+                <div class="w-14 h-14 mx-auto mb-lg rounded-2xl bg-secondary/10 flex items-center justify-center text-accent-secondary font-bold text-xl">2</div>
+                <h4 class="text-lg font-semibold mb-sm">Strategy</h4>
+                <p class="text-sm text-secondary">Design a custom AI roadmap aligned with your objectives.</p>
+            </div>
+            <div class="card text-center">
+                <div class="w-14 h-14 mx-auto mb-lg rounded-2xl bg-cyan-500/10 flex items-center justify-center text-accent-cyan font-bold text-xl">3</div>
+                <h4 class="text-lg font-semibold mb-sm">Implementation</h4>
+                <p class="text-sm text-secondary">Build and deploy AI solutions with iterative testing.</p>
+            </div>
+            <div class="card text-center">
+                <div class="w-14 h-14 mx-auto mb-lg rounded-2xl bg-emerald-500/10 flex items-center justify-center text-accent-emerald font-bold text-xl">4</div>
+                <h4 class="text-lg font-semibold mb-sm">Optimization</h4>
+                <p class="text-sm text-secondary">Continuous monitoring and improvement for peak performance.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-bg">
+        <div class="cta-gradient"></div>
+    </div>
+    <div class="cta-content" data-animate>
+        <h2 class="cta-title">
+            Ready to <span class="gradient-text">Start Your AI Journey</span>?
+        </h2>
+        <p class="cta-subtitle">
+            Schedule a consultation to discuss your AI needs.
+        </p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+                Schedule Consultation
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
