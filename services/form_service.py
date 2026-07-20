@@ -84,27 +84,56 @@ class FormService:
     
     @classmethod
     def get_setting(cls, key, default=None):
-        """Get a site setting."""
-        try:
-            setting = SiteSettings.query.filter_by(key=key).first()
-            return setting.get_value() if setting else default
-        except:
-            return default
+        """Get a site setting with retry logic for connection issues."""
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                setting = SiteSettings.query.filter_by(key=key).first()
+                return setting.get_value() if setting else default
+            except Exception as e:
+                error_msg = str(e).lower()
+                # Check if it's a connection error
+                if ('gone away' in error_msg or 
+                    'lost connection' in error_msg or
+                    'connection' in error_msg or
+                    'OperationalError' in str(type(e))):
+                    
+                    if attempt < max_retries - 1:
+                        db.session.rollback()
+                        import time
+                        time.sleep(0.5 * (attempt + 1))
+                        continue
+                return default
+        return default
     
     @classmethod
     def set_setting(cls, key, value, value_type='string'):
-        """Set a site setting."""
-        try:
-            setting = SiteSettings.query.filter_by(key=key).first()
-            if not setting:
-                setting = SiteSettings(key=key, value_type=value_type)
-                db.session.add(setting)
-            setting.set_value(value)
-            db.session.commit()
-            return True
-        except Exception as e:
-            print(f"Setting error: {e}")
-            return False
+        """Set a site setting with retry logic for connection issues."""
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                setting = SiteSettings.query.filter_by(key=key).first()
+                if not setting:
+                    setting = SiteSettings(key=key, value_type=value_type)
+                    db.session.add(setting)
+                setting.set_value(value)
+                db.session.commit()
+                return True
+            except Exception as e:
+                error_msg = str(e).lower()
+                if ('gone away' in error_msg or 
+                    'lost connection' in error_msg or
+                    'connection' in error_msg or
+                    'OperationalError' in str(type(e))):
+                    
+                    if attempt < max_retries - 1:
+                        db.session.rollback()
+                        import time
+                        time.sleep(0.5 * (attempt + 1))
+                        continue
+                print(f"Setting error: {e}")
+                return False
+        return False
     
     @classmethod
     def send_email(cls, to_email, subject, html_content, text_content=None):
