@@ -36,7 +36,7 @@
                         {% endif %}
                     {% endwith %}
                     
-                    <form id="contact-form" method="POST" action="{{ url_for('contact') }}">
+                    <form id="contact-form">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
                             <div class="form-group">
                                 <label for="name" class="form-label">Full Name *</label>
@@ -80,9 +80,9 @@
                             <textarea id="message" name="message" class="form-textarea" rows="5" placeholder="Tell us about your project or inquiry..." required></textarea>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary btn-lg w-full justify-center">
+                        <button type="submit" id="contact-submit-btn" class="btn btn-primary btn-lg w-full justify-center">
                             <span class="flex items-center gap-2">
-                                Send Message
+                                <span id="contact-btn-text">Send Message</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>
                                 </svg>
