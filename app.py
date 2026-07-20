@@ -199,6 +199,39 @@ def subscribe_newsletter():
     return jsonify({'success': True, 'message': 'Successfully subscribed!'})
 
 
+@app.route('/api/contact', methods=['POST'])
+def api_contact():
+    """Contact form submission endpoint."""
+    data = {}
+    
+    if request.is_json:
+        data = request.json
+    else:
+        data = {
+            'name': request.form.get('name'),
+            'email': request.form.get('email'),
+            'phone': request.form.get('phone'),
+            'company': request.form.get('company'),
+            'subject': request.form.get('subject'),
+            'message': request.form.get('message')
+        }
+    
+    # Validate required fields
+    if not data.get('name'):
+        return jsonify({'success': False, 'message': 'Name is required'}), 400
+    if not data.get('email'):
+        return jsonify({'success': False, 'message': 'Email is required'}), 400
+    if not data.get('message'):
+        return jsonify({'success': False, 'message': 'Message is required'}), 400
+    
+    lead, error = FormService.submit_contact(data, request.url)
+    
+    if error:
+        return jsonify({'success': False, 'message': error}), 400
+    
+    return jsonify({'success': True, 'message': 'Thank you for your message! We will get back to you within 24 hours.'})
+
+
 @app.route('/api/enroll', methods=['POST'])
 def enroll_course():
     """Course enrollment endpoint."""

@@ -150,4 +150,68 @@ document.getElementById('newsletter-form')?.addEventListener('submit', async (e)
         });
     }
 });
+
+// Contact Form AJAX Submission
+document.getElementById('contact-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('contact-submit-btn');
+    const btnText = document.getElementById('contact-btn-text');
+    const originalText = btnText.textContent;
+    
+    // Disable button and show loading
+    submitBtn.disabled = true;
+    btnText.textContent = 'Sending...';
+    
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        company: document.getElementById('company').value,
+        subject: document.getElementById('subject').value,
+        message: document.getElementById('message').value
+    };
+    
+    try {
+        const response = await fetch('{{ url_for("api_contact") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            Swal.fire({
+                title: 'Success!',
+                text: data.message,
+                icon: 'success',
+                confirmButtonColor: '#4f46e5'
+            });
+            // Reset form
+            document.getElementById('contact-form').reset();
+        } else {
+            Swal.fire({
+                title: 'Error',
+                text: data.message,
+                icon: 'error',
+                confirmButtonColor: '#4f46e5'
+            });
+        }
+    } catch (error) {
+        console.error('Contact form error:', error);
+        Swal.fire({
+            title: 'Error',
+            text: 'Something went wrong. Please try again later.',
+            icon: 'error',
+            confirmButtonColor: '#4f46e5'
+        });
+    } finally {
+        // Re-enable button
+        submitBtn.disabled = false;
+        btnText.textContent = originalText;
+    }
+});
 </script>
