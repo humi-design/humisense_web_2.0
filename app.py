@@ -1401,19 +1401,42 @@ def admin_create_user():
 # =====================================================
 
 def get_masterclass_setting(key, default=None):
-    """Get masterclass module setting from database."""
-    setting = SiteSettings.query.filter_by(key=key).first()
-    return setting.get_value() if setting else default
+    """Get masterclass module setting from database with retry logic."""
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            setting = SiteSettings.query.filter_by(key=key).first()
+            return setting.get_value() if setting else default
+        except Exception as e:
+            if attempt < max_retries - 1:
+                db.session.rollback()
+                import time
+                time.sleep(0.5 * (attempt + 1))
+                continue
+            print(f"Error getting masterclass setting {key}: {e}")
+    return default
 
 
 def set_masterclass_setting(key, value, value_type='bool'):
-    """Set masterclass module setting in database."""
-    setting = SiteSettings.query.filter_by(key=key).first()
-    if not setting:
-        setting = SiteSettings(key=key, value_type=value_type)
-        db.session.add(setting)
-    setting.set_value(value)
-    db.session.commit()
+    """Set masterclass module setting in database with retry logic."""
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            setting = SiteSettings.query.filter_by(key=key).first()
+            if not setting:
+                setting = SiteSettings(key=key, value_type=value_type)
+                db.session.add(setting)
+            setting.set_value(value)
+            db.session.commit()
+            return True
+        except Exception as e:
+            if attempt < max_retries - 1:
+                db.session.rollback()
+                import time
+                time.sleep(0.5 * (attempt + 1))
+                continue
+            print(f"Error setting masterclass setting {key}: {e}")
+    return False
 
 
 def generate_slug(title):
