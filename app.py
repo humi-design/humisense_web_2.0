@@ -35,6 +35,26 @@ def save_json_data(filename, data):
     with open(os.path.join('data', f'{filename}.json'), 'w') as f:
         json.dump(data, f, indent=2)
 
+
+def allowed_image(filename):
+    """Check if the file extension is allowed for images."""
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def upload_image(file):
+    """Upload an image file and return the URL path. Returns None if no file or invalid."""
+    if file and file.filename and allowed_image(file.filename):
+        filename = secure_filename(file.filename)
+        # Add UUID to prevent filename conflicts
+        unique_filename = f"{uuid.uuid4().hex}_{filename}"
+        upload_folder = os.path.join(app.root_path, 'static', 'uploads')
+        os.makedirs(upload_folder, exist_ok=True)
+        file_path = os.path.join(upload_folder, unique_filename)
+        file.save(file_path)
+        return f"/static/uploads/{unique_filename}"
+    return None
+
 # Create Flask application
 app = Flask(__name__)
 app.config.from_object(config[os.environ.get('FLASK_ENV', 'default')])
@@ -1567,12 +1587,21 @@ def admin_masterclass_create():
             if not slug:
                 slug = generate_slug(form.title.data)
             
+            # Handle banner image upload vs URL
+            banner_image = None
+            if 'banner_image_file' in request.files:
+                uploaded_file = request.files['banner_image_file']
+                if uploaded_file and uploaded_file.filename:
+                    banner_image = upload_image(uploaded_file)
+            if not banner_image:
+                banner_image = form.banner_image.data
+            
             masterclass = Masterclass(
                 title=form.title.data,
                 slug=slug,
                 short_description=form.short_description.data,
                 detailed_description=form.detailed_description.data,
-                banner_image=form.banner_image.data,
+                banner_image=banner_image,
                 thumbnail=form.thumbnail.data,
                 featured_image=form.featured_image.data,
                 timezone=form.timezone.data,
@@ -1602,25 +1631,52 @@ def admin_masterclass_create():
                 instructor_website=form.instructor_website.data,
             )
             
-            # Parse date and time
-            try:
-                masterclass.date = datetime.strptime(form.date.data, '%Y-%m-%d').date()
-                masterclass.time = datetime.strptime(form.time.data, '%H:%M').time()
-            except ValueError:
-                flash('Invalid date or time format', 'error')
+            # Parse date and time with robust error handling
+            date_str = form.date.data
+            time_str = form.time.data
+            
+            if date_str and time_str:
+                try:
+                    # Handle HTML5 datetime input format if combined
+                    if 'T' in date_str:
+                        date_parts = date_str.split('T')
+                        masterclass.date = datetime.strptime(date_parts[0], '%Y-%m-%d').date()
+                    else:
+                        masterclass.date = datetime.strptime(date_str, '%Y-%m-%d').date()
+                    
+                    # Handle time with seconds or without
+                    if ':' in time_str:
+                        time_parts = time_str.split(':')
+                        if len(time_parts) >= 2:
+                            hour, minute = int(time_parts[0]), int(time_parts[1])
+                            masterclass.time = datetime.strptime(f"{hour}:{minute}", '%H:%M').time()
+                except (ValueError, TypeError) as e:
+                    print(f"DEBUG: Date/time parsing error: {e}")
+                    flash('Invalid date or time format. Please use the date/time pickers.', 'error')
+                    return render_template('admin/masterclass_edit.html', form=form, masterclass=None)
+            else:
+                flash('Date and time are required', 'error')
                 return render_template('admin/masterclass_edit.html', form=form, masterclass=None)
             
-            # Parse registration opens/closes
-            if form.registration_opens.data:
+            # Parse registration opens/closes with robust error handling
+            reg_opens = form.registration_opens.data
+            reg_closes = form.registration_closes.data
+            
+            if reg_opens:
                 try:
-                    masterclass.registration_opens = datetime.strptime(form.registration_opens.data, '%Y-%m-%d %H:%M')
-                except ValueError:
+                    # Handle both datetime-local and plain datetime formats
+                    if 'T' in str(reg_opens):
+                        reg_opens = str(reg_opens).replace('T', ' ')
+                    masterclass.registration_opens = datetime.strptime(str(reg_opens).split('.')[0], '%Y-%m-%d %H:%M')
+                except (ValueError, TypeError):
                     pass
             
-            if form.registration_closes.data:
+            if reg_closes:
                 try:
-                    masterclass.registration_closes = datetime.strptime(form.registration_closes.data, '%Y-%m-%d %H:%M')
-                except ValueError:
+                    if 'T' in str(reg_closes):
+                        reg_closes = str(reg_closes).replace('T', ' ')
+                    masterclass.registration_closes = datetime.strptime(str(reg_closes).split('.')[0], '%Y-%m-%d %H:%M')
+                except (ValueError, TypeError):
                     pass
             
             try:
@@ -1651,7 +1707,20 @@ def admin_masterclass_edit(masterclass_id):
             masterclass.slug = form.slug.data if form.slug.data else generate_slug(form.title.data)
             masterclass.short_description = form.short_description.data
             masterclass.detailed_description = form.detailed_description.data
-            masterclass.banner_image = form.banner_image.data
+            
+            # Handle banner image upload vs URL
+            if 'banner_image_file' in request.files:
+                uploaded_file = request.files['banner_image_file']
+                if uploaded_file and uploaded_file.filename:
+                    new_banner = upload_image(uploaded_file)
+                    if new_banner:
+                        masterclass.banner_image = new_banner
+                    # Only update with URL if no new file uploaded
+                elif form.banner_image.data:
+                    masterclass.banner_image = form.banner_image.data
+            else:
+                masterclass.banner_image = form.banner_image.data
+            
             masterclass.thumbnail = form.thumbnail.data
             masterclass.featured_image = form.featured_image.data
             masterclass.timezone = form.timezone.data
@@ -1681,25 +1750,51 @@ def admin_masterclass_edit(masterclass_id):
             masterclass.instructor_twitter = form.instructor_twitter.data
             masterclass.instructor_website = form.instructor_website.data
             
-            # Parse date and time
-            try:
-                masterclass.date = datetime.strptime(form.date.data, '%Y-%m-%d').date()
-                masterclass.time = datetime.strptime(form.time.data, '%H:%M').time()
-            except ValueError:
-                flash('Invalid date or time format', 'error')
+            # Parse date and time with robust error handling
+            date_str = form.date.data
+            time_str = form.time.data
+            
+            if date_str and time_str:
+                try:
+                    # Handle HTML5 datetime input format if combined
+                    if 'T' in date_str:
+                        date_parts = date_str.split('T')
+                        masterclass.date = datetime.strptime(date_parts[0], '%Y-%m-%d').date()
+                    else:
+                        masterclass.date = datetime.strptime(date_str, '%Y-%m-%d').date()
+                    
+                    # Handle time with seconds or without
+                    if ':' in time_str:
+                        time_parts = time_str.split(':')
+                        if len(time_parts) >= 2:
+                            hour, minute = int(time_parts[0]), int(time_parts[1])
+                            masterclass.time = datetime.strptime(f"{hour}:{minute}", '%H:%M').time()
+                except (ValueError, TypeError) as e:
+                    print(f"DEBUG: Date/time parsing error: {e}")
+                    flash('Invalid date or time format. Please use the date/time pickers.', 'error')
+                    return render_template('admin/masterclass_edit.html', form=form, masterclass=masterclass)
+            else:
+                flash('Date and time are required', 'error')
                 return render_template('admin/masterclass_edit.html', form=form, masterclass=masterclass)
             
-            # Parse registration opens/closes
-            if form.registration_opens.data:
+            # Parse registration opens/closes with robust error handling
+            reg_opens = form.registration_opens.data
+            reg_closes = form.registration_closes.data
+            
+            if reg_opens:
                 try:
-                    masterclass.registration_opens = datetime.strptime(form.registration_opens.data, '%Y-%m-%d %H:%M')
-                except ValueError:
+                    if 'T' in str(reg_opens):
+                        reg_opens = str(reg_opens).replace('T', ' ')
+                    masterclass.registration_opens = datetime.strptime(str(reg_opens).split('.')[0], '%Y-%m-%d %H:%M')
+                except (ValueError, TypeError):
                     pass
             
-            if form.registration_closes.data:
+            if reg_closes:
                 try:
-                    masterclass.registration_closes = datetime.strptime(form.registration_closes.data, '%Y-%m-%d %H:%M')
-                except ValueError:
+                    if 'T' in str(reg_closes):
+                        reg_closes = str(reg_closes).replace('T', ' ')
+                    masterclass.registration_closes = datetime.strptime(str(reg_closes).split('.')[0], '%Y-%m-%d %H:%M')
+                except (ValueError, TypeError):
                     pass
             
             db.session.commit()
