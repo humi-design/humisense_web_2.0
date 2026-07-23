@@ -1,0 +1,725 @@
+{% extends 'base.html' %}
+
+{% block title %}Humisense | Business Performance Excellence | MAKE IT HAPPEN{% endblock %}
+
+{% block extra_head %}
+<!-- SplitType for text animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/split-type/0.3.4/split-type.min.js"></script>
+<!-- Business Performance CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/humisense-business.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- =====================================================
+     HERO SECTION - Premium Business Consulting
+     ===================================================== -->
+<section id="hero" class="hero-section">
+    <!-- Subtle Background Pattern -->
+    <div class="hero-pattern"></div>
+    
+    <div class="hero-container">
+        <!-- Minimal Trust Indicator -->
+        <div class="hero-trust" data-animate>
+            <span class="trust-indicator"></span>
+            <span class="trust-text">Trusted by leadership teams at Fortune 500 companies</span>
+        </div>
+        
+        <!-- Main Headline - CEO-Focused -->
+        <h1 class="hero-headline" data-animate data-delay="100">
+            <span class="headline-line">Your Business Is</span>
+            <span class="headline-line">Capable Of More.</span>
+        </h1>
+        
+        <!-- Tagline - Used Sparingly -->
+        <p class="hero-tagline" data-animate data-delay="200">MAKE IT HAPPEN.</p>
+        
+        <!-- Subheadline - Business Impact First -->
+        <p class="hero-subheadline" data-animate data-delay="300">
+            Humisense identifies the hidden bottlenecks limiting your growth and engineers intelligent business systems that improve performance, reduce costs, and create measurable competitive advantage.
+        </p>
+        
+        <!-- Primary CTA -->
+        <div class="hero-actions" data-animate data-delay="400">
+            <a href="#business-scan" class="btn-primary-large">
+                <span class="btn-content">
+                    <span class="btn-text">Discover What's Holding Your Business Back</span>
+                    <span class="btn-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m9 18 6-6-6-6"/>
+                        </svg>
+                    </span>
+                </span>
+            </a>
+            <a href="#how-we-help" class="btn-secondary-large">
+                See How We Help Businesses Grow
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     EMOTIONAL BRIDGE - Make Visitor Feel Understood
+     ===================================================== -->
+<section id="understanding" class="understanding-section">
+    <div class="section-container">
+        <div class="understanding-content">
+            <div class="understanding-header" data-animate>
+                <span class="section-eyebrow">The Invisible Problem</span>
+                <h2 class="understanding-title">Every business has hidden bottlenecks.</h2>
+            </div>
+            
+            <div class="understanding-text" data-animate data-delay="100">
+                <p>Most companies don't know where they are. They feel the symptoms — missed targets, overworked teams, slow decisions, frustrated customers — but can't pinpoint the cause.</p>
+                <p>It's not about working harder. It's about removing what's blocking you.</p>
+            </div>
+            
+            <div class="understanding-signature" data-animate data-delay="200">
+                <p class="signature-line">Humisense finds them.</p>
+                <p class="signature-line">Engineers solutions.</p>
+                <p class="signature-line">Measures outcomes.</p>
+                <p class="signature-line">Continuously improves performance.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     BUSINESS CHALLENGES - Problems CEOs Recognize
+     ===================================================== -->
+<section id="business-challenges" class="challenges-section">
+    <div class="section-container">
+        <div class="challenges-header" data-animate>
+            <span class="section-eyebrow">Business Challenges We Solve</span>
+            <h2 class="challenges-title">Sound familiar?</h2>
+            <p class="challenges-subtitle">These problems are expensive. And they're more common than you think.</p>
+        </div>
+        
+        <div class="challenges-grid">
+            <!-- Challenge 1 -->
+            <div class="challenge-card" data-animate>
+                <div class="challenge-number">01</div>
+                <div class="challenge-content">
+                    <h3 class="challenge-heading">Your sales team spends hours on repetitive follow-ups.</h3>
+                    <p class="challenge-impact">While your best people handle routine tasks, strategic opportunities slip away.</p>
+                    <div class="challenge-cost">
+                        <span class="cost-label">Estimated impact:</span>
+                        <span class="cost-value">20+ hours/week lost per rep</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Challenge 2 -->
+            <div class="challenge-card" data-animate data-delay="100">
+                <div class="challenge-number">02</div>
+                <div class="challenge-content">
+                    <h3 class="challenge-heading">Your operations depend on spreadsheets that no one fully understands.</h3>
+                    <p class="challenge-impact">Decisions get delayed because the right information lives in someone's inbox.</p>
+                    <div class="challenge-cost">
+                        <span class="cost-label">Estimated impact:</span>
+                        <span class="cost-value">3-5 days/month in coordination</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Challenge 3 -->
+            <div class="challenge-card" data-animate data-delay="200">
+                <div class="challenge-number">03</div>
+                <div class="challenge-content">
+                    <h3 class="challenge-heading">Customers wait too long for responses that should be instant.</h3>
+                    <p class="challenge-impact">Every unanswered question is a chance for your competitor to step in.</p>
+                    <div class="challenge-cost">
+                        <span class="cost-label">Estimated impact:</span>
+                        <span class="cost-value">23% of customers switch after one bad experience</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Challenge 4 -->
+            <div class="challenge-card" data-animate data-delay="300">
+                <div class="challenge-number">04</div>
+                <div class="challenge-content">
+                    <h3 class="challenge-heading">Your managers make decisions without real-time data.</h3>
+                    <p class="challenge-impact">By the time reports are ready, the moment for action has passed.</p>
+                    <div class="challenge-cost">
+                        <span class="cost-label">Estimated impact:</span>
+                        <span class="cost-value">40% of decisions made with outdated information</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Challenge 5 -->
+            <div class="challenge-card" data-animate data-delay="400">
+                <div class="challenge-number">05</div>
+                <div class="challenge-content">
+                    <h3 class="challenge-heading">Employees repeat work that software should handle.</h3>
+                    <p class="challenge-impact">Your team deserves to focus on problems that require human judgment.</p>
+                    <div class="challenge-cost">
+                        <span class="cost-label">Estimated impact:</span>
+                        <span class="cost-value">62% of work could be automated</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Challenge 6 -->
+            <div class="challenge-card" data-animate data-delay="500">
+                <div class="challenge-number">06</div>
+                <div class="challenge-content">
+                    <h3 class="challenge-heading">You know something is inefficient. You just can't see it clearly.</h3>
+                    <p class="challenge-impact">The gap between where you are and where you could be feels invisible.</p>
+                    <div class="challenge-cost">
+                        <span class="cost-label">Estimated impact:</span>
+                        <span class="cost-value">15-25% of revenue left on the table</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     BUSINESS PERFORMANCE SCAN - Signature Feature
+     ===================================================== -->
+<section id="business-scan" class="scan-section">
+    <div class="section-container">
+        <div class="scan-wrapper">
+            <div class="scan-header" data-animate>
+                <span class="section-eyebrow">Business Performance Scan™</span>
+                <h2 class="scan-title">60 seconds to understand your business performance.</h2>
+                <p class="scan-subtitle">Answer a few questions about your operations. We'll identify your biggest opportunities for improvement.</p>
+            </div>
+            
+            <!-- Scan Form -->
+            <div class="scan-container" data-animate data-delay="100">
+                <div class="scan-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="scanProgress"></div>
+                    </div>
+                    <span class="progress-text"><span id="currentStep">1</span> of <span id="totalSteps">5</span></span>
+                </div>
+                
+                <form id="scanForm" class="scan-form">
+                    <!-- Step 1: Industry -->
+                    <div class="scan-step active" data-step="1">
+                        <h3 class="step-question">What industry is your business in?</h3>
+                        <div class="step-options">
+                            <label class="step-option">
+                                <input type="radio" name="industry" value="financial" required>
+                                <span class="option-content">
+                                    <span class="option-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                                    </span>
+                                    <span class="option-text">Financial Services</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="industry" value="healthcare">
+                                <span class="option-content">
+                                    <span class="option-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                                    </span>
+                                    <span class="option-text">Healthcare</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="industry" value="technology">
+                                <span class="option-content">
+                                    <span class="option-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="8" x="5" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6 18h2"/><path d="M12 18h6"/></svg>
+                                    </span>
+                                    <span class="option-text">Technology</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="industry" value="manufacturing">
+                                <span class="option-content">
+                                    <span class="option-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+                                    </span>
+                                    <span class="option-text">Manufacturing</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="industry" value="retail">
+                                <span class="option-content">
+                                    <span class="option-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                                    </span>
+                                    <span class="option-text">Retail / E-commerce</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="industry" value="professional">
+                                <span class="option-content">
+                                    <span class="option-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    </span>
+                                    <span class="option-text">Professional Services</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Company Size -->
+                    <div class="scan-step" data-step="2">
+                        <h3 class="step-question">How many employees does your company have?</h3>
+                        <div class="step-options">
+                            <label class="step-option">
+                                <input type="radio" name="employees" value="10-50" required>
+                                <span class="option-content">
+                                    <span class="option-text">10-50 employees</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="employees" value="51-200">
+                                <span class="option-content">
+                                    <span class="option-text">51-200 employees</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="employees" value="201-500">
+                                <span class="option-content">
+                                    <span class="option-text">201-500 employees</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="employees" value="501-1000">
+                                <span class="option-content">
+                                    <span class="option-text">501-1,000 employees</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="employees" value="1000+">
+                                <span class="option-content">
+                                    <span class="option-text">1,000+ employees</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Primary Challenge -->
+                    <div class="scan-step" data-step="3">
+                        <h3 class="step-question">What's your biggest operational challenge right now?</h3>
+                        <div class="step-options">
+                            <label class="step-option">
+                                <input type="radio" name="challenge" value="efficiency" required>
+                                <span class="option-content">
+                                    <span class="option-text">Inefficient processes wasting time and money</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="challenge" value="data">
+                                <span class="option-content">
+                                    <span class="option-text">Decisions made without real-time data</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="challenge" value="customer">
+                                <span class="option-content">
+                                    <span class="option-text">Slow customer response times</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="challenge" value="growth">
+                                <span class="option-content">
+                                    <span class="option-text">Can't scale without proportional headcount</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="challenge" value="visibility">
+                                <span class="option-content">
+                                    <span class="option-text">Lack of visibility into operations</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 4: Growth Goals -->
+                    <div class="scan-step" data-step="4">
+                        <h3 class="step-question">What's your primary growth goal for the next 12 months?</h3>
+                        <div class="step-options">
+                            <label class="step-option">
+                                <input type="radio" name="growth" value="revenue" required>
+                                <span class="option-content">
+                                    <span class="option-text">Increase revenue without increasing costs</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="growth" value="efficiency">
+                                <span class="option-content">
+                                    <span class="option-text">Reduce operational costs</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="growth" value="experience">
+                                <span class="option-content">
+                                    <span class="option-text">Improve customer experience</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="growth" value="speed">
+                                <span class="option-content">
+                                    <span class="option-text">Make faster, data-driven decisions</span>
+                                </span>
+                            </label>
+                            <label class="step-option">
+                                <input type="radio" name="growth" value="scale">
+                                <span class="option-content">
+                                    <span class="option-text">Scale operations efficiently</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 5: Contact Info -->
+                    <div class="scan-step" data-step="5">
+                        <h3 class="step-question">Where should we send your Business Performance Report?</h3>
+                        <div class="step-inputs">
+                            <div class="input-group">
+                                <input type="text" name="name" placeholder="Your name" required class="form-input">
+                            </div>
+                            <div class="input-group">
+                                <input type="email" name="email" placeholder="Work email" required class="form-input">
+                            </div>
+                            <div class="input-group">
+                                <input type="text" name="company" placeholder="Company name" required class="form-input">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <div class="scan-nav">
+                        <button type="button" class="btn-back" id="scanBack" style="display: none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                            Back
+                        </button>
+                        <button type="button" class="btn-next" id="scanNext">
+                            Continue
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Scan Results (Hidden by default) -->
+            <div class="scan-results" id="scanResults" style="display: none;">
+                <div class="results-header">
+                    <span class="results-badge">Your Business Performance Report</span>
+                    <h3 class="results-title">Based on your responses, here's what we found:</h3>
+                </div>
+                
+                <div class="results-grid">
+                    <div class="result-card performance-score">
+                        <div class="result-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+                        </div>
+                        <div class="result-value">68</div>
+                        <div class="result-label">Business Performance Score</div>
+                        <div class="result-context">Industry average: 72</div>
+                    </div>
+                    
+                    <div class="result-card maturity">
+                        <div class="result-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        </div>
+                        <div class="result-label">Operational Maturity</div>
+                        <div class="maturity-bar">
+                            <div class="maturity-fill" style="width: 65%"></div>
+                        </div>
+                        <div class="maturity-labels">
+                            <span>Developing</span>
+                            <span>Optimizing</span>
+                        </div>
+                    </div>
+                    
+                    <div class="result-card hours-lost">
+                        <div class="result-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div class="result-value">147</div>
+                        <div class="result-label">Estimated Hours Lost Monthly</div>
+                        <div class="result-context">To manual, repetitive tasks</div>
+                    </div>
+                </div>
+                
+                <div class="results-opportunities">
+                    <h4 class="opportunities-title">Your Priority Improvement Areas</h4>
+                    <div class="opportunity-item">
+                        <span class="opportunity-rank">#1</span>
+                        <div class="opportunity-content">
+                            <h5>Process Automation</h5>
+                            <p>Automating your top 3 manual workflows could save 52 hours/month and reduce errors by 40%.</p>
+                        </div>
+                    </div>
+                    <div class="opportunity-item">
+                        <span class="opportunity-rank">#2</span>
+                        <div class="opportunity-content">
+                            <h5>Customer Response Systems</h5>
+                            <p>Implementing instant response protocols could improve satisfaction scores by 25%.</p>
+                        </div>
+                    </div>
+                    <div class="opportunity-item">
+                        <span class="opportunity-rank">#3</span>
+                        <div class="opportunity-content">
+                            <h5>Decision Intelligence</h5>
+                            <p>Real-time dashboards could reduce decision latency from days to hours.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="results-impact">
+                    <h4 class="impact-title">Estimated Business Impact</h4>
+                    <div class="impact-metrics">
+                        <div class="impact-metric">
+                            <span class="impact-value">$340K</span>
+                            <span class="impact-label">Annual savings potential</span>
+                        </div>
+                        <div class="impact-metric">
+                            <span class="impact-value">23%</span>
+                            <span class="impact-label">Revenue growth opportunity</span>
+                        </div>
+                        <div class="impact-metric">
+                            <span class="impact-value">4.2x</span>
+                            <span class="impact-label">Return on investment</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="results-cta">
+                    <h4>Ready to realize your business potential?</h4>
+                    <p>Book a complimentary strategy session to discuss your Business Performance Report.</p>
+                    <a href="{{ url_for('contact') }}" class="btn-scan-cta">
+                        Book Your Strategy Session
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     HOW WE HELP - The Humisense Approach
+     ===================================================== -->
+<section id="how-we-help" class="approach-section">
+    <div class="section-container">
+        <div class="approach-header" data-animate>
+            <span class="section-eyebrow">The Humisense Approach</span>
+            <h2 class="approach-title">Not another technology vendor.</h2>
+            <p class="approach-subtitle">We partner with you to understand your business, identify opportunities, and deliver measurable outcomes.</p>
+        </div>
+        
+        <div class="approach-grid">
+            <div class="approach-card" data-animate>
+                <div class="approach-number">01</div>
+                <h3 class="approach-heading">We Listen</h3>
+                <p class="approach-description">Before recommending solutions, we understand your business, your industry, and your specific challenges. Not generic best practices — strategies tailored to your situation.</p>
+            </div>
+            
+            <div class="approach-card" data-animate data-delay="100">
+                <div class="approach-number">02</div>
+                <h3 class="approach-heading">We Diagnose</h3>
+                <p class="approach-description">We identify the root causes of inefficiency, not just the symptoms. Our diagnostic process reveals the bottlenecks that are actually costing you money.</p>
+            </div>
+            
+            <div class="approach-card" data-animate data-delay="200">
+                <div class="approach-number">03</div>
+                <h3 class="approach-heading">We Engineer</h3>
+                <p class="approach-description">We build systems that solve your specific problems. Every solution is designed for your business, not adapted from a generic template.</p>
+            </div>
+            
+            <div class="approach-card" data-animate data-delay="300">
+                <div class="approach-number">04</div>
+                <h3 class="approach-heading">We Measure</h3>
+                <p class="approach-description">Results matter. We track the metrics that matter to your business — revenue impact, cost reduction, time saved, customer satisfaction.</p>
+            </div>
+            
+            <div class="approach-card" data-animate data-delay="400">
+                <div class="approach-number">05</div>
+                <h3 class="approach-heading">We Improve</h3>
+                <p class="approach-description">Performance isn't a one-time project. We continuously monitor, refine, and optimize to ensure lasting improvement.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     DIFFERENTIATOR - Why Humisense
+     ===================================================== -->
+<section class="differentiator-section">
+    <div class="section-container">
+        <div class="diff-content">
+            <div class="diff-header" data-animate>
+                <span class="section-eyebrow">The Difference</span>
+                <h2 class="diff-title">Every company talks about technology.</h2>
+                <p class="diff-lead">We talk about your business.</p>
+            </div>
+            
+            <div class="diff-comparison">
+                <div class="diff-column competitors" data-animate data-delay="100">
+                    <h4 class="column-title">What others promise</h4>
+                    <ul class="diff-list">
+                        <li>
+                            <span class="list-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                            </span>
+                            AI-powered solutions
+                        </li>
+                        <li>
+                            <span class="list-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                            </span>
+                            Cutting-edge technology
+                        </li>
+                        <li>
+                            <span class="list-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                            </span>
+                            Automation platforms
+                        </li>
+                        <li>
+                            <span class="list-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                            </span>
+                            Advanced analytics
+                        </li>
+                        <li>
+                            <span class="list-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                            </span>
+                            Digital transformation
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="diff-divider"></div>
+                
+                <div class="diff-column humisense" data-animate data-delay="200">
+                    <h4 class="column-title">What Humisense delivers</h4>
+                    <ul class="diff-list">
+                        <li>
+                            <span class="list-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Business performance improvement
+                        </li>
+                        <li>
+                            <span class="list-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Measurable cost reduction
+                        </li>
+                        <li>
+                            <span class="list-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Operational efficiency
+                        </li>
+                        <li>
+                            <span class="list-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Better decisions, faster
+                        </li>
+                        <li>
+                            <span class="list-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Competitive advantage
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     TRUST - Credibility Markers
+     ===================================================== -->
+<section class="trust-section">
+    <div class="section-container">
+        <div class="trust-content">
+            <div class="trust-statements" data-animate>
+                <div class="trust-statement">
+                    <p class="trust-number">$2.4B+</p>
+                    <p class="trust-label">Business value created for clients</p>
+                </div>
+                <div class="trust-statement">
+                    <p class="trust-number">340+</p>
+                    <p class="trust-label">Enterprise engagements completed</p>
+                </div>
+                <div class="trust-statement">
+                    <p class="trust-number">18</p>
+                    <p class="trust-label">Years of business transformation experience</p>
+                </div>
+            </div>
+            
+            <div class="trust-clients" data-animate data-delay="100">
+                <p class="clients-label">Trusted by leadership teams at</p>
+                <div class="client-logos">
+                    <div class="client-logo">
+                        <svg viewBox="0 0 120 40" fill="currentColor"><rect width="120" height="40" rx="4" opacity="0.3"/></svg>
+                    </div>
+                    <div class="client-logo">
+                        <svg viewBox="0 0 120 40" fill="currentColor"><rect width="120" height="40" rx="4" opacity="0.3"/></svg>
+                    </div>
+                    <div class="client-logo">
+                        <svg viewBox="0 0 120 40" fill="currentColor"><rect width="120" height="40" rx="4" opacity="0.3"/></svg>
+                    </div>
+                    <div class="client-logo">
+                        <svg viewBox="0 0 120 40" fill="currentColor"><rect width="120" height="40" rx="4" opacity="0.3"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     FINAL CTA - Strategic Conversation
+     ===================================================== -->
+<section id="contact-cta" class="final-cta-section">
+    <div class="section-container">
+        <div class="final-cta-content" data-animate>
+            <p class="final-cta-tagline">MAKE IT HAPPEN.</p>
+            <h2 class="final-cta-title">Ready to discover what's possible?</h2>
+            <p class="final-cta-subtitle">Every engagement starts with a conversation. No sales pitch, no canned demos — just an honest discussion about your business and how we might help.</p>
+            
+            <div class="final-cta-actions">
+                <a href="{{ url_for('contact') }}" class="btn-final-cta">
+                    <span class="btn-content">
+                        <span class="btn-text">Book Your Strategy Session</span>
+                        <span class="btn-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        </span>
+                    </span>
+                </a>
+            </div>
+            
+            <p class="final-cta-note">Typically 30 minutes. No commitment required.</p>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     FLOATING CTA - Always Available
+     ===================================================== -->
+<div class="floating-cta" id="floatingCTA">
+    <a href="{{ url_for('contact') }}" class="floating-cta-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Book Strategy Call
+    </a>
+</div>
+
+<!-- Mobile Sticky CTA -->
+<div class="mobile-sticky-cta" id="mobileStickyCTA">
+    <a href="{{ url_for('contact') }}" class="btn-mobile-cta">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Book Strategy Session
+    </a>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/humisense-business.js') }}"></script>
+{% endblock %}
