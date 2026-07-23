@@ -568,10 +568,15 @@ a {
 }
 
 .dark .theme-toggle .sun-icon {
-    display: none;
+    display: block;
 }
 
+html:not(.dark) .theme-toggle .moon-icon,
 :root:not(.dark) .theme-toggle .moon-icon {
+    display: block;
+}
+
+.dark .theme-toggle .moon-icon {
     display: none;
 }
 
