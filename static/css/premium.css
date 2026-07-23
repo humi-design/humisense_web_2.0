@@ -560,23 +560,44 @@ a {
 .theme-toggle svg {
     width: 20px;
     height: 20px;
-    transition: transform var(--transition-base);
+    transition: transform var(--transition-base), opacity var(--transition-fast);
 }
 
 .theme-toggle:hover svg {
     transform: rotate(15deg);
 }
 
+/* Default state - show moon in light mode, sun in dark mode */
+.theme-toggle .sun-icon {
+    display: none;
+}
+
+.theme-toggle .moon-icon {
+    display: block;
+}
+
 .dark .theme-toggle .sun-icon {
     display: block;
 }
 
-html:not(.dark) .theme-toggle .moon-icon,
-:root:not(.dark) .theme-toggle .moon-icon {
+.dark .theme-toggle .moon-icon {
+    display: none;
+}
+
+/* Mobile Theme Toggle Button */
+#mobileThemeToggle .sun-icon {
+    display: none;
+}
+
+#mobileThemeToggle .moon-icon {
     display: block;
 }
 
-.dark .theme-toggle .moon-icon {
+.dark #mobileThemeToggle .sun-icon {
+    display: block;
+}
+
+.dark #mobileThemeToggle .moon-icon {
     display: none;
 }
 
