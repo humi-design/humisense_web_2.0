@@ -536,6 +536,17 @@ a {
     gap: var(--space-md);
 }
 
+/* The nav CTA group also carries the .hide-mobile utility. That utility sets
+   `display: block` in humisense-premium.css, which loads after this file and
+   has equal specificity, so it would otherwise stack the theme toggle above the
+   Contact button and make this navbar taller than the other pages. This more
+   specific selector restores the flex row; the mobile `.hide-mobile` rule in
+   premium.css uses !important, so it still hides the group on small screens. */
+.navbar .nav-actions-desktop {
+    display: flex;
+    align-items: center;
+}
+
 /* Theme Toggle */
 .theme-toggle {
     width: 40px;
