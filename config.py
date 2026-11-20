@@ -23,12 +23,12 @@ class Config:
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = 'Lax'
     
-    # Mail configuration
+    # Mail configuration - credentials must come from the environment
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'humisense.com')
     MAIL_PORT = int(os.environ.get('MAIL_PORT', 465))
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'True').lower() == 'true'
-    MAIL_USERNAME = os.environ.get('info@humisense.com')
-    MAIL_PASSWORD = os.environ.get('Kalpana@00000')
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME', '')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', '')
     
     # Application settings
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB max upload

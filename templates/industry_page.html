@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/seo-pages.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
+    <div class="page-header-content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="{{ url_for('home') }}">Home</a>
+            <span class="breadcrumbs-separator">/</span>
+            <a href="{{ url_for('industries') }}">Industries</a>
+            <span class="breadcrumbs-separator">/</span>
+            <span aria-current="page">{{ industry.eyebrow }}</span>
+        </nav>
+        <span class="hero-tagline">MAKE IT HAPPEN</span>
+        <h1 class="page-header-title">{{ industry.h1 }}</h1>
+        <p class="page-header-subtitle">{{ industry.summary }}</p>
+        <div class="seo-hero-actions">
+            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg" data-cta="industry-hero">Discuss your operation</a>
+            <a href="{{ url_for('industries') }}" class="btn btn-secondary btn-lg">All industries</a>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-container">
+        <div class="seo-layout">
+            <article class="seo-main">
+                <div class="seo-answer">
+                    <h2 class="seo-answer-heading">In short</h2>
+                    <p>{{ industry.answer }}</p>
+                </div>
+
+                <h2>Where the manual work sits</h2>
+                <ul class="seo-list">
+                    {% for challenge in industry.challenges %}<li>{{ challenge }}</li>{% endfor %}
+                </ul>
+
+                <h2>What we automate</h2>
+                <div class="seo-cards">
+                    {% for solution in industry.solutions %}
+                    <div class="seo-card">
+                        <h3>{{ solution.title }}</h3>
+                        <p>{{ solution.text }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <h2>Capabilities in this sector</h2>
+                <ul class="seo-grid-list">
+                    {% for capability in industry.capabilities %}<li>{{ capability }}</li>{% endfor %}
+                </ul>
+
+                <h2>What changes in practice</h2>
+                <ul class="seo-list">
+                    {% for outcome in industry.outcomes %}<li>{{ outcome }}</li>{% endfor %}
+                </ul>
+
+                <h2>Relevant services</h2>
+                <ul class="seo-inline-links">
+                    {% for label, url in industry.related_services %}
+                    <li><a href="{{ url }}">{{ label }}</a></li>
+                    {% endfor %}
+                </ul>
+
+                <h2>Frequently asked questions</h2>
+                <div class="faq-list">
+                    {% for faq in industry.faqs %}
+                    <div class="faq-item">
+                        <button class="faq-question" type="button">
+                            <span class="faq-question-text">{{ faq.q }}</span>
+                            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                        </button>
+                        <div class="faq-answer"><div class="faq-answer-content">{{ faq.a }}</div></div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </article>
+
+            <aside class="seo-aside">
+                <div class="seo-aside-card">
+                    <h2>Talk to an engineer</h2>
+                    <p>Tell us how your operation works today and where the delays accumulate.</p>
+                    <a href="{{ url_for('contact') }}" class="btn btn-primary w-full justify-center" data-cta="industry-aside">Start a conversation</a>
+                    <p class="seo-aside-note">Working with clients worldwide. Remote delivery.</p>
+                </div>
+                <div class="seo-aside-card">
+                    <h2>Other industries</h2>
+                    <ul class="seo-aside-links">
+                        {% for other in other_industries %}
+                        <li><a href="{{ url_for('industry_page', slug=other.slug) }}">{{ other.eyebrow }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="seo-aside-card">
+                    <h2>Further reading</h2>
+                    <ul class="seo-aside-links">
+                        <li><a href="{{ url_for('blog') }}">Implementation guides</a></li>
+                        <li><a href="{{ url_for('faqs') }}">AI automation FAQs</a></li>
+                        <li><a href="{{ url_for('case_studies') }}">Reference implementations</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-bg"><div class="cta-gradient"></div></div>
+    <div class="cta-content">
+        <h2 class="cta-title">Start with <span class="gradient-text">one process</span></h2>
+        <p class="cta-subtitle">We scope a single, measurable improvement before anything else.</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg" data-cta="industry-footer">Request a consultation</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

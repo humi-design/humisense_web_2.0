@@ -3,17 +3,18 @@
     <div class="navbar-container">
         <!-- Logo -->
         <a href="{{ url_for('home') }}" class="nav-logo">
-             <div><img src="{{ url_for('static', filename='images/logo.png') }}" class="nav-logo-icon" alt="Humisense"></div>
+             <div><img src="{{ url_for('static', filename='images/logo-120.png') }}" class="nav-logo-icon" alt="Humisense" width="120" height="120" decoding="async"></div>
             <span class="nav-logo-text">HUMISENSE</span>
         </a>
         
         <!-- Desktop Navigation -->
         <div class="hide-mobile">
             <ul class="nav-links">
-                <li><a href="{{ url_for('products') }}" class="nav-link {% if request.endpoint == 'products' or request.endpoint == 'product_detail' %}active{% endif %}">Products</a></li>
-                <li><a href="{{ url_for('services') }}" class="nav-link {% if request.endpoint == 'services' %}active{% endif %}">Services</a></li>
-                <li><a href="{{ url_for('research') }}" class="nav-link {% if request.endpoint == 'research' %}active{% endif %}">Research</a></li>
-                <li><a href="{{ url_for('courses') }}" class="nav-link {% if request.endpoint == 'courses' or request.endpoint == 'course_detail' %}active{% endif %}">Academy</a></li>
+                <li><a href="{{ url_for('services') }}" class="nav-link {% if request.endpoint in ['services','service_landing','ai_consulting'] %}active{% endif %}">Services</a></li>
+                <li><a href="{{ url_for('industries') }}" class="nav-link {% if request.endpoint in ['industries','industry_page'] %}active{% endif %}">Industries</a></li>
+                <li><a href="{{ url_for('products') }}" class="nav-link {% if request.endpoint in ['products','product_detail'] %}active{% endif %}">Products</a></li>
+                <li><a href="{{ url_for('resources') }}" class="nav-link {% if request.endpoint in ['resources','blog','blog_article','faqs','case_studies'] %}active{% endif %}">Resources</a></li>
+                <li><a href="{{ url_for('courses') }}" class="nav-link {% if request.endpoint in ['courses','course_detail'] %}active{% endif %}">Academy</a></li>
                 <li><a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}">About</a></li>
             </ul>
         </div>
@@ -70,7 +71,7 @@
 <div class="mobile-menu" id="mobileMenu">
     <div class="mobile-menu-header">
         <a href="{{ url_for('home') }}" class="nav-logo">
-            <div><img src="{{ url_for('static', filename='images/logo.png') }}" class="nav-logo-icon" alt="Humisense"></div>
+            <div><img src="{{ url_for('static', filename='images/logo-120.png') }}" class="nav-logo-icon" alt="Humisense" width="120" height="120" decoding="async"></div>
             <span class="nav-logo-text">HUMISENSE</span>
         </a>
         <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">
@@ -82,9 +83,14 @@
     </div>
     
     <ul class="mobile-nav-links">
-        <li><a href="{{ url_for('products') }}">Products</a></li>
         <li><a href="{{ url_for('services') }}">Services</a></li>
-        <li><a href="{{ url_for('research') }}">Research</a></li>
+        <li><a href="{{ url_for('ai_automation') }}">AI Automation</a></li>
+        <li><a href="{{ url_for('ai_agents') }}">AI Agents</a></li>
+        <li><a href="{{ url_for('industries') }}">Industries</a></li>
+        <li><a href="{{ url_for('products') }}">Products</a></li>
+        <li><a href="{{ url_for('resources') }}">Resources</a></li>
+        <li><a href="{{ url_for('blog') }}">Blog</a></li>
+        <li><a href="{{ url_for('faqs') }}">FAQs</a></li>
         <li><a href="{{ url_for('courses') }}">Academy</a></li>
         <li><a href="{{ url_for('about') }}">About</a></li>
         <li><a href="{{ url_for('contact') }}">Contact</a></li>

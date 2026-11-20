@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/seo-pages.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
+    <div class="page-header-content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="{{ url_for('home') }}">Home</a>
+            <span class="breadcrumbs-separator">/</span>
+            <a href="{{ url_for('services') }}">Services</a>
+            <span class="breadcrumbs-separator">/</span>
+            <span aria-current="page">{{ service.eyebrow }}</span>
+        </nav>
+        <span class="hero-tagline">MAKE IT HAPPEN</span>
+        <h1 class="page-header-title">{{ service.h1 }}</h1>
+        <p class="page-header-subtitle">{{ service.summary }}</p>
+        <div class="seo-hero-actions">
+            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg" data-cta="service-hero">Discuss your process</a>
+            <a href="{{ url_for('services') }}" class="btn btn-secondary btn-lg">All services</a>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-container">
+        <div class="seo-layout">
+            <article class="seo-main">
+                <div class="seo-answer">
+                    <h2 class="seo-answer-heading">In short</h2>
+                    <p>{{ service.answer }}</p>
+                </div>
+
+                <h2>The problem we usually find</h2>
+                <ul class="seo-list">
+                    {% for problem in service.problems %}<li>{{ problem }}</li>{% endfor %}
+                </ul>
+
+                <h2>How Humisense approaches it</h2>
+                <ol class="seo-steps">
+                    {% for step in service.approach %}
+                    <li>
+                        <h3>{{ step.title }}</h3>
+                        <p>{{ step.text }}</p>
+                    </li>
+                    {% endfor %}
+                </ol>
+
+                <h2>What the solution includes</h2>
+                <ul class="seo-grid-list">
+                    {% for capability in service.capabilities %}<li>{{ capability }}</li>{% endfor %}
+                </ul>
+
+                <h2>Practical use cases</h2>
+                <div class="seo-cards">
+                    {% for case in service.use_cases %}
+                    <div class="seo-card">
+                        <h3>{{ case.title }}</h3>
+                        <p>{{ case.text }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <h2>Where this is applied by industry</h2>
+                <ul class="seo-inline-links">
+                    {% for label, url in service.industries %}
+                    <li><a href="{{ url }}">{{ label }}</a></li>
+                    {% endfor %}
+                </ul>
+
+                <h2>Technologies used where relevant</h2>
+                <ul class="seo-tags">
+                    {% for tech in service.technologies %}<li>{{ tech }}</li>{% endfor %}
+                </ul>
+
+                <h2>Expected benefits</h2>
+                <ul class="seo-list">
+                    {% for benefit in service.benefits %}<li>{{ benefit }}</li>{% endfor %}
+                </ul>
+
+                <h2>Frequently asked questions</h2>
+                <div class="faq-list">
+                    {% for faq in service.faqs %}
+                    <div class="faq-item">
+                        <button class="faq-question" type="button">
+                            <span class="faq-question-text">{{ faq.q }}</span>
+                            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                        </button>
+                        <div class="faq-answer"><div class="faq-answer-content">{{ faq.a }}</div></div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </article>
+
+            <aside class="seo-aside">
+                <div class="seo-aside-card">
+                    <h2>Talk to an engineer</h2>
+                    <p>Describe the process you want to automate. We will reply with a practical assessment, not a sales deck.</p>
+                    <a href="{{ url_for('contact') }}" class="btn btn-primary w-full justify-center" data-cta="service-aside">Start a conversation</a>
+                    <p class="seo-aside-note">Working with clients worldwide. Remote delivery.</p>
+                </div>
+                <div class="seo-aside-card">
+                    <h2>Related services</h2>
+                    <ul class="seo-aside-links">
+                        {% for label, url in service.related %}
+                        <li><a href="{{ url }}">{{ label }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="seo-aside-card">
+                    <h2>Further reading</h2>
+                    <ul class="seo-aside-links">
+                        <li><a href="{{ url_for('faqs') }}">AI automation FAQs</a></li>
+                        <li><a href="{{ url_for('blog') }}">Implementation guides</a></li>
+                        <li><a href="{{ url_for('resources') }}">Resource centre</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-bg"><div class="cta-gradient"></div></div>
+    <div class="cta-content">
+        <h2 class="cta-title">Ready to <span class="gradient-text">scope this properly</span>?</h2>
+        <p class="cta-subtitle">Tell us about the process, the volume and the systems involved.</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg" data-cta="service-footer">Request a consultation</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

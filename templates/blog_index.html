@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/seo-pages.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
+    <div class="page-header-content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="{{ url_for('home') }}">Home</a>
+            <span class="breadcrumbs-separator">/</span>
+            <span aria-current="page">Blog</span>
+        </nav>
+        <span class="hero-tagline">IMPLEMENTATION NOTES</span>
+        <h1 class="page-header-title">AI Automation Blog</h1>
+        <p class="page-header-subtitle">
+            Practical guides on automating business processes with AI, written from implementation work rather than theory.
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-container">
+        <div class="seo-cards seo-cards--wide">
+            {% for article in articles %}
+            <article class="seo-card seo-card--article">
+                <span class="seo-card-category">{{ article.category }}</span>
+                <h2 class="seo-card-title"><a href="{{ url_for('blog_article', slug=article.slug) }}">{{ article.title }}</a></h2>
+                <p>{{ article.description }}</p>
+                <div class="seo-card-meta">
+                    <time datetime="{{ article.published }}">{{ article.published }}</time>
+                    <span>{{ article.reading_time }} min read</span>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        <div class="seo-crosslinks">
+            <h2>Explore the resource centre</h2>
+            <ul class="seo-inline-links">
+                <li><a href="{{ url_for('resources') }}">Guides and frameworks</a></li>
+                <li><a href="{{ url_for('faqs') }}">AI automation FAQs</a></li>
+                <li><a href="{{ url_for('case_studies') }}">Reference implementations</a></li>
+                <li><a href="{{ url_for('services') }}">All services</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}

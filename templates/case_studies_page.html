@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/seo-pages.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
+    <div class="page-header-content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="{{ url_for('home') }}">Home</a>
+            <span class="breadcrumbs-separator">/</span>
+            <span aria-current="page">Case studies</span>
+        </nav>
+        <span class="hero-tagline">HOW THE WORK LOOKS</span>
+        <h1 class="page-header-title">Reference Implementations</h1>
+        <p class="page-header-subtitle">
+            These are reference implementations: they describe the problem, the approach and the
+            components involved. Client names and commercial figures are published only where the
+            client has approved disclosure, so they are not included here.
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-container">
+        {% for study in studies %}
+        <article class="seo-case-study">
+            <div class="seo-case-study-head">
+                <span class="seo-card-category">{{ study.sector }}</span>
+                <span class="seo-case-study-type">{{ study.type }}</span>
+            </div>
+            <h2>{{ study.title }}</h2>
+
+            <h3>The problem</h3>
+            <p>{{ study.problem }}</p>
+
+            <h3>The approach</h3>
+            <p>{{ study.approach }}</p>
+
+            <h3>Components</h3>
+            <ul class="seo-tags">
+                {% for component in study.components %}<li>{{ component }}</li>{% endfor %}
+            </ul>
+
+            <p class="seo-case-study-note">{{ study.notes }}</p>
+        </article>
+        {% endfor %}
+
+        <div class="seo-crosslinks">
+            <h2>Discuss a similar project</h2>
+            <p>
+                If one of these patterns matches a process in your business, describe it to us and
+                we will tell you what an implementation would involve.
+            </p>
+            <ul class="seo-inline-links">
+                <li><a href="{{ url_for('contact') }}">Talk to Humisense</a></li>
+                <li><a href="{{ url_for('services') }}">All services</a></li>
+                <li><a href="{{ url_for('blog') }}">Implementation guides</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
-{% block title %}HUMISENSE - Building the Future with AI | MAKE IT HAPPEN{% endblock %}
 
 {% block extra_head %}
 
@@ -23,7 +22,7 @@
         <!-- Trust Badge -->
         <div class="hero-badge" data-animate>
             <span class="hero-badge-dot"></span>
-            <span>Trusted by 50+ Enterprise Clients Worldwide</span>
+            <span>Global AI automation and implementation partner</span>
         </div>
         
         <!-- Main Headline -->
@@ -37,7 +36,9 @@
         
         <!-- Subheadline -->
         <p class="hero-subtitle" data-animate data-delay="300">
-            Transform your business with enterprise AI solutions. From autonomous agents to intelligent automation — we build the systems that drive growth.
+            Humisense helps businesses worldwide automate operations, build AI-powered
+            workflows and deploy custom AI agents. We implement the systems, integrate them
+            with your existing platforms and hand them over running.
         </p>
         
         <!-- CTA Buttons -->
@@ -55,61 +56,61 @@
             </a>
         </div>
         
-        <!-- Stats Row -->
+        <!-- Capability Row -->
         <div class="hero-stats" data-animate data-delay="500">
             <div class="hero-stat">
-                <div class="hero-stat-value counter" data-target="500">50+</div>
-                <div class="hero-stat-label">Enterprise Clients</div>
+                <div class="hero-stat-value">AI</div>
+                <div class="hero-stat-label">Workflow automation</div>
             </div>
             <div class="hero-stat">
-                <div class="hero-stat-value counter" data-target="50">5+</div>
-                <div class="hero-stat-label">Countries Served</div>
+                <div class="hero-stat-value">Agents</div>
+                <div class="hero-stat-label">Custom development</div>
             </div>
             <div class="hero-stat">
-                <div class="hero-stat-value counter" data-target="99">99%</div>
-                <div class="hero-stat-label">Client Satisfaction</div>
+                <div class="hero-stat-value">Docs</div>
+                <div class="hero-stat-label">Intelligent processing</div>
             </div>
             <div class="hero-stat">
-                <div class="hero-stat-value counter" data-target="24">24/7</div>
-                <div class="hero-stat-label">Expert Support</div>
+                <div class="hero-stat-value">RFQ</div>
+                <div class="hero-stat-label">Quote automation</div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- =====================================================
-     TRUST SECTION - Build Immediate Credibility
+     SECTOR FOCUS - Where the work is applied
      ===================================================== -->
 <section class="trust-section">
     <div class="section-container">
         <div class="trust-header" data-animate>
-            <p>Trusted by industry leaders worldwide</p>
+            <p>Automation built for the sectors where documents and coordination drive the business</p>
         </div>
         <div class="trust-logos" data-animate data-delay="100">
-            <div class="trust-logo">
-                <svg class="trust-logo-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                TechCorp Global
-            </div>
-            <div class="trust-logo">
-                <svg class="trust-logo-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                FinanceHub
-            </div>
-            <div class="trust-logo">
-                <svg class="trust-logo-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                MedTech Innovations
-            </div>
-            <div class="trust-logo">
-                <svg class="trust-logo-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                RetailMax
-            </div>
-            <div class="trust-logo">
-                <svg class="trust-logo-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                CloudScale Systems
-            </div>
-            <div class="trust-logo">
-                <svg class="trust-logo-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                DataFlow Inc
-            </div>
+            <a class="trust-logo" href="{{ url_for('industry_page', slug='manufacturing') }}">
+                <svg class="trust-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h20"/><path d="M4 20V9l5 3V9l5 3V4l6 4v12"/></svg>
+                Manufacturing
+            </a>
+            <a class="trust-logo" href="{{ url_for('industry_page', slug='industrial-distribution') }}">
+                <svg class="trust-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h13v10H3z"/><path d="M16 10h4l1 3v4h-5z"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+                Industrial distribution
+            </a>
+            <a class="trust-logo" href="{{ url_for('industry_page', slug='wholesale') }}">
+                <svg class="trust-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-6 9 6v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21V12h6v9"/></svg>
+                Wholesale &amp; B2B
+            </a>
+            <a class="trust-logo" href="{{ url_for('industry_page', slug='professional-services') }}">
+                <svg class="trust-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>
+                Professional services
+            </a>
+            <a class="trust-logo" href="{{ url_for('industry_page', slug='small-businesses') }}">
+                <svg class="trust-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+                Small businesses
+            </a>
+            <a class="trust-logo" href="{{ url_for('industry_page', slug='b2b-businesses') }}">
+                <svg class="trust-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+                B2B businesses
+            </a>
         </div>
     </div>
 </section>
@@ -282,9 +283,10 @@
                 </svg>
                 Our Solutions
             </span>
-            <h2 class="section-title">Enterprise AI <span class="gradient-text">Solutions</span></h2>
+            <h2 class="section-title">AI Automation <span class="gradient-text">Services</span></h2>
             <p class="section-subtitle">
-                Comprehensive AI services designed for enterprise scale. From strategy to deployment, we deliver solutions that drive measurable business outcomes.
+                We implement automation around the processes that consume the most manual time:
+                documents, enquiries, quotations and supplier coordination.
             </p>
         </div>
         
@@ -297,17 +299,18 @@
                     </svg>
                 </div>
                 <span class="service-category">AI Automation</span>
-                <h3 class="service-title">Intelligent Automation</h3>
+                <h3 class="service-title">AI Workflow Automation</h3>
                 <p class="service-description">
-                    Automate complex business processes with AI-powered workflows that learn and improve over time.
+                    Workflows that carry a request from trigger to outcome, with AI used only
+                    where the input needs interpreting.
                 </p>
                 <ul class="service-features">
-                    <li>Process Optimization</li>
-                    <li>Document Processing</li>
-                    <li>Workflow Automation</li>
-                    <li>Decision Support</li>
+                    <li>Email and inbox triggers</li>
+                    <li>Document intake</li>
+                    <li>Approval routing</li>
+                    <li>Exception queues</li>
                 </ul>
-                <a href="{{ url_for('services') }}" class="service-link">
+                <a href="{{ url_for('ai_workflow_automation') }}" class="service-link">
                     Learn more
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
@@ -322,18 +325,19 @@
                         <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>
                     </svg>
                 </div>
-                <span class="service-category">Voice AI</span>
-                <h3 class="service-title">Voice API Solutions</h3>
+                <span class="service-category">Documents</span>
+                <h3 class="service-title">Intelligent Document Processing</h3>
                 <p class="service-description">
-                    Build natural voice experiences with our enterprise-grade voice API. Speech recognition, synthesis, and conversation AI.
+                    Turn invoices, purchase orders, delivery notes and spreadsheets into
+                    structured records your systems can use.
                 </p>
                 <ul class="service-features">
-                    <li>Speech Recognition</li>
-                    <li>Voice Synthesis</li>
-                    <li>Conversation AI</li>
-                    <li>Multi-language Support</li>
+                    <li>PDF and scan extraction</li>
+                    <li>Table and line items</li>
+                    <li>Field validation</li>
+                    <li>Review queue</li>
                 </ul>
-                <a href="{{ url_for('product_detail', product_id='voice-api') }}" class="service-link">
+                <a href="{{ url_for('document_automation') }}" class="service-link">
                     Learn more
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
@@ -349,17 +353,18 @@
                     </svg>
                 </div>
                 <span class="service-category">AI Agents</span>
-                <h3 class="service-title">Autonomous AI Agents</h3>
+                <h3 class="service-title">Custom AI Agent Development</h3>
                 <p class="service-description">
-                    Deploy intelligent agents that work 24/7. From customer service to sales, our agents handle complex tasks autonomously.
+                    Narrow, permissioned agents that complete multi-step tasks across your
+                    systems with full trace logging.
                 </p>
                 <ul class="service-features">
-                    <li>Multi-channel Deployment</li>
-                    <li>Custom Training</li>
-                    <li>Human Handoff</li>
-                    <li>Analytics Dashboard</li>
+                    <li>Scoped tool access</li>
+                    <li>Evaluation sets</li>
+                    <li>Guardrails and limits</li>
+                    <li>Human escalation</li>
                 </ul>
-                <a href="{{ url_for('product_detail', product_id='agent-studio') }}" class="service-link">
+                <a href="{{ url_for('ai_agents') }}" class="service-link">
                     Learn more
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
@@ -374,18 +379,19 @@
                         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
                     </svg>
                 </div>
-                <span class="service-category">Research AI</span>
-                <h3 class="service-title">AI Consulting</h3>
+                <span class="service-category">RFQ &amp; Quotation</span>
+                <h3 class="service-title">RFQ and Quotation Automation</h3>
                 <p class="service-description">
-                    Strategic AI guidance from assessment to implementation. We help you navigate the AI landscape with confidence.
+                    Parse incoming requests, match them to your catalogue and generate quotations
+                    for approval.
                 </p>
                 <ul class="service-features">
-                    <li>AI Readiness Assessment</li>
-                    <li>Use Case Identification</li>
-                    <li>Implementation Roadmap</li>
-                    <li>Team Training</li>
+                    <li>Multi-format RFQ intake</li>
+                    <li>Catalogue matching</li>
+                    <li>Priced quotation drafts</li>
+                    <li>Follow-up tracking</li>
                 </ul>
-                <a href="{{ url_for('services') }}" class="service-link">
+                <a href="{{ url_for('rfq_automation') }}" class="service-link">
                     Learn more
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
@@ -397,173 +403,69 @@
 </section>
 
 <!-- =====================================================
-     PROOF SECTION - Demonstrate Results
+     MEASUREMENT SECTION - How results are evidenced
      ===================================================== -->
 <section class="section proof-section">
     <div class="section-container">
         <div class="section-header" data-animate>
             <span class="section-label" style="color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.1);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
                 </svg>
-                Results That Matter
+                Measured, Not Claimed
             </span>
-            <h2 class="section-title" style="color: white;">Measurable <span class="gradient-text">Business Impact</span></h2>
+            <h2 class="section-title" style="color: white;">How We <span class="gradient-text">Prove It Works</span></h2>
             <p class="section-subtitle">
-                Our clients consistently achieve significant improvements across key business metrics.
+                We do not publish projected ROI figures. We measure your process before we
+                change it, then measure the same things afterwards.
             </p>
         </div>
-        
+
         <div class="proof-grid stagger-children">
             <div class="proof-stat">
                 <div class="proof-stat-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                    </svg>
-                </div>
-                <div class="proof-stat-value">
-                    <span class="counter" data-target="156">156</span><span>%</span>
-                </div>
-                <div class="proof-stat-label">Average ROI in Year One</div>
-            </div>
-            
-            <div class="proof-stat">
-                <div class="proof-stat-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
                     </svg>
                 </div>
-                <div class="proof-stat-value">
-                    <span class="counter" data-target="80">80</span><span>%</span>
-                </div>
-                <div class="proof-stat-label">Reduction in Manual Tasks</div>
+                <div class="proof-stat-value">Cycle time</div>
+                <div class="proof-stat-label">Time from request received to outcome delivered</div>
             </div>
-            
+
             <div class="proof-stat">
                 <div class="proof-stat-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
                     </svg>
                 </div>
-                <div class="proof-stat-value">
-                    <span class="counter" data-target="3" data-suffix="x">3x</span>
-                </div>
-                <div class="proof-stat-label">Increase in Customer Satisfaction</div>
+                <div class="proof-stat-value">Hours per unit</div>
+                <div class="proof-stat-label">Manual effort spent on each document or request</div>
             </div>
-            
+
             <div class="proof-stat">
                 <div class="proof-stat-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/>
+                    </svg>
+                </div>
+                <div class="proof-stat-value">Error rate</div>
+                <div class="proof-stat-label">Rework caused by capture or entry mistakes</div>
+            </div>
+
+            <div class="proof-stat">
+                <div class="proof-stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
                     </svg>
                 </div>
-                <div class="proof-stat-value">
-                    <span class="counter" data-target="156">156</span><span>%</span>
-                </div>
-                <div class="proof-stat-label">Average ROI in Year One</div>
+                <div class="proof-stat-value">Review rate</div>
+                <div class="proof-stat-label">Share of outputs needing human correction</div>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- =====================================================
-     CASE STUDIES SECTION - Show Proof
-     ===================================================== -->
-<section id="case-studies" class="section section-alt">
-    <div class="section-container">
-        <div class="section-header" data-animate>
-            <span class="section-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                </svg>
-                Success Stories
-            </span>
-            <h2 class="section-title">Real Results, <span class="gradient-text">Real Impact</span></h2>
-            <p class="section-subtitle">
-                See how enterprises have transformed their operations with our AI solutions.
-            </p>
-        </div>
-        
-        <div class="case-studies-grid stagger-children">
-            <!-- Case Study 1 -->
-            <div class="case-study-card">
-                <div class="case-study-image">
-                    <span class="case-study-badge">Finance</span>
-                </div>
-                <div class="case-study-content">
-                    <span class="case-study-industry">Financial Services</span>
-                    <h3 class="case-study-title">Global Bank Reduces Fraud Detection Time by 95%</h3>
-                    <p class="case-study-description">
-                        Implemented AI-powered fraud detection system that analyzes millions of transactions in real-time, identifying threats before they cause damage.
-                    </p>
-                    <div class="case-study-metrics">
-                        <div class="case-study-metric">
-                            <div class="case-study-metric-value">95%</div>
-                            <div class="case-study-metric-label">Faster Detection</div>
-                        </div>
-                        <div class="case-study-metric">
-                            <div class="case-study-metric-value">$12M</div>
-                            <div class="case-study-metric-label">Annual Savings</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Case Study 2 -->
-            <div class="case-study-card">
-                <div class="case-study-image" style="background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);">
-                    <span class="case-study-badge">Healthcare</span>
-                </div>
-                <div class="case-study-content">
-                    <span class="case-study-industry">Healthcare</span>
-                    <h3 class="case-study-title">Hospital Network Improves Patient Care with AI Assistants</h3>
-                    <p class="case-study-description">
-                        Deployed AI nurse assistants that handle routine inquiries, freeing medical staff to focus on critical patient care.
-                    </p>
-                    <div class="case-study-metrics">
-                        <div class="case-study-metric">
-                            <div class="case-study-metric-value">40%</div>
-                            <div class="case-study-metric-label">Less Administrative Work</div>
-                        </div>
-                        <div class="case-study-metric">
-                            <div class="case-study-metric-value">4.8</div>
-                            <div class="case-study-metric-label">Patient Satisfaction</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Case Study 3 -->
-            <div class="case-study-card">
-                <div class="case-study-image" style="background: linear-gradient(135deg, #f59e0b 0%, #f43f5e 100%);">
-                    <span class="case-study-badge">E-Commerce</span>
-                </div>
-                <div class="case-study-content">
-                    <span class="case-study-industry">Retail</span>
-                    <h3 class="case-study-title">Retail Giant Increases Conversion by 340%</h3>
-                    <p class="case-study-description">
-                        Implemented AI-powered product recommendations and personalized shopping experience across web and mobile platforms.
-                    </p>
-                    <div class="case-study-metrics">
-                        <div class="case-study-metric">
-                            <div class="case-study-metric-value">340%</div>
-                            <div class="case-study-metric-label">Conversion Increase</div>
-                        </div>
-                        <div class="case-study-metric">
-                            <div class="case-study-metric-value">28%</div>
-                            <div class="case-study-metric-label">Higher AOV</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
         <div class="text-center mt-4xl" data-animate>
-            <a href="{{ url_for('contact') }}" class="btn btn-secondary btn-lg">
-                View More Case Studies
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-                </svg>
+            <a href="{{ url_for('case_studies') }}" class="btn btn-secondary btn-lg">
+                See reference implementations
             </a>
         </div>
     </div>
@@ -875,26 +777,44 @@
 {% endif %}
 
 <!-- =====================================================
-     STATISTICS SECTION
+     HOW WE WORK SECTION
      ===================================================== -->
-<section id="stats" class="section bg-secondary">
+<section id="how-we-work" class="section bg-secondary">
     <div class="section-container">
-        <div class="stats-grid stagger-children">
-            <div class="stat-card">
-                <div class="stat-value"><span class="counter" data-target="300">0</span><span class="stat-suffix">+</span></div>
-                <div class="stat-label">AI Models Deployed</div>
+        <div class="section-header" data-animate>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+                Delivery Model
+            </span>
+            <h2 class="section-title">How an Engagement Works</h2>
+            <p class="section-subtitle">
+                Every project follows the same sequence, so you know what happens next and what
+                you receive at each stage.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-xl stagger-children">
+            <div class="card text-center">
+                <div class="w-14 h-14 mx-auto mb-lg rounded-2xl bg-primary/10 flex items-center justify-center text-accent-primary font-bold text-xl">1</div>
+                <h3 class="text-lg font-semibold mb-sm">Map</h3>
+                <p class="text-sm text-secondary">We document how the process works today, including the exceptions and the delays.</p>
             </div>
-            <div class="stat-card">
-                <div class="stat-value"><span class="counter" data-target="98">0</span><span class="stat-suffix">%</span></div>
-                <div class="stat-label">Customer Satisfaction</div>
+            <div class="card text-center">
+                <div class="w-14 h-14 mx-auto mb-lg rounded-2xl bg-secondary/10 flex items-center justify-center text-accent-secondary font-bold text-xl">2</div>
+                <h3 class="text-lg font-semibold mb-sm">Measure</h3>
+                <p class="text-sm text-secondary">Baseline cycle time, volume and error rate are recorded before anything changes.</p>
             </div>
-            <div class="stat-card">
-                <div class="stat-value"><span class="counter" data-target="30">0</span><span class="stat-suffix">+</span></div>
-                <div class="stat-label">Enterprise Clients</div>
+            <div class="card text-center">
+                <div class="w-14 h-14 mx-auto mb-lg rounded-2xl bg-cyan-500/10 flex items-center justify-center text-accent-cyan font-bold text-xl">3</div>
+                <h3 class="text-lg font-semibold mb-sm">Build</h3>
+                <p class="text-sm text-secondary">The automation is built against your real systems, with logging and a review queue.</p>
             </div>
-            <div class="stat-card">
-                <div class="stat-value"><span class="counter" data-target="500">0</span><span class="stat-suffix">K+</span></div>
-                <div class="stat-label">API Calls Monthly</div>
+            <div class="card text-center">
+                <div class="w-14 h-14 mx-auto mb-lg rounded-2xl bg-emerald-500/10 flex items-center justify-center text-accent-emerald font-bold text-xl">4</div>
+                <h3 class="text-lg font-semibold mb-sm">Hand over</h3>
+                <p class="text-sm text-secondary">Your team gets documentation, monitoring and the review process, plus the same measurements repeated.</p>
             </div>
         </div>
     </div>
@@ -903,97 +823,6 @@
 <!-- =====================================================
      SERVICES SECTION
      ===================================================== -->
-<section id="services" class="section">
-    <div class="section-container">
-        <!-- Section Header -->
-        <div class="section-header" data-animate>
-            <span class="section-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                </svg>
-                AI Services
-            </span>
-            <h2 class="section-title">Expert AI Services</h2>
-            <p class="section-subtitle">
-                From strategy to implementation, our team of AI experts helps you build, deploy, and scale intelligent solutions.
-            </p>
-        </div>
-        
-        <!-- Services Grid -->
-        <div class="services-grid stagger-children">
-            <div class="service-card">
-                <div class="service-icon" style="background: rgba(79, 70, 229, 0.1); color: #4f46e5;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/>
-                    </svg>
-                </div>
-                <h3 class="service-name">AI Consulting</h3>
-                <p class="service-description">Strategic guidance for AI adoption, use case identification, and implementation roadmaps.</p>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                    </svg>
-                </div>
-                <h3 class="service-name">Machine Learning</h3>
-                <p class="service-description">Custom ML models for prediction, classification, and optimization tailored to your data.</p>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
-                    </svg>
-                </div>
-                <h3 class="service-name">AI Agents</h3>
-                <p class="service-description">Deploy autonomous agents that handle complex tasks with minimal human intervention.</p>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/>
-                    </svg>
-                </div>
-                <h3 class="service-name">Cloud Deployment</h3>
-                <p class="service-description">Scalable cloud infrastructure for AI workloads with auto-scaling and monitoring.</p>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 12v2m-9-9h6m6 0h2M4.22 4.22l4.24 4.24m7.07 7.07 4.24 4.24M4.22 19.78l4.24-4.24m7.07-7.07-4.24-4.24"/>
-                    </svg>
-                </div>
-                <h3 class="service-name">MLOps</h3>
-                <p class="service-description">Production-ready ML infrastructure with automated training, deployment, and monitoring.</p>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
-                    </svg>
-                </div>
-                <h3 class="service-name">Data Science</h3>
-                <p class="service-description">Transform raw data into strategic insights with advanced analytics and visualization.</p>
-            </div>
-        </div>
-        
-        <!-- View All Services -->
-        <div class="text-center mt-4xl" data-animate>
-            <a href="{{ url_for('services') }}" class="btn btn-secondary btn-lg">
-                View All Services
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-                </svg>
-            </a>
-        </div>
-    </div>
-</section>
-
 <!-- =====================================================
      BUSINESS ASSESSMENT SECTION
      Where Does Your Business Stand?
@@ -1364,136 +1193,146 @@
 </section>
 
 <!-- =====================================================
-     TESTIMONIALS SECTION
+     EVIDENCE SECTION - link to reference implementations
      ===================================================== -->
-<section id="testimonials" class="section bg-secondary">
+<section id="evidence" class="section bg-secondary">
     <div class="section-container">
-        <!-- Section Header -->
         <div class="section-header" data-animate>
             <span class="section-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
                 </svg>
-                Testimonials
+                Reference Work
             </span>
-            <h2 class="section-title">Trusted by Industry Leaders</h2>
+            <h2 class="section-title">How These Systems Are Built</h2>
             <p class="section-subtitle">
-                See how leading companies are transforming their businesses with HUMISENSE AI solutions.
+                We publish reference implementations rather than client testimonials, because
+                the architecture is what tells you whether an approach will work in your business.
             </p>
         </div>
-        
-        <!-- Testimonials Grid -->
-        <div class="testimonials-grid stagger-children">
-            {% for testimonial in testimonials %}
-            <div class="testimonial-card">
-                <div class="testimonial-stars">
-                    {% for i in range(testimonial.rating) %}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                    </svg>
-                    {% endfor %}
-                </div>
-                <p class="testimonial-content">"{{ testimonial.quote }}"</p>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">{{ testimonial.avatar }}</div>
-                    <div class="testimonial-info">
-                        <div class="testimonial-name">{{ testimonial.name }}</div>
-                        <div class="testimonial-role">{{ testimonial.role }}</div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
+
+        <div class="seo-cards seo-cards--wide">
+            <a class="seo-card" href="{{ url_for('case_studies') }}" style="text-decoration:none">
+                <h3>RFQ intake for a distributor</h3>
+                <p>Multi-channel intake, table extraction, catalogue matching and a review queue for uncertain fields.</p>
+            </a>
+            <a class="seo-card" href="{{ url_for('case_studies') }}" style="text-decoration:none">
+                <h3>Supplier acknowledgement reconciliation</h3>
+                <p>Field-level comparison of supplier confirmations against open purchase orders.</p>
+            </a>
+            <a class="seo-card" href="{{ url_for('case_studies') }}" style="text-decoration:none">
+                <h3>Quotation generation for catalogue business</h3>
+                <p>Documented pricing model, versioned template and approval routing by threshold.</p>
+            </a>
+        </div>
+
+        <div class="text-center mt-4xl" data-animate>
+            <a href="{{ url_for('case_studies') }}" class="btn btn-secondary btn-lg">Read the reference implementations</a>
         </div>
     </div>
 </section>
 
 <!-- =====================================================
-     FAQ SECTION
+     FAQ SECTION - AEO structured answers
      ===================================================== -->
 <section id="faq" class="section">
     <div class="section-container">
-        <!-- Section Header -->
         <div class="section-header" data-animate>
             <span class="section-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>
                 </svg>
                 FAQ
             </span>
             <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">
+                Direct answers to the questions we are asked most often.
+            </p>
         </div>
-        
-        <!-- FAQ List -->
+
         <div class="faq-list">
             <div class="faq-item" data-animate>
-                <button class="faq-question">
-                    <span class="faq-question-text">What makes HUMISENSE different from other AI platforms?</span>
-                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 5v14"/><path d="M5 12h14"/>
-                    </svg>
+                <button class="faq-question" type="button">
+                    <span class="faq-question-text">What is AI automation?</span>
+                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
                 </button>
-                <div class="faq-answer">
-                    <div class="faq-answer-content">
-                        HUMISENSE combines cutting-edge research with production-ready infrastructure. We don't just provide APIs — we offer end-to-end solutions including consulting, MLOps, and custom development. Our focus on enterprise-grade reliability, security, and scalability sets us apart.
-                    </div>
-                </div>
+                <div class="faq-answer"><div class="faq-answer-content">
+                    AI automation uses machine learning and language models to complete tasks that involve
+                    interpreting unstructured input, such as reading an email, extracting data from a PDF or
+                    deciding which team should handle a request. It is normally combined with conventional
+                    workflow automation, which handles the predictable steps around it.
+                    <a href="{{ url_for('ai_automation') }}">More on AI automation</a>.
+                </div></div>
             </div>
-            
+
             <div class="faq-item" data-animate>
-                <button class="faq-question">
-                    <span class="faq-question-text">How do I get started with HUMISENSE products?</span>
-                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 5v14"/><path d="M5 12h14"/>
-                    </svg>
+                <button class="faq-question" type="button">
+                    <span class="faq-question-text">What is an AI agent?</span>
+                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
                 </button>
-                <div class="faq-answer">
-                    <div class="faq-answer-content">
-                        Getting started is easy. You can sign up for a free account and explore our API documentation. For enterprise solutions, schedule a consultation with our team to discuss your specific requirements.
-                    </div>
-                </div>
+                <div class="faq-answer"><div class="faq-answer-content">
+                    An AI agent is software that uses a language model to decide which action to take next,
+                    then performs that action through tools you define. Unlike a chatbot, it completes work in
+                    external systems rather than only replying.
+                    <a href="{{ url_for('ai_agents') }}">How we build agents</a>.
+                </div></div>
             </div>
-            
+
             <div class="faq-item" data-animate>
-                <button class="faq-question">
-                    <span class="faq-question-text">What kind of support do you offer?</span>
-                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 5v14"/><path d="M5 12h14"/>
-                    </svg>
+                <button class="faq-question" type="button">
+                    <span class="faq-question-text">Which processes should we automate first?</span>
+                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
                 </button>
-                <div class="faq-answer">
-                    <div class="faq-answer-content">
-                        We offer multiple support tiers including self-service documentation, community forums, email support, and dedicated account managers for enterprise clients. Our team of AI experts is available to help you build, deploy, and scale your AI solutions.
-                    </div>
-                </div>
+                <div class="faq-answer"><div class="faq-answer-content">
+                    Start with a process that runs at high volume, has a clear definition of a correct outcome
+                    and is currently a bottleneck. RFQ intake, document data capture and enquiry routing are
+                    common first candidates.
+                    <a href="{{ url_for('faqs') }}">See all FAQs</a>.
+                </div></div>
             </div>
-            
+
             <div class="faq-item" data-animate>
-                <button class="faq-question">
-                    <span class="faq-question-text">Can HUMISENSE help with custom AI development?</span>
-                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 5v14"/><path d="M5 12h14"/>
-                    </svg>
+                <button class="faq-question" type="button">
+                    <span class="faq-question-text">Can AI process PDF and Excel documents?</span>
+                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
                 </button>
-                <div class="faq-answer">
-                    <div class="faq-answer-content">
-                        Absolutely. Our engineering team specializes in custom AI development tailored to your specific use case. From model fine-tuning to building entirely new AI systems, we work closely with clients to deliver solutions that meet their unique needs.
-                    </div>
-                </div>
+                <div class="faq-answer"><div class="faq-answer-content">
+                    Yes. PDFs with a text layer are parsed directly, scanned PDFs are processed with OCR and
+                    layout analysis, and Excel files are read as structured data. All three produce the same
+                    structured output, which is then validated against business rules.
+                    <a href="{{ url_for('document_automation') }}">Document processing detail</a>.
+                </div></div>
             </div>
-            
+
             <div class="faq-item" data-animate>
-                <button class="faq-question">
-                    <span class="faq-question-text">Do you offer training for our team?</span>
-                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 5v14"/><path d="M5 12h14"/>
-                    </svg>
+                <button class="faq-question" type="button">
+                    <span class="faq-question-text">Do we need to replace our ERP or CRM?</span>
+                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
                 </button>
-                <div class="faq-answer">
-                    <div class="faq-answer-content">
-                        Yes! Our AI Academy offers comprehensive training programs from beginner to advanced levels. We also provide custom corporate training tailored to your organization's specific needs and technology stack.
-                    </div>
-                </div>
+                <div class="faq-answer"><div class="faq-answer-content">
+                    No. We build around your existing systems, integrating through APIs, database access,
+                    file exchange or email. Replacement is only recommended when a system genuinely prevents
+                    the process from working.
+                    <a href="{{ url_for('ai_consulting') }}">Talk to us about your setup</a>.
+                </div></div>
             </div>
+
+            <div class="faq-item" data-animate>
+                <button class="faq-question" type="button">
+                    <span class="faq-question-text">How much does AI automation cost?</span>
+                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                </button>
+                <div class="faq-answer"><div class="faq-answer-content">
+                    Cost depends on process complexity, the number of integrations and the level of human
+                    review required. We scope in phases so a first production automation can be delivered and
+                    evaluated before committing to a wider programme.
+                    <a href="{{ url_for('contact') }}">Request a scoped estimate</a>.
+                </div></div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4xl" data-animate>
+            <a href="{{ url_for('faqs') }}" class="btn btn-secondary">All frequently asked questions</a>
         </div>
     </div>
 </section>
