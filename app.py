@@ -110,7 +110,7 @@ def home():
         {'value': 50, 'suffix': '+', 'label': 'Enterprise Clients'},
         {'value': 10, 'suffix': 'M+', 'label': 'API Calls Monthly'}
     ]
-    return render_template('home-premium.html', 
+    return render_template('home.html', 
                          products=products_data[:3],
                          stats=stats,
                          testimonials=testimonials_data[:6])
@@ -125,7 +125,7 @@ def home_premium():
         {'value': 50, 'suffix': '+', 'label': 'Enterprise Clients'},
         {'value': 10, 'suffix': 'M+', 'label': 'API Calls Monthly'}
     ]
-    return render_template('home-premium.html', 
+    return render_template('home.html', 
                          products=products_data[:3],
                          stats=stats,
                          testimonials=testimonials_data[:6])
