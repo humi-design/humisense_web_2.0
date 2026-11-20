@@ -91,13 +91,20 @@
     
     <!-- Premium CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/premium.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/humisense-premium.css') }}">
     
     <!-- Additional Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- SplitType for text animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/split-type/0.3.4/split-type.min.js"></script>
+      <!-- Google tag manager for analytics -->
+     
+     <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-WJKSCNR3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
+
+
     
     {% block extra_head %}{% endblock %}
 </head>
@@ -160,7 +167,6 @@
     
     <!-- Premium JavaScript -->
     <script src="{{ url_for('static', filename='js/premium.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/humisense-premium.js') }}"></script>
     
     {% block extra_scripts %}{% endblock %}
 </body>
