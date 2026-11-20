@@ -18,6 +18,13 @@ from forms import (ContactForm, NewsletterForm, EnrollmentForm, ResearchSubmissi
                    MasterclassForm, MasterclassRegistrationForm, MasterclassSettingsForm)
 from services.form_service import FormService
 from services.email_service import EmailService
+import seo as seo_lib
+from content.services import SERVICES, SERVICES_BY_SLUG
+from content.industries import INDUSTRIES, INDUSTRIES_BY_SLUG
+from content.articles import ARTICLES, ARTICLES_BY_SLUG
+from content.faqs import FAQ_GROUPS, ALL_FAQS
+from content.pages import (LEGAL_PAGES, CASE_STUDIES, service_hub, industry_hub,
+                           resources_hub)
 
 
 # Admin authentication decorator
@@ -113,7 +120,8 @@ def home():
     return render_template('home.html', 
                          products=products_data[:3],
                          stats=stats,
-                         testimonials=testimonials_data[:6])
+                         testimonials=testimonials_data[:6],
+                         seo=_home_seo())
 
 
 @app.route('/premium')
@@ -128,13 +136,16 @@ def home_premium():
     return render_template('home.html', 
                          products=products_data[:3],
                          stats=stats,
-                         testimonials=testimonials_data[:6])
+                         testimonials=testimonials_data[:6],
+                         seo=_home_seo())
 
 
 @app.route('/products')
 def products():
     """Products listing page."""
-    return render_template('products.html', products=products_data)
+    return render_template('products.html', products=products_data,
+                           seo=seo_lib.page('products', jsonld=_graph(
+                               seo_lib.breadcrumb_schema([('Home', '/'), ('Products', '/products')]))))
 
 
 @app.route('/products/<product_id>')
@@ -142,20 +153,34 @@ def product_detail(product_id):
     """Individual product detail page."""
     product = next((p for p in products_data if p['id'] == product_id), None)
     if not product:
-        return render_template('404.html'), 404
-    return render_template('product_detail.html', product=product)
+        return render_template('404.html', seo=_not_found_seo()), 404
+    path = f'/products/{product_id}'
+    description = product.get('short_description') or product.get('tagline') or ''
+    return render_template('product_detail.html', product=product,
+                           seo=seo_lib.meta(
+                               title=f"{product['name']} | Humisense AI Product",
+                               description=description[:158],
+                               path=path,
+                               jsonld=_graph(
+                                   seo_lib.breadcrumb_schema([
+                                       ('Home', '/'), ('Products', '/products'),
+                                       (product['name'], path)]))))
 
 
 @app.route('/services')
 def services():
     """Services listing page."""
-    return render_template('services.html', services=services_data)
+    return render_template('services.html', services=services_data,
+                           seo=seo_lib.page('services', jsonld=_graph(
+                               seo_lib.breadcrumb_schema([('Home', '/'), ('Services', '/services')]))))
 
 
 @app.route('/courses')
 def courses():
     """Courses listing page."""
-    return render_template('courses.html', courses=courses_data)
+    return render_template('courses.html', courses=courses_data,
+                           seo=seo_lib.page('courses', jsonld=_graph(
+                               seo_lib.breadcrumb_schema([('Home', '/'), ('Academy', '/courses')]))))
 
 
 @app.route('/courses/<course_id>')
@@ -163,8 +188,18 @@ def course_detail(course_id):
     """Individual course detail page."""
     course = next((c for c in courses_data if c['id'] == course_id), None)
     if not course:
-        return render_template('404.html'), 404
-    return render_template('course_detail.html', course=course)
+        return render_template('404.html', seo=_not_found_seo()), 404
+    path = f'/courses/{course_id}'
+    description = (course.get('short_description') or course.get('description') or '')[:158]
+    return render_template('course_detail.html', course=course,
+                           seo=seo_lib.meta(
+                               title=f"{course['name']} Course | Humisense Academy",
+                               description=description,
+                               path=path,
+                               jsonld=_graph(
+                                   seo_lib.breadcrumb_schema([
+                                       ('Home', '/'), ('Academy', '/courses'),
+                                       (course['name'], path)]))))
 
 
 @app.route('/research')
@@ -181,13 +216,17 @@ def research():
                              {'id': 'nlp', 'name': 'Natural Language Processing', 'description': 'Advancing understanding and generation of human language.'},
                              {'id': 'computer_vision', 'name': 'Computer Vision', 'description': 'Teaching machines to interpret and understand visual information.'},
                              {'id': 'ai_accessibility', 'name': 'AI Accessibility', 'description': 'Ensuring AI technologies are accessible to all users.'}
-                         ])
+                         ],
+                         seo=seo_lib.page('research', jsonld=_graph(
+                             seo_lib.breadcrumb_schema([('Home', '/'), ('Research', '/research')]))))
 
 
 @app.route('/about')
 def about():
     """About page."""
-    return render_template('about.html', team=team_data)
+    return render_template('about.html', team=team_data,
+                           seo=seo_lib.page('about', jsonld=_graph(
+                               seo_lib.breadcrumb_schema([('Home', '/'), ('About', '/about')]))))
 
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -213,7 +252,309 @@ def contact():
         
         return redirect(url_for('contact'))
     
-    return render_template('contact.html', form=form)
+    return render_template('contact.html', form=form,
+                           seo=seo_lib.page('contact', jsonld=_graph(
+                               seo_lib.breadcrumb_schema([('Home', '/'), ('Contact', '/contact')]))))
+
+
+# =====================================================
+# SEO HELPERS
+# =====================================================
+
+def _graph(*nodes):
+    """Wrap nodes in a single JSON-LD @graph document."""
+    return seo_lib.graph(*nodes)
+
+
+def _site_nodes():
+    return [seo_lib.organization_schema(), seo_lib.website_schema()]
+
+
+def _home_seo():
+    return seo_lib.page(
+        'home',
+        jsonld=_graph(*_site_nodes(), seo_lib.service_schema(
+            name='AI Automation and Intelligent Business Solutions',
+            description=(
+                'Humisense designs and implements AI automation, AI agents, document '
+                'processing and RFQ automation for businesses worldwide.'
+            ),
+            path='/',
+            service_type='AI automation and business process automation',
+            category='ProfessionalService',
+        )),
+    )
+
+
+def _not_found_seo():
+    return seo_lib.meta(
+        title='Page Not Found - Humisense',
+        description='The page you requested could not be found on humisense.com.',
+        path='/404',
+        robots='noindex, follow',
+    )
+
+
+def _service_page(slug):
+    service = SERVICES_BY_SLUG[slug]
+    path = '/' + slug
+    faq_node = {
+        '@type': 'FAQPage',
+        '@id': seo_lib.canonical(path) + '#faq',
+        'mainEntity': [
+            {
+                '@type': 'Question',
+                'name': item['q'],
+                'acceptedAnswer': {'@type': 'Answer', 'text': item['a']},
+            }
+            for item in service['faqs']
+        ],
+    }
+    return render_template(
+        'service_page.html',
+        service=service,
+        seo=seo_lib.meta(
+            title=service['title'],
+            description=service['description'],
+            path=path,
+            jsonld=_graph(
+                seo_lib.service_schema(
+                    name=service['h1'],
+                    description=service['description'],
+                    path=path,
+                    service_type=service['eyebrow'],
+                ),
+                seo_lib.breadcrumb_schema([
+                    ('Home', '/'), ('Services', '/services'), (service['eyebrow'], path),
+                ]),
+                faq_node,
+            ),
+        ),
+    )
+
+
+def _industry_page(slug):
+    industry = INDUSTRIES_BY_SLUG[slug]
+    path = f'/industries/{slug}'
+    faq_node = {
+        '@type': 'FAQPage',
+        '@id': seo_lib.canonical(path) + '#faq',
+        'mainEntity': [
+            {
+                '@type': 'Question',
+                'name': item['q'],
+                'acceptedAnswer': {'@type': 'Answer', 'text': item['a']},
+            }
+            for item in industry['faqs']
+        ],
+    }
+    return render_template(
+        'industry_page.html',
+        industry=industry,
+        other_industries=[i for i in INDUSTRIES if i['slug'] != slug],
+        seo=seo_lib.meta(
+            title=industry['title'],
+            description=industry['description'],
+            path=path,
+            jsonld=_graph(
+                seo_lib.service_schema(
+                    name=industry['h1'],
+                    description=industry['description'],
+                    path=path,
+                    service_type=f"AI automation for {industry['eyebrow']}",
+                ),
+                seo_lib.breadcrumb_schema([
+                    ('Home', '/'), ('Industries', '/industries'), (industry['eyebrow'], path),
+                ]),
+                faq_node,
+            ),
+        ),
+    )
+
+
+# =====================================================
+# SERVICE LANDING PAGES
+# =====================================================
+
+def _register_service_routes():
+    """Register one explicit route per service so each slug has its own endpoint."""
+    for service in SERVICES:
+        slug = service['slug']
+        endpoint = slug.replace('-', '_')
+
+        def view(_slug=slug):
+            return _service_page(_slug)
+
+        app.add_url_rule('/' + slug, endpoint, view, methods=['GET'])
+
+
+_register_service_routes()
+
+
+# =====================================================
+# INDUSTRY PAGES
+# =====================================================
+
+@app.route('/industries')
+def industries():
+    hub = industry_hub()
+    return render_template(
+        'hub_page.html', hub=hub,
+        seo=seo_lib.page('industries', jsonld=_graph(
+            seo_lib.breadcrumb_schema([('Home', '/'), ('Industries', '/industries')]),
+            {
+                '@type': 'FAQPage',
+                '@id': seo_lib.canonical('/industries') + '#faq',
+                'mainEntity': [
+                    {'@type': 'Question', 'name': f['q'],
+                     'acceptedAnswer': {'@type': 'Answer', 'text': f['a']}}
+                    for f in hub['faqs']
+                ],
+            },
+        )),
+    )
+
+
+@app.route('/industries/<slug>')
+def industry_page(slug):
+    if slug not in INDUSTRIES_BY_SLUG:
+        return render_template('404.html', seo=_not_found_seo()), 404
+    return _industry_page(slug)
+
+
+# =====================================================
+# RESOURCE CENTRE, BLOG, FAQS, CASE STUDIES
+# =====================================================
+
+@app.route('/resources')
+def resources():
+    hub = resources_hub()
+    return render_template(
+        'hub_page.html', hub=hub,
+        seo=seo_lib.page('resources', jsonld=_graph(
+            seo_lib.breadcrumb_schema([('Home', '/'), ('Resources', '/resources')]),
+        )),
+    )
+
+
+@app.route('/blog')
+def blog():
+    return render_template(
+        'blog_index.html', articles=ARTICLES,
+        seo=seo_lib.page('blog', jsonld=_graph(
+            seo_lib.breadcrumb_schema([('Home', '/'), ('Blog', '/blog')]),
+            {
+                '@type': 'CollectionPage',
+                '@id': seo_lib.canonical('/blog'),
+                'name': 'AI Automation Blog',
+                'description': seo_lib.PAGE_SEO['blog']['description'],
+                'hasPart': [
+                    {'@type': 'Article', 'headline': a['title'],
+                     'url': seo_lib.canonical('/blog/' + a['slug'])}
+                    for a in ARTICLES
+                ],
+            },
+        )),
+    )
+
+
+@app.route('/blog/<slug>')
+def blog_article(slug):
+    article = ARTICLES_BY_SLUG.get(slug)
+    if not article:
+        return render_template('404.html', seo=_not_found_seo()), 404
+    path = f'/blog/{slug}'
+    return render_template(
+        'blog_article.html',
+        article=article,
+        related_articles=ARTICLES_BY_SLUG,
+        seo=seo_lib.meta(
+            title=f"{article['title']} | Humisense",
+            description=article['description'],
+            path=path,
+            og_type='article',
+            published=article['published'],
+            modified=article.get('updated'),
+            jsonld=_graph(
+                seo_lib.article_schema(article, path),
+                seo_lib.breadcrumb_schema([
+                    ('Home', '/'), ('Blog', '/blog'), (article['title'], path),
+                ]),
+            ),
+        ),
+    )
+
+
+@app.route('/faqs')
+def faqs():
+    groups = []
+    for group in FAQ_GROUPS:
+        anchor = group['group'].lower().replace(' ', '-').replace(',', '').replace('&', 'and')
+        groups.append({
+            'group': group['group'],
+            'anchor': anchor,
+            'faqs': group['faqs'],
+        })
+    faq_node = {
+        '@type': 'FAQPage',
+        '@id': seo_lib.canonical('/faqs') + '#faq',
+        'mainEntity': [
+            {'@type': 'Question', 'name': faq['q'],
+             'acceptedAnswer': {'@type': 'Answer', 'text': faq['a']}}
+            for faq in ALL_FAQS
+        ],
+    }
+    return render_template(
+        'faqs_page.html', groups=groups,
+        seo=seo_lib.page('faqs', jsonld=_graph(
+            seo_lib.breadcrumb_schema([('Home', '/'), ('FAQs', '/faqs')]),
+            faq_node,
+        )),
+    )
+
+
+@app.route('/case-studies')
+def case_studies():
+    return render_template(
+        'case_studies_page.html', studies=CASE_STUDIES,
+        seo=seo_lib.page('case_studies', jsonld=_graph(
+            seo_lib.breadcrumb_schema([('Home', '/'), ('Case studies', '/case-studies')]),
+        )),
+    )
+
+
+# =====================================================
+# LEGAL PAGES
+# =====================================================
+
+@app.route('/privacy')
+def privacy():
+    return render_template(
+        'legal_page.html', legal=LEGAL_PAGES['privacy'], site_email=seo_lib.SITE['email'],
+        seo=seo_lib.page('privacy', jsonld=_graph(
+            seo_lib.breadcrumb_schema([('Home', '/'), ('Privacy Policy', '/privacy')]),
+        )),
+    )
+
+
+@app.route('/terms')
+def terms():
+    return render_template(
+        'legal_page.html', legal=LEGAL_PAGES['terms'], site_email=seo_lib.SITE['email'],
+        seo=seo_lib.page('terms', jsonld=_graph(
+            seo_lib.breadcrumb_schema([('Home', '/'), ('Terms of Service', '/terms')]),
+        )),
+    )
+
+
+@app.route('/cookies')
+def cookies():
+    return render_template(
+        'legal_page.html', legal=LEGAL_PAGES['cookies'], site_email=seo_lib.SITE['email'],
+        seo=seo_lib.page('cookies', jsonld=_graph(
+            seo_lib.breadcrumb_schema([('Home', '/'), ('Cookie Policy', '/cookies')]),
+        )),
+    )
 
 
 # API Routes
@@ -345,44 +686,150 @@ def request_demo():
     return jsonify({'success': True, 'message': 'Demo request submitted! We will contact you shortly.'})
 
 
-# Sitemap and SEO
+# Sitemap, robots and SEO infrastructure
 @app.route('/sitemap.xml')
 def sitemap():
-    """Generate sitemap.xml."""
+    """Generate sitemap.xml covering every public, indexable page."""
     from flask import Response
-    pages = [
-        {'loc': url_for('home', _external=True), 'priority': '1.0'},
-        {'loc': url_for('products', _external=True), 'priority': '0.9'},
-        {'loc': url_for('services', _external=True), 'priority': '0.9'},
-        {'loc': url_for('courses', _external=True), 'priority': '0.9'},
-        {'loc': url_for('research', _external=True), 'priority': '0.8'},
-        {'loc': url_for('about', _external=True), 'priority': '0.7'},
-        {'loc': url_for('contact', _external=True), 'priority': '0.8'},
-    ]
+    from datetime import date
+
+    today = date.today().isoformat()
+
+    def entry(path, priority, changefreq='monthly', lastmod=today):
+        return (f'  <url>\n    <loc>{seo_lib.canonical(path)}</loc>\n'
+                f'    <lastmod>{lastmod}</lastmod>\n'
+                f'    <changefreq>{changefreq}</changefreq>\n'
+                f'    <priority>{priority}</priority>\n  </url>\n')
+
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>\n',
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n']
+
+    xml.append(entry('/', '1.0', 'weekly'))
+    for endpoint, priority in [
+        ('services', '0.9'), ('industries', '0.9'), ('contact', '0.9'),
+        ('faqs', '0.8'), ('resources', '0.8'), ('blog', '0.8'),
+        ('case_studies', '0.7'), ('about', '0.7'),
+        ('products', '0.6'), ('courses', '0.6'), ('research', '0.6'),
+    ]:
+        xml.append(entry(seo_lib.PAGE_SEO[endpoint]['path'], priority, 'weekly'))
+
+    for service in SERVICES:
+        xml.append(entry('/' + service['slug'], '0.9'))
+    for industry in INDUSTRIES:
+        xml.append(entry(f"/industries/{industry['slug']}", '0.8'))
+    for article in ARTICLES:
+        xml.append(entry(f"/blog/{article['slug']}", '0.7', 'monthly',
+                         article.get('updated') or article['published']))
     for product in products_data:
-        pages.append({'loc': url_for('product_detail', product_id=product['id'], _external=True), 'priority': '0.8'})
+        xml.append(entry(f"/products/{product['id']}", '0.6'))
     for course in courses_data:
-        pages.append({'loc': url_for('course_detail', course_id=course['id'], _external=True), 'priority': '0.8'})
-    
-    xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
-    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    for page in pages:
-        xml += f'  <url>\n    <loc>{page["loc"]}</loc>\n    <priority>{page["priority"]}</priority>\n    <changefreq>weekly</changefreq>\n  </url>\n'
-    xml += '</urlset>'
-    
-    return Response(xml, mimetype='application/xml')
+        xml.append(entry(f"/courses/{course['id']}", '0.6'))
+
+    for endpoint in ('privacy', 'terms', 'cookies'):
+        xml.append(entry(seo_lib.PAGE_SEO[endpoint]['path'], '0.3', 'yearly'))
+
+    xml.append('</urlset>')
+    return Response(''.join(xml), mimetype='application/xml')
+
+
+@app.route('/robots.txt')
+def robots_txt():
+    """Serve robots.txt with explicit rules for search and AI crawlers."""
+    from flask import Response
+    base = seo_lib.BASE_URL
+    lines = [
+        '# robots.txt for humisense.com',
+        '',
+        '# Search engines',
+        'User-agent: *',
+        'Allow: /',
+        'Disallow: /admin/',
+        'Disallow: /api/',
+        '',
+        '# OpenAI search crawler (ChatGPT Search)',
+        'User-agent: OAI-SearchBot',
+        'Allow: /',
+        'Disallow: /admin/',
+        'Disallow: /api/',
+        '',
+        '# Perplexity',
+        'User-agent: PerplexityBot',
+        'Allow: /',
+        'Disallow: /admin/',
+        'Disallow: /api/',
+        '',
+        '# Google',
+        'User-agent: Googlebot',
+        'Allow: /',
+        'Disallow: /admin/',
+        '',
+        '# Bing / Copilot',
+        'User-agent: Bingbot',
+        'Allow: /',
+        'Disallow: /admin/',
+        '',
+        '# Block training-only crawlers that add no discovery value',
+        'User-agent: CCBot',
+        'Disallow: /',
+        '',
+        f'Sitemap: {base}/sitemap.xml',
+        '',
+    ]
+    return Response('\n'.join(lines), mimetype='text/plain')
+
+
+@app.context_processor
+def inject_globals():
+    return {'current_year': datetime.now(timezone.utc).year}
+
+
+@app.after_request
+def add_seo_headers(response):
+    """Add security and caching headers to every response."""
+    response.headers.setdefault('X-Content-Type-Options', 'nosniff')
+    response.headers.setdefault('X-Frame-Options', 'SAMEORIGIN')
+    response.headers.setdefault('Referrer-Policy', 'strict-origin-when-cross-origin')
+    response.headers.setdefault(
+        'Permissions-Policy', 'geolocation=(), microphone=(), camera=()')
+    if request.is_secure:
+        response.headers.setdefault(
+            'Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+    if request.endpoint not in ('static', 'sitemap', 'robots_txt'):
+        response.headers.setdefault('X-Robots-Tag', 'index, follow')
+    if request.endpoint == 'static':
+        response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+    elif request.endpoint in ('sitemap', 'robots_txt'):
+        response.headers['Cache-Control'] = 'public, max-age=3600'
+    return response
+
+
+@app.before_request
+def enforce_canonical_host():
+    """Consolidate www and alternate hosts onto the canonical https host."""
+    host = request.host.split(':')[0].lower()
+    if host.startswith('www.'):
+        target = seo_lib.BASE_URL + request.full_path.rstrip('?')
+        return redirect(target, code=301)
+    if request.headers.get('X-Forwarded-Proto') == 'http':
+        return redirect(seo_lib.BASE_URL + request.full_path.rstrip('?'), code=301)
+    return None
 
 
 # Error handlers
 @app.errorhandler(404)
 def not_found_error(error):
-    return render_template('404.html'), 404
+    return render_template('404.html', seo=_not_found_seo()), 404
 
 
 @app.errorhandler(500)
 def internal_error(error):
     db.session.rollback()
-    return render_template('500.html'), 500
+    return render_template('500.html', seo=seo_lib.meta(
+        title='Server Error - Humisense',
+        description='A temporary server error occurred on humisense.com.',
+        path='/500',
+        robots='noindex, nofollow',
+    )), 500
 
 
 # Shell context

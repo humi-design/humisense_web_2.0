@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/seo-pages.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
+    <div class="page-header-content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="{{ url_for('home') }}">Home</a>
+            <span class="breadcrumbs-separator">/</span>
+            <span aria-current="page">FAQs</span>
+        </nav>
+        <span class="hero-tagline">DIRECT ANSWERS</span>
+        <h1 class="page-header-title">AI Automation FAQs</h1>
+        <p class="page-header-subtitle">
+            Straight answers to the questions businesses ask before starting an AI automation project.
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-container">
+        <div class="seo-layout">
+            <article class="seo-main">
+                {% for group in groups %}
+                <h2 id="{{ group.anchor }}">{{ group.group }}</h2>
+                {% for faq in group.faqs %}
+                <div class="seo-faq-block">
+                    <h3>{{ faq.q }}</h3>
+                    <p class="seo-faq-answer">{{ faq.a }}</p>
+                    {% if faq.more %}<p class="seo-faq-more">{{ faq.more }}</p>{% endif %}
+                    {% if faq.link %}
+                    <p class="seo-faq-link"><a href="{{ faq.link[1] }}">{{ faq.link[0] }}</a></p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% endfor %}
+            </article>
+
+            <aside class="seo-aside">
+                <div class="seo-aside-card">
+                    <h2>Jump to a topic</h2>
+                    <ul class="seo-aside-links">
+                        {% for group in groups %}
+                        <li><a href="#{{ group.anchor }}">{{ group.group }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="seo-aside-card">
+                    <h2>Question not answered?</h2>
+                    <p>Send it to us and we will answer it directly, without a sales sequence.</p>
+                    <a href="{{ url_for('contact') }}" class="btn btn-primary w-full justify-center" data-cta="faq-aside">Ask Humisense</a>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}

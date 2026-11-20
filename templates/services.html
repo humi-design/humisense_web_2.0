@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}AI Services - HUMISENSE{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/seo-pages.css') }}">
+{% endblock %}
 
 {% block content %}
 <!-- Page Header -->
@@ -17,9 +20,82 @@
     </div>
 </section>
 
-<!-- Services Grid -->
+<!-- Core AI Automation Services -->
 <section class="section">
     <div class="section-container">
+        <div class="section-header" data-animate>
+            <span class="section-label">Core Focus</span>
+            <h2 class="section-title">AI Automation Services</h2>
+            <p class="section-subtitle">
+                These are the services most engagements start with. Each page explains the
+                problem, the approach and how the work is delivered.
+            </p>
+        </div>
+        <div class="seo-hub-grid">
+            <a class="seo-hub-card" href="{{ url_for('ai_automation') }}">
+                <h3>AI Automation</h3>
+                <p>End-to-end automation of business processes using AI extraction and reasoning.</p>
+                <span class="seo-hub-more">Read more &rarr;</span>
+            </a>
+            <a class="seo-hub-card" href="{{ url_for('ai_workflow_automation') }}">
+                <h3>AI Workflow Automation</h3>
+                <p>Workflows that carry a request from trigger to outcome without manual handoffs.</p>
+                <span class="seo-hub-more">Read more &rarr;</span>
+            </a>
+            <a class="seo-hub-card" href="{{ url_for('ai_agents') }}">
+                <h3>Custom AI Agents</h3>
+                <p>Narrow, permissioned agents that complete multi-step operational tasks.</p>
+                <span class="seo-hub-more">Read more &rarr;</span>
+            </a>
+            <a class="seo-hub-card" href="{{ url_for('rfq_automation') }}">
+                <h3>RFQ Automation</h3>
+                <p>Structured capture of requests for quotation from any format.</p>
+                <span class="seo-hub-more">Read more &rarr;</span>
+            </a>
+            <a class="seo-hub-card" href="{{ url_for('quotation_automation') }}">
+                <h3>Quotation Automation</h3>
+                <p>Priced, approved and tracked quotation generation.</p>
+                <span class="seo-hub-more">Read more &rarr;</span>
+            </a>
+            <a class="seo-hub-card" href="{{ url_for('document_automation') }}">
+                <h3>Document Processing</h3>
+                <p>PDF, scan and spreadsheet extraction with validation and review.</p>
+                <span class="seo-hub-more">Read more &rarr;</span>
+            </a>
+            <a class="seo-hub-card" href="{{ url_for('sales_automation') }}">
+                <h3>Sales Automation</h3>
+                <p>Enquiry routing, follow-up discipline and reliable CRM data.</p>
+                <span class="seo-hub-more">Read more &rarr;</span>
+            </a>
+            <a class="seo-hub-card" href="{{ url_for('lead_generation_automation') }}">
+                <h3>Lead Generation Automation</h3>
+                <p>Researched, reviewed outreach preparation and reply qualification.</p>
+                <span class="seo-hub-more">Read more &rarr;</span>
+            </a>
+            <a class="seo-hub-card" href="{{ url_for('business_process_automation') }}">
+                <h3>Business Process Automation</h3>
+                <p>Whole-process redesign and automation, measured end to end.</p>
+                <span class="seo-hub-more">Read more &rarr;</span>
+            </a>
+            <a class="seo-hub-card" href="{{ url_for('ai_consulting') }}">
+                <h3>AI Consulting</h3>
+                <p>Assessment, prioritisation and delivery of a first production use case.</p>
+                <span class="seo-hub-more">Read more &rarr;</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Services Grid -->
+<section class="section bg-secondary">
+    <div class="section-container">
+        <div class="section-header" data-animate>
+            <span class="section-label">Full Capability</span>
+            <h2 class="section-title">Technical and Delivery Services</h2>
+            <p class="section-subtitle">
+                Broader capability that supports an automation programme when it is needed.
+            </p>
+        </div>
         <div class="services-grid stagger-children" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
             {% for service in services %}
             <div class="service-card" style="padding: 2rem;">

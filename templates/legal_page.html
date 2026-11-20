@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/seo-pages.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
+    <div class="page-header-content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="{{ url_for('home') }}">Home</a>
+            <span class="breadcrumbs-separator">/</span>
+            <span aria-current="page">{{ legal.title }}</span>
+        </nav>
+        <h1 class="page-header-title">{{ legal.title }}</h1>
+        <p class="page-header-subtitle">{{ legal.summary }}</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-container">
+        <div class="seo-legal">
+            <p class="seo-updated">Last updated: {{ legal.updated }}</p>
+            {% for block in legal.blocks %}
+                {% if block[0] == 'h2' %}
+                    <h2>{{ block[1] }}</h2>
+                {% elif block[0] == 'p' %}
+                    <p>{{ block[1] }}</p>
+                {% elif block[0] == 'ul' %}
+                    <ul class="seo-list">
+                        {% for item in block[1] %}<li>{{ item }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            {% endfor %}
+            <p class="seo-updated">
+                Questions about this page can be sent to
+                <a href="mailto:{{ site_email }}">{{ site_email }}</a>.
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}

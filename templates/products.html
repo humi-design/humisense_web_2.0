@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}AI Products - HUMISENSE{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/seo-pages.css') }}">
+{% endblock %}
 
 {% block content %}
 <!-- Page Header -->
@@ -12,7 +15,9 @@
         <span class="hero-tagline">MAKE IT HAPPEN</span>
         <h1 class="page-header-title">AI Products</h1>
         <p class="page-header-subtitle">
-            Enterprise-grade AI solutions built for production. From voice APIs to autonomous agents, our products power the next generation of intelligent applications.
+            AI products and platforms from Humisense, plus the implementation work that puts
+            them into production inside your business. Each product page describes what it
+            does and where it fits.
         </p>
     </div>
 </section>
@@ -74,55 +79,76 @@
     </div>
 </section>
 
-<!-- Features Section -->
+<!-- Deployment Section -->
 <section class="section bg-secondary">
     <div class="section-container">
         <div class="section-header" data-animate>
             <span class="section-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
                 </svg>
-                Why HUMISENSE
+                How Products Are Delivered
             </span>
-            <h2 class="section-title">Enterprise-Grade Infrastructure</h2>
+            <h2 class="section-title">Products Plus Implementation</h2>
             <p class="section-subtitle">
-                Built for scale, security, and reliability. Our products meet the highest standards for enterprise deployment.
+                A product on its own rarely changes an operational process. The value comes
+                from the integration work around it, and that is what we do.
             </p>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-xl stagger-children">
-            <div class="card text-center">
-                <div class="w-16 h-16 mx-auto mb-lg rounded-2xl bg-primary/10 flex items-center justify-center text-accent-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="card">
+                <div class="w-16 h-16 mb-lg rounded-2xl bg-primary/10 flex items-center justify-center text-accent-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 17h16"/><path d="M7 17V9"/><path d="M12 17V5"/><path d="M17 17v-5"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold mb-sm">Deployment options</h3>
+                <p class="text-sm text-secondary">
+                    Processing can run in your own cloud account, on your infrastructure or in
+                    an agreed hosted environment, depending on your data obligations.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="w-16 h-16 mb-lg rounded-2xl bg-secondary/10 flex items-center justify-center text-accent-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
-                        <path d="m9 12 2 2 4-4"/>
                     </svg>
                 </div>
-                <h4 class="text-lg font-semibold mb-sm">SOC2 Compliant</h4>
-                <p class="text-sm text-secondary">Enterprise-grade security with SOC2 Type II certification and GDPR compliance.</p>
+                <h3 class="text-lg font-semibold mb-sm">Data handling</h3>
+                <p class="text-sm text-secondary">
+                    Retention, deletion and access rules are agreed during design. We do not
+                    claim certifications we have not obtained.
+                </p>
             </div>
-            
-            <div class="card text-center">
-                <div class="w-16 h-16 mx-auto mb-lg rounded-2xl bg-primary/10 flex items-center justify-center text-accent-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 3v18h18"/>
-                        <path d="m19 9-5 5-4-4-3 3"/>
+
+            <div class="card">
+                <div class="w-16 h-16 mb-lg rounded-2xl bg-cyan-500/10 flex items-center justify-center text-accent-cyan">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
                     </svg>
                 </div>
-                <h4 class="text-lg font-semibold mb-sm">99.9% Uptime</h4>
-                <p class="text-sm text-secondary">Production-ready infrastructure with redundant systems and 24/7 monitoring.</p>
+                <h3 class="text-lg font-semibold mb-sm">Operational handover</h3>
+                <p class="text-sm text-secondary">
+                    Documentation, monitoring and a defined review process are part of
+                    delivery, so your team can run the system without us.
+                </p>
             </div>
-            
-            <div class="card text-center">
-                <div class="w-16 h-16 mx-auto mb-lg rounded-2xl bg-primary/10 flex items-center justify-center text-accent-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 6v6l4 2"/>
-                    </svg>
-                </div>
-                <h4 class="text-lg font-semibold mb-sm">Low Latency</h4>
-                <p class="text-sm text-secondary">Global edge network ensures fast response times worldwide.</p>
-            </div>
+        </div>
+
+        <div class="seo-crosslinks" style="margin-top:3rem">
+            <h2>Looking for implementation rather than a product?</h2>
+            <p>
+                Most of our work is building automation around existing systems rather than
+                adopting a new platform.
+            </p>
+            <ul class="seo-inline-links">
+                <li><a href="{{ url_for('ai_automation') }}">AI automation services</a></li>
+                <li><a href="{{ url_for('document_automation') }}">Document processing</a></li>
+                <li><a href="{{ url_for('ai_agents') }}">Custom AI agents</a></li>
+                <li><a href="{{ url_for('case_studies') }}">Reference implementations</a></li>
+            </ul>
         </div>
     </div>
 </section>

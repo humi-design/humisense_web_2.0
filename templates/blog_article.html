@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/seo-pages.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
+    <div class="page-header-content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="{{ url_for('home') }}">Home</a>
+            <span class="breadcrumbs-separator">/</span>
+            <a href="{{ url_for('blog') }}">Blog</a>
+            <span class="breadcrumbs-separator">/</span>
+            <span aria-current="page">{{ article.category }}</span>
+        </nav>
+        <span class="hero-tagline">{{ article.category }}</span>
+        <h1 class="page-header-title">{{ article.h1 }}</h1>
+        <p class="page-header-subtitle">{{ article.description }}</p>
+        <p class="seo-byline">
+            <span>By the Humisense implementation team</span>
+            <span class="seo-byline-sep">·</span>
+            <time datetime="{{ article.published }}">Published {{ article.published }}</time>
+            {% if article.updated and article.updated != article.published %}
+            <span class="seo-byline-sep">·</span>
+            <time datetime="{{ article.updated }}">Updated {{ article.updated }}</time>
+            {% endif %}
+            <span class="seo-byline-sep">·</span>
+            <span>{{ article.reading_time }} min read</span>
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-container">
+        <div class="seo-layout">
+            <article class="seo-main seo-article">
+                <p class="seo-lede">{{ article.intro }}</p>
+
+                {% for block in article.blocks %}
+                    {% if block[0] == 'h2' %}
+                        <h2>{{ block[1] }}</h2>
+                    {% elif block[0] == 'h3' %}
+                        <h3>{{ block[1] }}</h3>
+                    {% elif block[0] == 'p' %}
+                        <p>{{ block[1] }}</p>
+                    {% elif block[0] == 'ul' %}
+                        <ul class="seo-list">
+                            {% for item in block[1] %}<li>{{ item }}</li>{% endfor %}
+                        </ul>
+                    {% elif block[0] == 'ol' %}
+                        <ol class="seo-list">
+                            {% for item in block[1] %}<li>{{ item }}</li>{% endfor %}
+                        </ol>
+                    {% elif block[0] == 'callout' %}
+                        <div class="seo-callout">{{ block[1] }}</div>
+                    {% elif block[0] == 'table' %}
+                        <div class="seo-table-wrap">
+                            <table class="seo-table">
+                                <thead>
+                                    <tr>{% for header in block[1].headers %}<th scope="col">{{ header }}</th>{% endfor %}</tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in block[1].rows %}
+                                    <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                {% if article.related_articles %}
+                <h2>Related reading</h2>
+                <ul class="seo-inline-links">
+                    {% for slug in article.related_articles %}
+                        {% set related = related_articles[slug] %}
+                        {% if related %}
+                        <li><a href="{{ url_for('blog_article', slug=related.slug) }}">{{ related.title }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </article>
+
+            <aside class="seo-aside">
+                <div class="seo-aside-card">
+                    <h2>Related services</h2>
+                    <ul class="seo-aside-links">
+                        {% for label, url in article.related_services %}
+                        <li><a href="{{ url }}">{{ label }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="seo-aside-card">
+                    <h2>Discuss your process</h2>
+                    <p>Tell us what you are trying to automate and we will reply with a practical assessment.</p>
+                    <a href="{{ url_for('contact') }}" class="btn btn-primary w-full justify-center" data-cta="article-aside">Get in touch</a>
+                </div>
+                <div class="seo-aside-card">
+                    <h2>More guides</h2>
+                    <ul class="seo-aside-links">
+                        <li><a href="{{ url_for('blog') }}">All articles</a></li>
+                        <li><a href="{{ url_for('faqs') }}">AI automation FAQs</a></li>
+                        <li><a href="{{ url_for('resources') }}">Resource centre</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}

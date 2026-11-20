@@ -5,11 +5,13 @@
             <!-- Brand Column -->
             <div class="footer-brand">
                 <div class="footer-logo">
-                    <div><img src="{{ url_for('static', filename='images/logo.png') }}" class="footer-logo-icon" alt="Humisense"></div>
+                    <div><img src="{{ url_for('static', filename='images/logo-120.png') }}" class="footer-logo-icon" alt="Humisense" width="120" height="120" loading="lazy" decoding="async"></div>
                     <span class="footer-logo-text">HUMISENSE</span>
                 </div>
                 <p class="footer-description">
-                    Building the Future with AI. World-class AI products, research, and education for intelligent businesses.
+                    Global AI automation and intelligent business solutions. We implement AI
+                    workflow automation, custom AI agents, document processing and RFQ
+                    automation for businesses worldwide.
                 </p>
                 <p class="text-sm font-semibold text-accent mb-4">MAKE IT HAPPEN</p>
                 
@@ -62,11 +64,24 @@
             <div>
                 <h3 class="footer-column-title">Services</h3>
                 <ul class="footer-links">
-                    <li><a href="{{ url_for('services') }}">AI Consulting</a></li>
-                    <li><a href="{{ url_for('services') }}">Machine Learning</a></li>
-                    <li><a href="{{ url_for('services') }}">MLOps</a></li>
-                    <li><a href="{{ url_for('services') }}">Cloud Deployment</a></li>
-                    <li><a href="{{ url_for('services') }}">AI Automation</a></li>
+                    <li><a href="{{ url_for('ai_automation') }}">AI Automation</a></li>
+                    <li><a href="{{ url_for('ai_workflow_automation') }}">Workflow Automation</a></li>
+                    <li><a href="{{ url_for('ai_agents') }}">AI Agents</a></li>
+                    <li><a href="{{ url_for('rfq_automation') }}">RFQ Automation</a></li>
+                    <li><a href="{{ url_for('document_automation') }}">Document Processing</a></li>
+                    <li><a href="{{ url_for('ai_consulting') }}">AI Consulting</a></li>
+                </ul>
+            </div>
+
+            <!-- Industries -->
+            <div>
+                <h3 class="footer-column-title">Industries</h3>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('industry_page', slug='manufacturing') }}">Manufacturing</a></li>
+                    <li><a href="{{ url_for('industry_page', slug='industrial-distribution') }}">Industrial Distribution</a></li>
+                    <li><a href="{{ url_for('industry_page', slug='wholesale') }}">Wholesale &amp; B2B</a></li>
+                    <li><a href="{{ url_for('industry_page', slug='professional-services') }}">Professional Services</a></li>
+                    <li><a href="{{ url_for('industry_page', slug='small-businesses') }}">Small Businesses</a></li>
                 </ul>
             </div>
             
@@ -87,10 +102,12 @@
                 <h3 class="footer-column-title">Company</h3>
                 <ul class="footer-links">
                     <li><a href="{{ url_for('about') }}">About Us</a></li>
-                    <li><a href="{{ url_for('research') }}">Research Lab</a></li>
+                    <li><a href="{{ url_for('blog') }}">Blog</a></li>
+                    <li><a href="{{ url_for('resources') }}">Resources</a></li>
+                    <li><a href="{{ url_for('case_studies') }}">Case Studies</a></li>
+                    <li><a href="{{ url_for('faqs') }}">FAQs</a></li>
+                    <li><a href="{{ url_for('research') }}">Research</a></li>
                     <li><a href="{{ url_for('contact') }}">Contact</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Blog</a></li>
                 </ul>
             </div>
         </div>
@@ -98,12 +115,12 @@
         <!-- Bottom Bar -->
         <div class="footer-bottom">
             <p class="footer-copyright">
-                © 2024 HUMISENSE. All rights reserved. MAKE IT HAPPEN.
+                © {{ current_year }} HUMISENSE. All rights reserved. MAKE IT HAPPEN.
             </p>
             <div class="footer-legal">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Cookie Policy</a>
+                <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+                <a href="{{ url_for('terms') }}">Terms of Service</a>
+                <a href="{{ url_for('cookies') }}">Cookie Policy</a>
             </div>
         </div>
     </div>
