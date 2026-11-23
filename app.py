@@ -23,6 +23,8 @@ from content.services import SERVICES, SERVICES_BY_SLUG
 from content.industries import INDUSTRIES, INDUSTRIES_BY_SLUG
 from content.articles import ARTICLES, ARTICLES_BY_SLUG
 from content.faqs import FAQ_GROUPS, ALL_FAQS
+from content.home import (HOME_SERVICES, home_products, home_courses,
+                          home_research)
 from content.pages import (LEGAL_PAGES, CASE_STUDIES, service_hub, industry_hub,
                            resources_hub)
 
@@ -87,6 +89,8 @@ products_data = load_data('products')
 services_data = load_data('services')
 courses_data = load_data('courses')
 research_data = load_data('research')
+# Testimonials are managed in admin but never rendered on the public site: the
+# previous records were fabricated and no client has approved a quote.
 testimonials_data = load_data('testimonials')
 
 # Initialize admin user if not exists
@@ -110,34 +114,21 @@ init_admin_user()
 # Page Routes
 @app.route('/')
 def home():
-    """Home page - Premium enterprise sales experience."""
-    stats = [
-        {'value': 500, 'suffix': '+', 'label': 'AI Models Deployed'},
-        {'value': 98, 'suffix': '%', 'label': 'Customer Satisfaction'},
-        {'value': 50, 'suffix': '+', 'label': 'Enterprise Clients'},
-        {'value': 10, 'suffix': 'M+', 'label': 'API Calls Monthly'}
-    ]
-    return render_template('home.html', 
-                         products=products_data[:3],
-                         stats=stats,
-                         testimonials=testimonials_data[:6],
-                         seo=_home_seo())
+    """Home page."""
+    return render_template(
+        'home.html',
+        home_services=HOME_SERVICES,
+        home_products=home_products(products_data),
+        home_courses=home_courses(courses_data),
+        home_research=home_research(research_data),
+        seo=_home_seo(),
+    )
 
 
 @app.route('/premium')
 def home_premium():
-    """Premium home page route for testing."""
-    stats = [
-        {'value': 500, 'suffix': '+', 'label': 'AI Models Deployed'},
-        {'value': 98, 'suffix': '%', 'label': 'Customer Satisfaction'},
-        {'value': 50, 'suffix': '+', 'label': 'Enterprise Clients'},
-        {'value': 10, 'suffix': 'M+', 'label': 'API Calls Monthly'}
-    ]
-    return render_template('home.html', 
-                         products=products_data[:3],
-                         stats=stats,
-                         testimonials=testimonials_data[:6],
-                         seo=_home_seo())
+    """Legacy preview URL; the homepage is the only design."""
+    return redirect(url_for('home'), code=301)
 
 
 @app.route('/products')
@@ -226,6 +217,11 @@ def about():
     """About page."""
     return render_template('about.html', team=team_data,
                            seo=seo_lib.page('about', jsonld=_graph(
+                               seo_lib.organization_schema(),
+                               seo_lib.web_page_schema(
+                                   'AboutPage', '/about',
+                                   name='About Humisense',
+                                   description=seo_lib.PAGE_SEO['about']['description']),
                                seo_lib.breadcrumb_schema([('Home', '/'), ('About', '/about')]))))
 
 
@@ -254,6 +250,11 @@ def contact():
     
     return render_template('contact.html', form=form,
                            seo=seo_lib.page('contact', jsonld=_graph(
+                               seo_lib.organization_schema(),
+                               seo_lib.web_page_schema(
+                                   'ContactPage', '/contact',
+                                   name='Contact Humisense',
+                                   description=seo_lib.PAGE_SEO['contact']['description']),
                                seo_lib.breadcrumb_schema([('Home', '/'), ('Contact', '/contact')]))))
 
 
@@ -695,38 +696,62 @@ def sitemap():
 
     today = date.today().isoformat()
 
-    def entry(path, priority, changefreq='monthly', lastmod=today):
+    import os
+    from flask import current_app
+
+    def mtime(template):
+        """Real last-modified date from the template that renders the page."""
+        path = os.path.join(current_app.template_folder, template)
+        try:
+            return date.fromtimestamp(os.path.getmtime(path)).isoformat()
+        except OSError:
+            return today
+
+    def entry(path, priority, changefreq='monthly', lastmod=None):
         return (f'  <url>\n    <loc>{seo_lib.canonical(path)}</loc>\n'
-                f'    <lastmod>{lastmod}</lastmod>\n'
+                f'    <lastmod>{lastmod or today}</lastmod>\n'
                 f'    <changefreq>{changefreq}</changefreq>\n'
                 f'    <priority>{priority}</priority>\n  </url>\n')
 
     xml = ['<?xml version="1.0" encoding="UTF-8"?>\n',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n']
 
-    xml.append(entry('/', '1.0', 'weekly'))
-    for endpoint, priority in [
-        ('services', '0.9'), ('industries', '0.9'), ('contact', '0.9'),
-        ('faqs', '0.8'), ('resources', '0.8'), ('blog', '0.8'),
-        ('case_studies', '0.7'), ('about', '0.7'),
-        ('products', '0.6'), ('courses', '0.6'), ('research', '0.6'),
+    xml.append(entry('/', '1.0', 'weekly', mtime('home.html')))
+    for endpoint, priority, template in [
+        ('services', '0.9', 'services.html'),
+        ('industries', '0.9', 'services.html'),
+        ('contact', '0.9', 'contact.html'),
+        ('faqs', '0.8', 'faqs_page.html'),
+        ('resources', '0.8', 'hub_page.html'),
+        ('blog', '0.8', 'blog_index.html'),
+        ('case_studies', '0.7', 'case_studies_page.html'),
+        ('about', '0.7', 'about.html'),
+        ('products', '0.6', 'products.html'),
+        ('courses', '0.6', 'courses.html'),
+        ('research', '0.6', 'research.html'),
     ]:
-        xml.append(entry(seo_lib.PAGE_SEO[endpoint]['path'], priority, 'weekly'))
+        xml.append(entry(seo_lib.PAGE_SEO[endpoint]['path'], priority, 'weekly',
+                         mtime(template)))
 
     for service in SERVICES:
-        xml.append(entry('/' + service['slug'], '0.9'))
+        xml.append(entry('/' + service['slug'], '0.9', 'monthly',
+                         mtime('service_page.html')))
     for industry in INDUSTRIES:
-        xml.append(entry(f"/industries/{industry['slug']}", '0.8'))
+        xml.append(entry(f"/industries/{industry['slug']}", '0.8', 'monthly',
+                         mtime('industry_page.html')))
     for article in ARTICLES:
         xml.append(entry(f"/blog/{article['slug']}", '0.7', 'monthly',
                          article.get('updated') or article['published']))
     for product in products_data:
-        xml.append(entry(f"/products/{product['id']}", '0.6'))
+        xml.append(entry(f"/products/{product['id']}", '0.6', 'monthly',
+                         mtime('product_detail.html')))
     for course in courses_data:
-        xml.append(entry(f"/courses/{course['id']}", '0.6'))
+        xml.append(entry(f"/courses/{course['id']}", '0.6', 'monthly',
+                         mtime('course_detail.html')))
 
     for endpoint in ('privacy', 'terms', 'cookies'):
-        xml.append(entry(seo_lib.PAGE_SEO[endpoint]['path'], '0.3', 'yearly'))
+        xml.append(entry(seo_lib.PAGE_SEO[endpoint]['path'], '0.3', 'yearly',
+                         mtime('legal_page.html')))
 
     xml.append('</urlset>')
     return Response(''.join(xml), mimetype='application/xml')

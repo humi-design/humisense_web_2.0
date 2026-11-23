@@ -2,12 +2,50 @@
 <html lang="{{ seo.lang if seo is defined and seo.lang else 'en' }}">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="format-detection" content="telephone=no">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#fbfaf8">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- Theme applied before paint to avoid a flash of the wrong mode -->
+    <script>
+        (function () {
+            var root = document.documentElement;
+            root.classList.add('js');
+            try {
+                var saved = localStorage.getItem('humi-theme');
+                var dark = saved === 'dark' ||
+                    (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                if (dark) {
+                    root.classList.add('dark');
+                    root.style.colorScheme = 'dark';
+                } else {
+                    root.style.colorScheme = 'light';
+                }
+            } catch (e) {}
+        })();
+    </script>
+
+    <!-- Google Consent Mode defaults: analytics denied until the visitor chooses -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        (function () {
+            var stored = null;
+            try { stored = localStorage.getItem('humi-consent'); } catch (e) {}
+            var granted = stored === 'granted';
+            gtag('consent', 'default', {
+                ad_storage: 'denied',
+                ad_user_data: 'denied',
+                ad_personalization: 'denied',
+                analytics_storage: granted ? 'granted' : 'denied',
+                functionality_storage: 'granted',
+                security_storage: 'granted'
+            });
+            gtag('set', 'ads_data_redaction', true);
+            gtag('set', 'url_passthrough', true);
+        })();
+    </script>
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -46,52 +84,20 @@
     <script type="application/ld+json">{{ seo.jsonld | tojson }}</script>
     {% endif %}
 
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo-120.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/logo-120.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        display: ['Sora', 'Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        accent: {
-                            primary: '#4f46e5',
-                            secondary: '#8b5cf6',
-                            cyan: '#06b6d4',
-                            emerald: '#10b981',
-                            rose: '#f43f5e',
-                            amber: '#f59e0b',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- Premium CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/premium.css') }}">
-
-    <!-- Icons (non-blocking) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/humi.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/legacy.css') }}">
 
     {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-primary text-primary font-sans antialiased">
+<body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJKSCNR3"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -99,56 +105,31 @@
 
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- Loading Screen -->
-    <div class="loader" id="loader">
-        <div class="loader-brand">
-            <img
-                src="{{ url_for('static', filename='images/logo.png') }}"
-                alt=""
-                width="64" height="64"
-                class="loader-logo-icon">
-            <div class="loader-logo">
-                Humisense
-            </div>
-        </div>
-        <div class="loader-bar">
-            <div class="loader-progress"></div>
-        </div>
-    </div>
-
-    <!-- Navigation -->
     {% include 'components/navbar.html' %}
 
-    <!-- Main Content -->
     <main id="main-content">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
     {% include 'components/footer.html' %}
 
-    <!-- Masterclass Promotion Elements -->
     {% include 'components/masterclass_promotion.html' %}
 
-    <!-- Scroll to Top Button -->
-    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="m18 15-6-6-6 6"/>
-        </svg>
-    </button>
+    <div class="consent" id="consent-banner" role="dialog" aria-live="polite"
+         aria-label="Cookie and analytics preferences" hidden>
+        <p class="consent__text">
+            We use analytics cookies to understand how the site is used. Nothing is set until you choose.
+            <a href="{{ url_for('cookies') }}">Cookie policy</a>
+        </p>
+        <div class="consent__actions">
+            <button type="button" class="btn btn--ghost btn--sm" data-consent="denied">Decline</button>
+            <button type="button" class="btn btn--primary btn--sm" data-consent="granted">Accept</button>
+        </div>
+    </div>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
     <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" defer></script>
-    <script src="https://unpkg.com/headroom.js@0.12.0/dist/headroom.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/just-validate@4.2.0/dist/just-validate.production.min.js" defer></script>
-
-    <!-- Premium JavaScript -->
-    <script src="{{ url_for('static', filename='js/premium.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/humi.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/analytics.js') }}" defer></script>
 
     {% block extra_scripts %}{% endblock %}

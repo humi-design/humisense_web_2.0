@@ -277,6 +277,24 @@ def website_schema():
     }
 
 
+def web_page_schema(page_type, path, name=None, description=None):
+    """AboutPage / ContactPage / CollectionPage wrapper that points at the
+    organization, so E-E-A-T signals stay connected to the entity graph."""
+    node = {
+        '@type': page_type,
+        '@id': canonical(path) + '#webpage',
+        'url': canonical(path),
+        'isPartOf': {'@id': WEBSITE_ID},
+        'about': {'@id': ORG_ID},
+        'inLanguage': 'en',
+    }
+    if name:
+        node['name'] = name
+    if description:
+        node['description'] = description
+    return node
+
+
 def breadcrumb_schema(items):
     """items: list of (label, path)."""
     return {
