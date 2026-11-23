@@ -371,5 +371,18 @@ def article_schema(article, path):
 
 
 def graph(*nodes):
-    """Combine page-level nodes into a single JSON-LD graph."""
-    return {'@context': 'https://schema.org', '@graph': [n for n in nodes if n]}
+    """Combine page-level nodes into a single JSON-LD graph.
+
+    Organization and WebSite are always emitted so that every page carries the
+    same entity description, and duplicate @ids are dropped.
+    """
+    merged = [organization_schema(), website_schema()] + [n for n in nodes if n]
+    seen, unique = set(), []
+    for node in merged:
+        node_id = node.get('@id')
+        if node_id:
+            if node_id in seen:
+                continue
+            seen.add(node_id)
+        unique.append(node)
+    return {'@context': 'https://schema.org', '@graph': unique}
