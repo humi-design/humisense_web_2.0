@@ -69,7 +69,7 @@ after editing them.
   and must reuse the `--color-*` / `--text-*` / `--space-*` tokens from `premium.css`.
 - Analytics: `static/js/analytics.js` pushes to `dataLayer` for GTM container
   `GTM-WJKSCNR3`. Events: `cta_click`, `contact_email_click`, `contact_phone_click`,
-  `generate_lead`, `newsletter_signup`, `scroll_depth`. No personal data in events.
+  `generate_lead`, `scroll_depth`. No personal data in events.
 - Consent: `base.html` sets Google Consent Mode v2 defaults (analytics denied) before
   the GTM snippet. `initConsent()` in `static/js/humi.js` shows `#consent-banner`,
   stores the choice in `localStorage['humi-consent']` and calls

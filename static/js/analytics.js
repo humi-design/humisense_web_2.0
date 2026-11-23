@@ -48,14 +48,6 @@
             });
         }
 
-        // Newsletter subscription
-        var newsletter = document.getElementById('newsletter-form');
-        if (newsletter) {
-            newsletter.addEventListener('submit', function () {
-                push('newsletter_signup', { form_type: 'newsletter' });
-            });
-        }
-
         // Scroll depth at 25/50/75/100 percent
         var marks = [25, 50, 75, 100];
         var fired = {};

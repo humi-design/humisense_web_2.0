@@ -219,9 +219,10 @@ Removed from the live site:
   `<head>`, noscript iframe immediately after `<body>`. Verified on all 60 pages.
 - `static/js/analytics.js` pushes to `dataLayer`:
   `cta_click` (with `cta_type`), `contact_email_click`, `contact_phone_click`,
-  `generate_lead` (contact form submit), `newsletter_signup`, `scroll_depth`
-  (25/50/75/100). No personal data is included — only event name, page path and an
-  80-character label.
+  `generate_lead` (contact form submit), `scroll_depth` (25/50/75/100). No personal
+  data is included — only event name, page path and an 80-character label. A
+  `newsletter_signup` listener was removed because no public newsletter form exists;
+  the admin newsletter tables are not reachable from the public site.
 - **Google Consent Mode v2** is set before the GTM snippet in `base.html`:
   `ad_storage`, `ad_user_data`, `ad_personalization` and `analytics_storage` all default
   to `denied`, with `ads_data_redaction` and `url_passthrough` enabled. Analytics cookies
