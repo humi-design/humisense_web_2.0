@@ -15,12 +15,18 @@ Repository context for agents working on the Humisense website.
 ## Running locally
 
 ```bash
+python3 -m pip install -r requirements.txt   # Flask 3.0.0 et al.
 python3 app.py                 # http://127.0.0.1:5000
 ```
 
-Dependencies: Flask, Flask-SQLAlchemy, Flask-Migrate, alembic, Pillow (build-time only).
-SQLite database at `instance/humisense.db`. Mail credentials come from the environment
+Dependencies: Flask, Flask-SQLAlchemy, Flask-Migrate, alembic. SQLite database at
+`instance/humisense.db`. Mail credentials come from the environment
 (`MAIL_USERNAME`, `MAIL_PASSWORD`) — there are no defaults.
+
+The sandbox image is rebuilt between sessions and does not keep installed packages, so
+run the `pip install` line first if `ModuleNotFoundError: flask` appears. Product and
+course data live in JSON modules that the reloader does not watch — restart the server
+after editing them.
 
 ## SEO architecture
 

@@ -269,6 +269,14 @@ Removed from the live site:
 | www → apex redirect | 301 verified |
 | 404 page | 404 + noindex + nav intact |
 | Contact form | 302 redirect, lead row written to `leads` table |
+| Form field labels | 6/6 controls have a `<label for>`, 0 unlabelled |
+| Form `autocomplete` | `name`, `email`, `tel`, `organization` set on the lead form |
+| Service page depth | 636–848 words, 13 H2 sections, 9 FAQs and FAQPage schema on all 10 |
+| Industry page uniqueness | Max 11.5% shared word set between any two industry pages |
+| Article depth | 533–837 words, 9–14 H2 sections, 2–3 service links each, 12 articles |
+| AEO questions present | 14/14 required questions on `/faqs` |
+| AEO answer format | 18/18 answers open with a direct answer, 0 preamble |
+| Internal link matrix | All 6 required service/industry links present |
 | Static assets | All 200, correct content types |
 | Horizontal overflow at 390 px | None — scrollWidth equals clientWidth on 8 page types |
 | Fabricated claims scan | 0 matches across all 60 pages |
