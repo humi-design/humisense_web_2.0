@@ -64,3 +64,10 @@ SQLite database at `instance/humisense.db`. Mail credentials come from the envir
 - Analytics: `static/js/analytics.js` pushes to `dataLayer` for GTM container
   `GTM-WJKSCNR3`. Events: `cta_click`, `contact_email_click`, `contact_phone_click`,
   `generate_lead`, `newsletter_signup`, `scroll_depth`. No personal data in events.
+- Consent: `base.html` sets Google Consent Mode v2 defaults (analytics denied) before
+  the GTM snippet. `initConsent()` in `static/js/humi.js` shows `#consent-banner`,
+  stores the choice in `localStorage['humi-consent']` and calls
+  `gtag('consent','update',…)`. The cookie policy copy in `content/pages.py` describes
+  this behaviour — update both together.
+- Product pages: `templates/product_detail.html` renders the API tab and the "View API
+  Docs" button only when `product.api_example` is set; five of six products have none.
