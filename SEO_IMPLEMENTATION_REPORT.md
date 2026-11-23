@@ -98,11 +98,13 @@ implementation method, benefits stated without invented numbers, FAQs, internal 
 
 Emitted as a single `@graph` per page with shared `@id`s:
 
-- `Organization` (homepage and every page via the graph) — name, alternateName, url, logo,
+- `Organization` (every page, prepended by `graph()`) — name, alternateName, url, logo,
   image, description, email, telephone via `ContactPoint`, postal address, `areaServed:
   Worldwide`, `knowsAbout` listing the nine service topics, `sameAs` only for profiles that
   exist.
-- `WebSite` with `potentialAction` search target.
+- `WebSite` with `publisher` pointing at `#organization` and `inLanguage: en`. No
+  `potentialAction`/`SearchAction` is declared because the site has no search endpoint —
+  declaring one would point crawlers at a URL that does not exist.
 - `Service` on every service and industry page, `provider` referencing `#organization`,
   `areaServed: Worldwide`.
 - `BreadcrumbList` on every non-home page.
@@ -198,8 +200,18 @@ Removed from the live site:
   `width`/`height` and `decoding="async"`.
 - `Cache-Control: public, max-age=31536000, immutable` on static assets;
   `max-age=3600` on sitemap and robots.
-- CSS and JS are separate files; `analytics.js` is 2.8 KB and deferred.
-- Server render time measured locally: 4–14 ms per page.
+- CSS and JS are separate files, all served with long-lived immutable caching:
+
+  | Asset | Raw | Gzipped |
+  | --- | --- | --- |
+  | `humi.css` | 47 KB | 9.6 KB |
+  | `premium.css` | 59 KB | 8.9 KB |
+  | `seo-pages.css` | 20 KB | 3.6 KB |
+  | `humi.js` | 17 KB | 4.1 KB |
+  | `analytics.js` | 2.8 KB | 1.0 KB |
+
+- Server render time measured locally: 3.4–4.4 ms TTFB on the homepage across five runs.
+- Lab Core Web Vitals (LCP/INP/CLS) still need a deployed origin — see section 4.
 
 ### 2.9 Analytics and consent
 
