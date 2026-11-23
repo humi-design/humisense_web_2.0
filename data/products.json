@@ -1,192 +1,241 @@
 [
   {
     "id": "voice-api",
-    "name": "HumiSense Voice API",
-    "tagline": "Transform Speech into Intelligent Action",
-    "description": "A powerful voice recognition and synthesis API that enables seamless speech-to-text, text-to-speech, and voice command capabilities for your applications.",
-    "category": "APIs",
+    "name": "Humisense API",
+    "tagline": "A voice and language layer for your own product",
+    "description": "An integration layer that lets a website or application accept spoken input and respond with speech. You keep your interface and your data; the API handles transcription, intent routing and synthesis.",
+    "category": "API",
+    "stage": "prototype",
     "icon": "mic",
-    "color": "#6366F1",
+    "color": "#4f46e5",
     "features": [
-      "Real-time speech recognition with 99.2% accuracy",
-      "Multi-language support (50+ languages)",
-      "Custom voice model training",
-      "Noise cancellation and audio enhancement",
-      "Speaker diarization",
-      "Emotion detection in voice",
-      "Low-latency streaming responses",
-      "WebSocket and REST API support"
+      "Streaming speech-to-text over WebSocket",
+      "Text-to-speech with selectable voice profiles",
+      "Intent routing to your own endpoints",
+      "Server-side key handling so credentials never reach the browser",
+      "Request logging with configurable retention",
+      "REST and WebSocket interfaces"
     ],
     "benefits": [
-      "Reduce development time by 70%",
-      "Improve user engagement with voice interfaces",
-      "Accessible products for all users",
-      "24/7 automated customer support",
-      "Multilingual global reach"
+      "Adds a voice interface without rebuilding your front end",
+      "Keeps your existing backend as the source of truth",
+      "Fits inside your own access controls"
     ],
     "use_cases": [
-      {"title": "Customer Service", "description": "AI-powered voice assistants for 24/7 customer support"},
-      {"title": "Healthcare", "description": "Voice-enabled clinical documentation and patient monitoring"},
-      {"title": "Accessibility", "description": "Voice control for applications serving users with disabilities"},
-      {"title": "Smart Home", "description": "Voice-controlled IoT devices and home automation"}
+      {
+        "title": "Support sites",
+        "description": "Spoken questions routed to the same knowledge base that serves written answers."
+      },
+      {
+        "title": "Internal tools",
+        "description": "Hands-free data entry for staff working away from a keyboard."
+      },
+      {
+        "title": "Field applications",
+        "description": "Voice capture in environments where typing is impractical."
+      }
     ],
     "api_example": {
-      "endpoint": "/api/v1/voice/transcribe",
+      "endpoint": "/v1/speech/transcribe",
       "method": "POST",
-      "code": "import requests\n\nresponse = requests.post(\n    'https://api.humisense.com/v1/voice/transcribe',\n    headers={'Authorization': 'Bearer YOUR_API_KEY'},\n    files={'audio': open('recording.wav', 'rb')}\n)\nprint(response.json())"
+      "code": "import requests\n\nresponse = requests.post(\n    'https://api.humisense.com/v1/speech/transcribe',\n    headers={'Authorization': 'Bearer <your-server-side-key>'},\n    files={'audio': open('clip.wav', 'rb')},\n    data={'language': 'en'}\n)\nprint(response.json()['text'])"
     },
-    "pricing": "Starting at $99/month for 100,000 API calls"
+    "pricing": "Pricing is agreed per engagement. This API is in prototype and is not sold as a self-serve subscription.",
+    "short_description": "Speech-to-text and text-to-speech API for your own product. Add spoken input and voice replies while keeping your interface and your data."
   },
   {
     "id": "sentinel-chat",
     "name": "Sentinel Chat",
-    "tagline": "Enterprise-Grade Conversational AI",
-    "description": "A secure, customizable conversational AI platform for building intelligent chatbots and virtual assistants that understand context and intent.",
-    "category": "Platforms",
-    "icon": "message-circle",
-    "color": "#10B981",
+    "tagline": "A support assistant that answers from your own documents",
+    "description": "A retrieval-based chat assistant for support and internal help desks. Answers are grounded in documents you supply, with citations back to the source passage and a fallback to a human when confidence is low.",
+    "category": "Product",
+    "stage": "prototype",
+    "icon": "message-square",
+    "color": "#7b4dff",
     "features": [
-      "Natural Language Understanding (NLU) engine",
-      "Context-aware conversation management",
-      "Multi-channel deployment (web, mobile, messaging)",
-      "Enterprise SSO and SAML integration",
-      "Custom knowledge base integration",
-      "Conversation analytics dashboard",
-      "A/B testing for responses",
-      "Compliance with SOC2 and GDPR"
+      "Retrieval over your own document set",
+      "Source citation on every answer",
+      "Confidence threshold with human handover",
+      "Conversation transcripts retained under your policy",
+      "No training on your data"
     ],
     "benefits": [
-      "Handle 10x more customer queries",
-      "Reduce support ticket volume by 60%",
-      "Consistent brand voice across channels",
-      "Real-time conversation insights",
-      "Seamless human handoff"
+      "Answers stay traceable to a source",
+      "Reduces repeated questions to the support team",
+      "Deployable inside your existing help centre"
     ],
     "use_cases": [
-      {"title": "Sales", "description": "AI sales assistant for lead qualification and product recommendations"},
-      {"title": "Support", "description": "Automated customer support with instant resolutions"},
-      {"title": "HR", "description": "Employee self-service chatbot for policy questions"},
-      {"title": "Education", "description": "Interactive learning assistants for students"}
+      {
+        "title": "Product support",
+        "description": "Answers drawn from manuals, release notes and known-issue lists."
+      },
+      {
+        "title": "Internal help desk",
+        "description": "Policy and process questions answered from internal documentation."
+      },
+      {
+        "title": "Onboarding",
+        "description": "New staff ask questions in plain language instead of searching a wiki."
+      }
     ],
-    "api_example": {
-      "endpoint": "/api/v1/chat/send",
-      "method": "POST",
-      "code": "import humisense\n\nclient = humisense.Client(api_key='YOUR_API_KEY')\nresponse = client.chat.send(\n    message='I need help with my order',\n    context={'user_id': 'user_123', 'order_id': 'ORD-456'}\n)\nprint(response.reply)"
-    },
-    "pricing": "Starting at $299/month with unlimited conversations"
+    "api_example": null,
+    "pricing": "Pricing is agreed per engagement. This product is in prototype.",
+    "short_description": "A retrieval-based support assistant that answers from documents you supply, cites the source passage and hands off to a person when confidence is low."
   },
   {
     "id": "agent-studio",
-    "name": "HumiSense Agent Studio",
-    "tagline": "Build Autonomous AI Agents",
-    "description": "A comprehensive platform for designing, training, and deploying autonomous AI agents that can reason, plan, and execute complex tasks.",
-    "category": "Platforms",
+    "name": "Humisense Agent Studio",
+    "tagline": "Design, test and audit tool-using agents",
+    "description": "A workbench for building agents that call your tools. Each run records the plan, the tool calls and the inputs, so behaviour can be reviewed rather than guessed at.",
+    "category": "Platform",
+    "stage": "development",
+    "icon": "boxes",
+    "color": "#12b5c9",
+    "features": [
+      "Task definition with an explicit tool allowlist",
+      "Step-by-step run traces",
+      "Replay of a past run against new inputs",
+      "Evaluation sets for regression checking",
+      "Human approval gates on sensitive tools"
+    ],
+    "benefits": [
+      "Agent behaviour becomes reviewable",
+      "Failures are reproducible instead of anecdotal",
+      "Changes can be regression-tested before release"
+    ],
+    "use_cases": [
+      {
+        "title": "Document workflows",
+        "description": "Agents that read, classify and route incoming files."
+      },
+      {
+        "title": "Research assistance",
+        "description": "Multi-step retrieval with a recorded reasoning trail."
+      },
+      {
+        "title": "Operations",
+        "description": "Recurring tasks that touch several internal systems."
+      }
+    ],
+    "api_example": null,
+    "pricing": "In development. Not available for purchase.",
+    "short_description": "A workbench for building agents that call your tools. Every run records the plan, the tool calls and the inputs so behaviour can be reviewed."
+  },
+  {
+    "id": "social-automation",
+    "name": "AI Social Automation",
+    "tagline": "Drafting and scheduling with a human in the loop",
+    "description": "A drafting assistant for social and content workflows. It proposes copy and schedules it, but nothing publishes without review. Built for teams who want volume without losing editorial control.",
+    "category": "Product",
+    "stage": "development",
+    "icon": "share-2",
+    "color": "#2f5cff",
+    "features": [
+      "Draft generation from a brief or an existing article",
+      "Channel-specific length and tone rules",
+      "Approval queue before publishing",
+      "Scheduling with a content calendar",
+      "Performance capture for review"
+    ],
+    "benefits": [
+      "Keeps a human decision on every published post",
+      "Cuts the blank-page problem on routine content",
+      "Keeps channel conventions consistent"
+    ],
+    "use_cases": [
+      {
+        "title": "B2B content",
+        "description": "Turning long-form articles into channel-appropriate posts."
+      },
+      {
+        "title": "Recruitment",
+        "description": "Consistent role announcements across channels."
+      },
+      {
+        "title": "Product updates",
+        "description": "Release notes drafted into customer-facing copy."
+      }
+    ],
+    "api_example": null,
+    "pricing": "In development. Not available for purchase.",
+    "short_description": "A drafting assistant for social and content workflows. It proposes copy and schedules posts, but nothing publishes without human review."
+  },
+  {
+    "id": "custom-agents",
+    "name": "Custom AI Agents",
+    "tagline": "Purpose-built agents for a single defined job",
+    "description": "Engagement-built agents scoped to one task with a measurable definition of done. Delivered with the tooling, logs and handover documentation needed to run them internally.",
+    "category": "Service",
+    "stage": "live",
     "icon": "bot",
-    "color": "#F59E0B",
+    "color": "#8b5cf6",
     "features": [
-      "Visual workflow builder",
-      "Pre-built agent templates",
-      "Multi-modal input support",
-      "Tool and API integration framework",
-      "Memory and context management",
-      "Agent orchestration dashboard",
-      "Real-time monitoring and logging",
-      "Safety guardrails configuration"
+      "Task boundary defined before build",
+      "Explicit tool allowlist",
+      "Structured logging of every decision",
+      "Review path for low-confidence output",
+      "Handover documentation and training"
     ],
     "benefits": [
-      "Automate complex business workflows",
-      "Reduce operational costs by 40%",
-      "Scale operations without scaling headcount",
-      "Improve decision-making speed",
-      "Enable 24/7 autonomous operations"
+      "Scoped to a job you can measure",
+      "Operable by your team after handover",
+      "Behaviour is auditable"
     ],
     "use_cases": [
-      {"title": "Research", "description": "Autonomous agents for literature review and data analysis"},
-      {"title": "Operations", "description": "Automated workflow orchestration across systems"},
-      {"title": "Content", "description": "AI agents for content creation and curation"},
-      {"title": "Finance", "description": "Automated financial analysis and reporting agents"}
+      {
+        "title": "Intake triage",
+        "description": "Classifying and routing inbound requests."
+      },
+      {
+        "title": "Document processing",
+        "description": "Extraction with validation against your records."
+      },
+      {
+        "title": "Quotation support",
+        "description": "Assembling pricing inputs for review."
+      }
     ],
-    "api_example": {
-      "endpoint": "/api/v1/agents/deploy",
-      "method": "POST",
-      "code": "import humisense\n\nclient = humisense.Client(api_key='YOUR_API_KEY')\nagent = client.agents.create(\n    name='Research Assistant',\n    capabilities=['web_search', 'data_analysis', 'report_generation'],\n    memory_type='vector_store'\n)\nagent.deploy()"
-    },
-    "pricing": "Starting at $599/month per agent"
+    "api_example": null,
+    "pricing": "Scoped per engagement after a discovery call.",
+    "short_description": "Purpose-built AI agents scoped to one task with a measurable definition of done, delivered with tooling, logs and handover documentation."
   },
   {
-    "id": "analytics-ai",
-    "name": "HumiSense Analytics AI",
-    "tagline": "Intelligence Beyond Dashboards",
-    "description": "An AI-powered analytics platform that transforms raw data into actionable insights using advanced machine learning and natural language queries.",
-    "category": "Analytics",
-    "icon": "bar-chart-2",
-    "color": "#EC4899",
+    "id": "business-automation",
+    "name": "Intelligent Business Automation",
+    "tagline": "End-to-end workflow automation, delivered",
+    "description": "Full workflow automation for operations teams: intake, validation, routing, approval and reporting. Delivered against a measured baseline so the effect is visible.",
+    "category": "Service",
+    "stage": "live",
+    "icon": "workflow",
+    "color": "#06b6d4",
     "features": [
-      "Natural language data querying",
-      "Automated insight generation",
-      "Predictive analytics",
-      "Anomaly detection",
-      "Causal inference engine",
-      "Custom visualization generation",
-      "Data preparation automation",
-      "Collaborative analytics workspaces"
+      "Process mapping and baseline measurement",
+      "Rule-based logic where rules are sufficient",
+      "Model-assisted steps where judgement is needed",
+      "Exception handling and review queues",
+      "Operational reporting"
     ],
     "benefits": [
-      "Get insights in seconds, not days",
-      "Democratize data access across organization",
-      "Identify opportunities and risks early",
-      "Make data-driven decisions with confidence",
-      "Reduce time from data to insight by 80%"
+      "Improvement is measured against a baseline",
+      "Exceptions are handled rather than hidden",
+      "Your team keeps operational control"
     ],
     "use_cases": [
-      {"title": "Business Intelligence", "description": "AI-powered dashboards with automatic insights"},
-      {"title": "Marketing", "description": "Customer behavior analysis and campaign optimization"},
-      {"title": "Operations", "description": "Supply chain optimization and efficiency analysis"},
-      {"title": "Finance", "description": "Financial forecasting and risk assessment"}
+      {
+        "title": "RFQ handling",
+        "description": "Intake through to priced response."
+      },
+      {
+        "title": "Order administration",
+        "description": "Validation and entry against your ERP."
+      },
+      {
+        "title": "Supplier communication",
+        "description": "Acknowledgement tracking and follow-up."
+      }
     ],
-    "api_example": {
-      "endpoint": "/api/v1/analytics/query",
-      "method": "POST",
-      "code": "import humisense\n\nclient = humisense.Client(api_key='YOUR_API_KEY')\ninsights = client.analytics.query(\n    question='What were our top performing products last quarter?',\n    data_sources=['sales_db', 'inventory_db']\n)\nfor insight in insights:\n    print(insight.summary)"
-    },
-    "pricing": "Starting at $399/month for team tier"
-  },
-  {
-    "id": "research-assistant",
-    "name": "HumiSense Research Assistant",
-    "tagline": "Accelerate Scientific Discovery",
-    "description": "An AI-powered research tool that helps scientists and researchers discover insights, analyze papers, and accelerate the research process.",
-    "category": "Research",
-    "icon": "book-open",
-    "color": "#8B5CF6",
-    "features": [
-      "Semantic paper search across millions of sources",
-      "Automatic literature review generation",
-      "Research hypothesis suggestion",
-      "Experimental design assistance",
-      "Data analysis and visualization",
-      "Citation network analysis",
-      "Collaboration and annotation tools",
-      "Reproducibility tracking"
-    ],
-    "benefits": [
-      "Reduce literature review time by 90%",
-      "Discover relevant research faster",
-      "Identify research gaps and opportunities",
-      "Accelerate publication process",
-      "Improve research reproducibility"
-    ],
-    "use_cases": [
-      {"title": "Academic Research", "description": "Comprehensive literature reviews and hypothesis generation"},
-      {"title": "Pharmaceutical", "description": "Drug discovery and clinical trial analysis"},
-      {"title": "Technical Research", "description": "Engineering and computer science research acceleration"},
-      {"title": "Market Research", "description": "Competitive analysis and market opportunity identification"}
-    ],
-    "api_example": {
-      "endpoint": "/api/v1/research/literature-review",
-      "method": "POST",
-      "code": "import humisense\n\nclient = humisense.Client(api_key='YOUR_API_KEY')\nreview = client.research.literature_review(\n    topic='transformer architectures for NLP',\n    max_papers=50,\n    include_citations=True\n)\nprint(review.markdown)"
-    },
-    "pricing": "Starting at $199/month for individual researchers"
+    "api_example": null,
+    "pricing": "Scoped per engagement after a discovery call.",
+    "short_description": "End-to-end workflow automation for operations teams: intake, validation, routing, approval and reporting, measured against a baseline."
   }
 ]

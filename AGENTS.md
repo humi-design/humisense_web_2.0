@@ -15,12 +15,18 @@ Repository context for agents working on the Humisense website.
 ## Running locally
 
 ```bash
+python3 -m pip install -r requirements.txt   # Flask 3.0.0 et al.
 python3 app.py                 # http://127.0.0.1:5000
 ```
 
-Dependencies: Flask, Flask-SQLAlchemy, Flask-Migrate, alembic, Pillow (build-time only).
-SQLite database at `instance/humisense.db`. Mail credentials come from the environment
+Dependencies: Flask, Flask-SQLAlchemy, Flask-Migrate, alembic. SQLite database at
+`instance/humisense.db`. Mail credentials come from the environment
 (`MAIL_USERNAME`, `MAIL_PASSWORD`) — there are no defaults.
+
+The sandbox image is rebuilt between sessions and does not keep installed packages, so
+run the `pip install` line first if `ModuleNotFoundError: flask` appears. Product and
+course data live in JSON modules that the reloader does not watch — restart the server
+after editing them.
 
 ## SEO architecture
 
@@ -63,4 +69,11 @@ SQLite database at `instance/humisense.db`. Mail credentials come from the envir
   and must reuse the `--color-*` / `--text-*` / `--space-*` tokens from `premium.css`.
 - Analytics: `static/js/analytics.js` pushes to `dataLayer` for GTM container
   `GTM-WJKSCNR3`. Events: `cta_click`, `contact_email_click`, `contact_phone_click`,
-  `generate_lead`, `newsletter_signup`, `scroll_depth`. No personal data in events.
+  `generate_lead`, `scroll_depth`. No personal data in events.
+- Consent: `base.html` sets Google Consent Mode v2 defaults (analytics denied) before
+  the GTM snippet. `initConsent()` in `static/js/humi.js` shows `#consent-banner`,
+  stores the choice in `localStorage['humi-consent']` and calls
+  `gtag('consent','update',…)`. The cookie policy copy in `content/pages.py` describes
+  this behaviour — update both together.
+- Product pages: `templates/product_detail.html` renders the API tab and the "View API
+  Docs" button only when `product.api_example` is set; five of six products have none.

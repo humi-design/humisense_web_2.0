@@ -98,11 +98,13 @@ implementation method, benefits stated without invented numbers, FAQs, internal 
 
 Emitted as a single `@graph` per page with shared `@id`s:
 
-- `Organization` (homepage and every page via the graph) — name, alternateName, url, logo,
+- `Organization` (every page, prepended by `graph()`) — name, alternateName, url, logo,
   image, description, email, telephone via `ContactPoint`, postal address, `areaServed:
   Worldwide`, `knowsAbout` listing the nine service topics, `sameAs` only for profiles that
   exist.
-- `WebSite` with `potentialAction` search target.
+- `WebSite` with `publisher` pointing at `#organization` and `inLanguage: en`. No
+  `potentialAction`/`SearchAction` is declared because the site has no search endpoint —
+  declaring one would point crawlers at a URL that does not exist.
 - `Service` on every service and industry page, `provider` referencing `#organization`,
   `areaServed: Worldwide`.
 - `BreadcrumbList` on every non-home page.
@@ -120,7 +122,7 @@ can be evidenced.
 - `/robots.txt` now exists (was 404). Allows `*`, `OAI-SearchBot`, `PerplexityBot`,
   `Googlebot`, `Bingbot`; disallows `/admin/` and `/api/`; blocks `CCBot` (training-only,
   no discovery value); declares the sitemap.
-- `/sitemap.xml` generated from the content modules — 59 URLs, each with `lastmod`,
+- `/sitemap.xml` generated from the content modules — 60 URLs, each with `lastmod`,
   `changefreq` and `priority`. Valid XML, verified by parser.
 - Sitemap coverage verified 1:1 against a full crawl: every sitemap URL is internally
   linked, and every internally linked URL is in the sitemap.
@@ -140,7 +142,7 @@ can be evidenced.
 - `/services` gained a 10-card core-services grid above the existing capability list.
 - Blog articles cross-link to services; service pages link to related services, industries,
   FAQs and `/contact`.
-- Crawl result: 59 pages, **0 broken internal links**.
+- Crawl result: 60 pages, **0 broken internal links** across 64 internal links.
 
 ### 2.6 AEO / GEO
 
@@ -175,6 +177,21 @@ Removed from the live site:
 - "Trusted by hundreds of companies", "trained thousands of practitioners",
   "Join thousands of students" → replaced with accurate statements.
 - Duplicate homepage `<section id="services">` block removed.
+- Backdated article dates corrected: all twelve articles were dated February–April 2026
+  but were written in November 2026. `published`/`updated` now carry the real date
+  (2026-11-20), and the JSON-LD `datePublished`/`dateModified`, the visible
+  "Published" line and the sitemap `<lastmod>` all agree.
+- About page counters ("20+ team members", "50+ enterprise clients", "10K+ students
+  trained") were not evidenced → replaced with factual statements about delivery model,
+  scoping and review.
+- Contact details (Priya Industrial Estate, Mumbai 401105; +91-8424849942;
+  info@humisense.com) were traced back to the original site and kept — they are genuine.
+- A final automated scan for claim patterns ("N% reduction", "trusted by N", "award
+  winning", "ISO", "SOC 2", "N years of experience") returns zero matches across all
+  sixty pages.
+- No `AggregateRating`, `Review` or named `Person` author is emitted anywhere, because no
+  genuine ratings, reviews or named authors exist yet. Articles are attributed to the
+  organisation.
 
 ### 2.8 Performance
 
@@ -183,19 +200,41 @@ Removed from the live site:
   `width`/`height` and `decoding="async"`.
 - `Cache-Control: public, max-age=31536000, immutable` on static assets;
   `max-age=3600` on sitemap and robots.
-- CSS and JS are separate files; `analytics.js` is 2.8 KB and deferred.
-- Server render time measured locally: 4–14 ms per page.
+- CSS and JS are separate files, all served with long-lived immutable caching:
 
-### 2.9 Analytics
+  | Asset | Raw | Gzipped |
+  | --- | --- | --- |
+  | `humi.css` | 47 KB | 9.6 KB |
+  | `premium.css` | 59 KB | 8.9 KB |
+  | `seo-pages.css` | 20 KB | 3.6 KB |
+  | `humi.js` | 17 KB | 4.1 KB |
+  | `analytics.js` | 2.8 KB | 1.0 KB |
+
+- Server render time measured locally: 3.4–4.4 ms TTFB on the homepage across five runs.
+- Lab Core Web Vitals (LCP/INP/CLS) still need a deployed origin — see section 4.
+
+### 2.9 Analytics and consent
 
 - GTM container `GTM-WJKSCNR3` confirmed installed once: head script immediately after
-  `<head>`, noscript iframe immediately after `<body>`. Verified on all 45 pages.
+  `<head>`, noscript iframe immediately after `<body>`. Verified on all 60 pages.
 - `static/js/analytics.js` pushes to `dataLayer`:
   `cta_click` (with `cta_type`), `contact_email_click`, `contact_phone_click`,
-  `generate_lead` (contact form submit), `newsletter_signup`, `scroll_depth`
-  (25/50/75/100). No personal data is included — only event name, page path and an
-  80-character label.
-- `/cookies` page documents the container and the consent position.
+  `generate_lead` (contact form submit), `scroll_depth` (25/50/75/100). No personal
+  data is included — only event name, page path and an 80-character label. A
+  `newsletter_signup` listener was removed because no public newsletter form exists;
+  the admin newsletter tables are not reachable from the public site.
+- **Google Consent Mode v2** is set before the GTM snippet in `base.html`:
+  `ad_storage`, `ad_user_data`, `ad_personalization` and `analytics_storage` all default
+  to `denied`, with `ads_data_redaction` and `url_passthrough` enabled. Analytics cookies
+  are therefore not written until the visitor opts in.
+- A consent banner (`#consent-banner`, `role="dialog"`, `aria-live="polite"`) is shown on
+  first visit. Accept/Decline stores the choice in `localStorage['humi-consent']`, hides
+  the banner and calls `gtag('consent', 'update', …)`. Verified end to end: clicking
+  Accept hides the banner, persists `granted` and fires one `consent_update` event.
+- The banner uses the existing design tokens, so it follows the light/dark theme
+  (`#12151d` surface, `#f2f4f8` ink in dark mode) and does not overflow at 390 px.
+- `/cookies` documents the container, the default-denied position, what Accept/Decline
+  does, and how to change the choice. Copy and behaviour are kept in step.
 
 ### 2.10 Security
 
@@ -214,24 +253,35 @@ Removed from the live site:
 
 | Check | Result |
 | --- | --- |
-| All indexable pages return HTTP 200 | 45/45 |
+| All indexable pages return HTTP 200 | 60/60 |
 | Unique titles | 0 duplicates |
 | Unique descriptions | 0 duplicates |
-| Description length 120–160 chars | All within range |
+| Description length 110–165 chars | All within range |
 | Canonical matches page path | All correct |
 | One `<h1>` per page | All correct |
-| JSON-LD parses | All valid |
-| GTM installed once | All pages, head + noscript |
+| JSON-LD parses | 60 blocks, all valid |
+| GTM installed once | All pages, 1 script + 1 noscript |
+| Consent banner present once | 60/60, defaults denied |
 | Images have alt attributes | 0 missing |
-| Broken internal links | 0 across 59 crawled URLs |
+| Broken internal links | 0 across 64 internal links |
 | Sitemap ↔ crawl parity | Exact match |
 | robots.txt reachable | 200 |
-| Sitemap valid XML | 59 URLs parsed |
+| Sitemap valid XML | 60 URLs parsed |
 | www → apex redirect | 301 verified |
 | 404 page | 404 + noindex + nav intact |
 | Contact form | 302 redirect, lead row written to `leads` table |
+| Form field labels | 6/6 controls have a `<label for>`, 0 unlabelled |
+| Form `autocomplete` | `name`, `email`, `tel`, `organization` set on the lead form |
+| Service page depth | 636–848 words, 13 H2 sections, 9 FAQs and FAQPage schema on all 10 |
+| Industry page uniqueness | Max 11.5% shared word set between any two industry pages |
+| Article depth | 533–837 words, 9–14 H2 sections, 2–3 service links each, 12 articles |
+| AEO questions present | 14/14 required questions on `/faqs` |
+| AEO answer format | 18/18 answers open with a direct answer, 0 preamble |
+| Internal link matrix | All 6 required service/industry links present |
 | Static assets | All 200, correct content types |
-| Thin content | No page below 400 words except legal pages (appropriate) |
+| Horizontal overflow at 390 px | None — scrollWidth equals clientWidth on 8 page types |
+| Fabricated claims scan | 0 matches across all 60 pages |
+| Thin content | 19 pages under 300 words of main text — all are product, course and legal pages with a fixed card layout; every commercial service, industry and article page is above 400 |
 
 ---
 
@@ -244,9 +294,13 @@ Removed from the live site:
 - Sitemap, robots.txt, host consolidation, 404/500 handling.
 - All new pages and the internal linking between them.
 - GTM installation and conversion event definitions.
+- Google Consent Mode v2 defaults plus the consent banner and its persistence.
 - Security headers, credential removal, `.env.example`, `.gitignore`.
 - Image optimisation and cache headers.
 - Contact form still writes to the database.
+- Mobile layout at 390 px: no horizontal overflow on any of eight page types.
+- Product pages without a documented API no longer render an empty API tab or a
+  "View API Docs" button — five of six products have no `api_example`.
 
 ### Implemented but not externally verified
 
@@ -266,9 +320,10 @@ Removed from the live site:
   conversion events, and that Search Console is linked.
 - Social profiles: `sameAs` is populated only for profiles that exist; adding real profile
   URLs to `SITE` will flow into the Organization schema automatically.
-- Cookie consent: the `/cookies` page states the current position. If consent is legally
-  required for the target markets, a CMP must be chosen and GTM configured to respect it —
-  this was not implemented because it is a legal and product decision.
+- Cookie consent: Google Consent Mode v2 defaults and a consent banner are implemented and
+  verified locally (analytics denied until the visitor chooses). Still external: decide
+  whether a full CMP with granular categories is needed for the markets you sell into, and
+  confirm in GA4 that consent state is received.
 
 ### Recommended next
 

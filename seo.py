@@ -146,16 +146,18 @@ PAGE_SEO = {
     'terms': {
         'title': 'Terms of Service - Humisense',
         'description': (
-            'Terms governing use of the Humisense website and the professional services '
-            'provided by Humisense.'
+            'The terms governing use of the Humisense website and our AI automation and '
+            'software services, covering scope, intellectual property, liability and '
+            'governing law.'
         ),
         'path': '/terms',
     },
     'cookies': {
         'title': 'Cookie Policy - Humisense',
         'description': (
-            'Which cookies and analytics tags the Humisense website uses, what they do and '
-            'how visitors can control them.'
+            'Which cookies and analytics tags the Humisense website uses, what each one '
+            'does, how long it lasts and how visitors can accept, decline or change '
+            'their choice.'
         ),
         'path': '/cookies',
     },
@@ -277,6 +279,24 @@ def website_schema():
     }
 
 
+def web_page_schema(page_type, path, name=None, description=None):
+    """AboutPage / ContactPage / CollectionPage wrapper that points at the
+    organization, so E-E-A-T signals stay connected to the entity graph."""
+    node = {
+        '@type': page_type,
+        '@id': canonical(path) + '#webpage',
+        'url': canonical(path),
+        'isPartOf': {'@id': WEBSITE_ID},
+        'about': {'@id': ORG_ID},
+        'inLanguage': 'en',
+    }
+    if name:
+        node['name'] = name
+    if description:
+        node['description'] = description
+    return node
+
+
 def breadcrumb_schema(items):
     """items: list of (label, path)."""
     return {
@@ -351,5 +371,18 @@ def article_schema(article, path):
 
 
 def graph(*nodes):
-    """Combine page-level nodes into a single JSON-LD graph."""
-    return {'@context': 'https://schema.org', '@graph': [n for n in nodes if n]}
+    """Combine page-level nodes into a single JSON-LD graph.
+
+    Organization and WebSite are always emitted so that every page carries the
+    same entity description, and duplicate @ids are dropped.
+    """
+    merged = [organization_schema(), website_schema()] + [n for n in nodes if n]
+    seen, unique = set(), []
+    for node in merged:
+        node_id = node.get('@id')
+        if node_id:
+            if node_id in seen:
+                continue
+            seen.add(node_id)
+        unique.append(node)
+    return {'@context': 'https://schema.org', '@graph': unique}

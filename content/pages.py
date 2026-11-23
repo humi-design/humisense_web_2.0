@@ -123,21 +123,24 @@ LEGAL_PAGES = {
                 'Strictly necessary cookies: a session cookie used to keep your visit '
                 'consistent and to protect forms against cross-site request forgery. These '
                 'cannot be switched off without breaking the site.',
-                'Preference storage: your light or dark theme choice is stored locally in your '
-                'browser. It is not transmitted to us.',
+                'Preference storage: your light or dark theme choice and your cookie choice '
+                'are stored locally in your browser. They are not transmitted to us.',
                 'Analytics: Google Tag Manager container GTM-WJKSCNR3 is installed to measure '
-                'site usage and conversion events. Whether analytics cookies are set depends '
-                'on the consent configuration of that container and on your choices.',
+                'site usage and conversion events. Analytics storage is denied by default, so '
+                'no analytics cookies are set until you press Accept in the cookie banner. '
+                'Declining keeps analytics storage denied. Your choice is remembered in your '
+                'browser and can be changed at any time by clearing site data.',
             ]),
             ('h2', 'What we do not use'),
             ('p', 'We do not use cookies to build advertising profiles of individual visitors, '
                   'and we do not send personal information such as names or email addresses to '
                   'analytics platforms.'),
             ('h2', 'Controlling cookies'),
-            ('p', 'You can block or delete cookies through your browser settings. Blocking '
-                  'strictly necessary cookies may prevent parts of the site, such as forms, '
-                  'from working. Where a consent banner is shown, your choice is recorded and '
-                  'respected.'),
+            ('p', 'When you first visit, a banner lets you accept or decline analytics. '
+                  'Declining sets no analytics cookies; the site continues to work normally. '
+                  'You can also block or delete cookies through your browser settings at any '
+                  'time. Blocking strictly necessary cookies may prevent parts of the site, '
+                  'such as forms, from working.'),
             ('h2', 'Questions'),
             ('p', 'If you have a question about cookies or tracking on this site, email '
                   'info@humisense.com.'),
