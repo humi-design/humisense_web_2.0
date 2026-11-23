@@ -146,11 +146,13 @@ def product_detail(product_id):
     if not product:
         return render_template('404.html', seo=_not_found_seo()), 404
     path = f'/products/{product_id}'
-    description = product.get('short_description') or product.get('tagline') or ''
+    description = _clip_meta(
+        product.get('short_description') or product.get('description')
+        or product.get('tagline') or '')
     return render_template('product_detail.html', product=product,
                            seo=seo_lib.meta(
                                title=f"{product['name']} | Humisense AI Product",
-                               description=description[:158],
+                               description=description,
                                path=path,
                                jsonld=_graph(
                                    seo_lib.breadcrumb_schema([
@@ -181,7 +183,8 @@ def course_detail(course_id):
     if not course:
         return render_template('404.html', seo=_not_found_seo()), 404
     path = f'/courses/{course_id}'
-    description = (course.get('short_description') or course.get('description') or '')[:158]
+    description = _clip_meta(
+        course.get('short_description') or course.get('description') or '')
     return render_template('course_detail.html', course=course,
                            seo=seo_lib.meta(
                                title=f"{course['name']} Course | Humisense Academy",
@@ -265,6 +268,19 @@ def contact():
 def _graph(*nodes):
     """Wrap nodes in a single JSON-LD @graph document."""
     return seo_lib.graph(*nodes)
+
+
+def _clip_meta(text, limit=158):
+    """Fit text into a meta description without cutting mid-sentence."""
+    text = ' '.join(text.split())
+    if len(text) <= limit:
+        return text
+    window = text[:limit]
+    # Prefer ending on a complete sentence.
+    end = max(window.rfind('. '), window.rfind('? '), window.rfind('! '))
+    if end >= limit * 0.6:
+        return window[:end + 1]
+    return window.rsplit(' ', 1)[0].rstrip(' ,;:.-')
 
 
 def _site_nodes():

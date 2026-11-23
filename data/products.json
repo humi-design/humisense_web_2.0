@@ -40,7 +40,8 @@
       "method": "POST",
       "code": "import requests\n\nresponse = requests.post(\n    'https://api.humisense.com/v1/speech/transcribe',\n    headers={'Authorization': 'Bearer <your-server-side-key>'},\n    files={'audio': open('clip.wav', 'rb')},\n    data={'language': 'en'}\n)\nprint(response.json()['text'])"
     },
-    "pricing": "Pricing is agreed per engagement. This API is in prototype and is not sold as a self-serve subscription."
+    "pricing": "Pricing is agreed per engagement. This API is in prototype and is not sold as a self-serve subscription.",
+    "short_description": "Speech-to-text and text-to-speech API for your own product. Add spoken input and voice replies while keeping your interface and your data."
   },
   {
     "id": "sentinel-chat",
@@ -78,7 +79,8 @@
       }
     ],
     "api_example": null,
-    "pricing": "Pricing is agreed per engagement. This product is in prototype."
+    "pricing": "Pricing is agreed per engagement. This product is in prototype.",
+    "short_description": "A retrieval-based support assistant that answers from documents you supply, cites the source passage and hands off to a person when confidence is low."
   },
   {
     "id": "agent-studio",
@@ -116,7 +118,8 @@
       }
     ],
     "api_example": null,
-    "pricing": "In development. Not available for purchase."
+    "pricing": "In development. Not available for purchase.",
+    "short_description": "A workbench for building agents that call your tools. Every run records the plan, the tool calls and the inputs so behaviour can be reviewed."
   },
   {
     "id": "social-automation",
@@ -154,7 +157,8 @@
       }
     ],
     "api_example": null,
-    "pricing": "In development. Not available for purchase."
+    "pricing": "In development. Not available for purchase.",
+    "short_description": "A drafting assistant for social and content workflows. It proposes copy and schedules posts, but nothing publishes without human review."
   },
   {
     "id": "custom-agents",
@@ -192,7 +196,8 @@
       }
     ],
     "api_example": null,
-    "pricing": "Scoped per engagement after a discovery call."
+    "pricing": "Scoped per engagement after a discovery call.",
+    "short_description": "Purpose-built AI agents scoped to one task with a measurable definition of done, delivered with tooling, logs and handover documentation."
   },
   {
     "id": "business-automation",
@@ -230,6 +235,7 @@
       }
     ],
     "api_example": null,
-    "pricing": "Scoped per engagement after a discovery call."
+    "pricing": "Scoped per engagement after a discovery call.",
+    "short_description": "End-to-end workflow automation for operations teams: intake, validation, routing, approval and reporting, measured against a baseline."
   }
 ]

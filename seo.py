@@ -146,16 +146,18 @@ PAGE_SEO = {
     'terms': {
         'title': 'Terms of Service - Humisense',
         'description': (
-            'Terms governing use of the Humisense website and the professional services '
-            'provided by Humisense.'
+            'The terms governing use of the Humisense website and our AI automation and '
+            'software services, covering scope, intellectual property, liability and '
+            'governing law.'
         ),
         'path': '/terms',
     },
     'cookies': {
         'title': 'Cookie Policy - Humisense',
         'description': (
-            'Which cookies and analytics tags the Humisense website uses, what they do and '
-            'how visitors can control them.'
+            'Which cookies and analytics tags the Humisense website uses, what each one '
+            'does, how long it lasts and how visitors can accept, decline or change '
+            'their choice.'
         ),
         'path': '/cookies',
     },

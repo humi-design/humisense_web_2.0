@@ -243,7 +243,7 @@ Removed from the live site:
 | All indexable pages return HTTP 200 | 60/60 |
 | Unique titles | 0 duplicates |
 | Unique descriptions | 0 duplicates |
-| Description length 120–160 chars | All within range |
+| Description length 110–165 chars | All within range |
 | Canonical matches page path | All correct |
 | One `<h1>` per page | All correct |
 | JSON-LD parses | 60 blocks, all valid |
