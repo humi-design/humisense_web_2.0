@@ -3,7 +3,7 @@
 
 {% block content %}
 <!-- Breadcrumbs -->
-<div class="section-container pt-32">
+<div class="section-container page-masthead">
     <nav class="breadcrumbs">
         <a href="{{ url_for('home') }}">Home</a>
         <span class="breadcrumbs-separator">/</span>
@@ -20,7 +20,7 @@
             <!-- Product Info -->
             <div data-animate>
                 <span class="hero-tagline">MAKE IT HAPPEN</span>
-                <div class="flex items-center gap-lg mt-lg mb-lg">
+                <div class="flex flex-wrap items-center gap-lg mt-lg mb-lg">
                     <div class="product-icon-lg" style="background: {{ product.color }}20; color: {{ product.color }}">
                         {% if product.icon == 'mic' %}
                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
