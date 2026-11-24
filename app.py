@@ -202,14 +202,13 @@ def research():
     return render_template('research.html', 
                          research=research_data,
                          research_areas=[
-                             {'id': 'agentic_ai', 'name': 'Agentic AI', 'description': 'Developing autonomous AI agents that can reason, plan, and execute tasks independently.'},
-                             {'id': 'multi_agent', 'name': 'Multi-Agent Systems', 'description': 'Studying coordination and collaboration between multiple AI agents.'},
-                             {'id': 'generative_ai', 'name': 'Generative AI', 'description': 'Creating AI systems capable of producing original content across modalities.'},
-                             {'id': 'explainable_ai', 'name': 'Explainable AI', 'description': 'Making AI decisions transparent and interpretable.'},
-                             {'id': 'healthcare_ai', 'name': 'Healthcare AI', 'description': 'Applying AI to improve healthcare outcomes and diagnostics.'},
-                             {'id': 'nlp', 'name': 'Natural Language Processing', 'description': 'Advancing understanding and generation of human language.'},
-                             {'id': 'computer_vision', 'name': 'Computer Vision', 'description': 'Teaching machines to interpret and understand visual information.'},
-                             {'id': 'ai_accessibility', 'name': 'AI Accessibility', 'description': 'Ensuring AI technologies are accessible to all users.'}
+                             {'id': 'agentic_ai', 'name': 'Agentic systems', 'description': 'Where a model should decide and where a deterministic step should, and how to keep failures observable.'},
+                             {'id': 'multi_agent', 'name': 'Task decomposition', 'description': 'How multi-step work splits between orchestration logic and model calls without losing recoverability.'},
+                             {'id': 'generative_ai', 'name': 'Document understanding', 'description': 'Extraction from purchase orders, quotations and specification sheets, including tables and units.'},
+                             {'id': 'explainable_ai', 'name': 'Evaluation', 'description': 'Scoring rules and baselines that tell you whether a change to a pipeline actually helped.'},
+                             {'id': 'nlp', 'name': 'Applied architecture', 'description': 'Choosing between rules, retrieval and model calls for a given task, and documenting the limits of that choice.'},
+                             {'id': 'computer_vision', 'name': 'Operational data', 'description': 'Turning unstructured operational records into values that are safe to act on.'},
+                             {'id': 'ai_accessibility', 'name': 'Reliability', 'description': 'Observability, retries and review queues for pipelines that run without a person watching every step.'}
                          ],
                          seo=seo_lib.page('research', jsonld=_graph(
                              seo_lib.breadcrumb_schema([('Home', '/'), ('Research', '/research')]))))
@@ -247,7 +246,7 @@ def contact():
         if error:
             flash(error, 'error')
         else:
-            flash('Thank you for your message! We will get back to you within 24 hours.', 'success')
+            flash('Thank you for your message. We have received it and will reply by email.', 'success')
         
         return redirect(url_for('contact'))
     
@@ -652,7 +651,7 @@ def api_contact():
     if error:
         return jsonify({'success': False, 'message': error}), 400
     
-    return jsonify({'success': True, 'message': 'Thank you for your message! We will get back to you within 24 hours.'})
+    return jsonify({'success': True, 'message': 'Thank you for your message. We have received it and will reply by email.'})
 
 
 @app.route('/api/enroll', methods=['POST'])

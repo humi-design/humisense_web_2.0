@@ -7,7 +7,7 @@
     "level": "Beginner",
     "duration": "6 weeks",
     "modules": 8,
-    "description": "Master Python programming fundamentals with a focus on AI and data science applications. Learn the essential skills needed for AI development.",
+    "description": "Python as it is actually used in AI work: data structures, file and PDF handling, HTTP calls, environment and dependency management, and the small amount of numerical code that appears in real pipelines. No computer-science theory you will not use.",
     "outcomes": [
       "Write clean, efficient Python code",
       "Work with data structures and algorithms",
@@ -107,7 +107,7 @@
     "level": "Intermediate",
     "duration": "10 weeks",
     "modules": 12,
-    "description": "Comprehensive machine learning course covering supervised, unsupervised, and reinforcement learning with hands-on projects.",
+    "description": "Supervised and unsupervised learning on tabular business data: feature preparation, baseline models, honest validation splits and how to tell whether a model beats a simple rule. Reinforcement learning is covered only where it applies to business problems.",
     "outcomes": [
       "Implement supervised learning algorithms",
       "Build unsupervised learning models",
@@ -247,7 +247,7 @@
     "level": "Advanced",
     "duration": "12 weeks",
     "modules": 14,
-    "description": "Master deep learning fundamentals through hands-on projects with neural networks, CNNs, RNNs, and transformers.",
+    "description": "How neural networks, CNNs and transformers work, taught by building and inspecting small versions of each. The emphasis is on understanding failure modes and cost, not on training large models from scratch.",
     "outcomes": [
       "Build and train neural networks from scratch",
       "Implement CNNs for image analysis",
@@ -407,7 +407,7 @@
     "level": "Advanced",
     "duration": "8 weeks",
     "modules": 10,
-    "description": "Learn to create AI systems that generate original content including text, images, code, and more using state-of-the-art generative models.",
+    "description": "Practical use of generative models: prompting, structured output, retrieval over your own documents, and evaluating output quality. You build a working retrieval pipeline against a document set and measure where it fails.",
     "outcomes": [
       "Understand generative AI fundamentals",
       "Build text generation models",
@@ -527,7 +527,7 @@
     "level": "Advanced",
     "duration": "10 weeks",
     "modules": 12,
-    "description": "Master the art of engineering large language model applications from prompt design to production deployment and optimization.",
+    "description": "The engineering layer around an LLM application: prompt versioning, context assembly, tool calling, caching, cost control and evaluation harnesses. For developers moving a prototype toward something that can run unattended.",
     "outcomes": [
       "Design effective LLM pipelines",
       "Implement RAG systems",
@@ -667,7 +667,7 @@
     "level": "Beginner",
     "duration": "4 weeks",
     "modules": 6,
-    "description": "Learn the art and science of crafting effective prompts to get the best results from AI language models.",
+    "description": "Writing prompts that produce reliable structured output rather than impressive one-off answers. Covers instruction design, few-shot examples, schema constraints, and how to test a prompt change instead of guessing.",
     "outcomes": [
       "Write clear, effective prompts",
       "Apply advanced prompting techniques",
@@ -748,7 +748,7 @@
     "level": "Advanced",
     "duration": "8 weeks",
     "modules": 10,
-    "description": "Build autonomous AI agents that can perceive, reason, plan, and act independently to accomplish complex tasks.",
+    "description": "Building single-purpose agents with tool access: loop design, stopping conditions, error recovery and logging. Ends with an agent that completes a defined task and degrades predictably when a tool fails.",
     "outcomes": [
       "Design AI agent architectures",
       "Implement agent reasoning systems",
@@ -868,7 +868,7 @@
     "level": "Intermediate",
     "duration": "12 weeks",
     "modules": 14,
-    "description": "Comprehensive data science training covering statistical analysis, machine learning, and data visualization with real-world projects.",
+    "description": "Analysis that survives scrutiny: cleaning operational data, stating assumptions, choosing a suitable test, and presenting a result with its uncertainty. Uses spreadsheet exports and database extracts, not tidy sample datasets.",
     "outcomes": [
       "Perform exploratory data analysis",
       "Apply statistical methods",
@@ -1028,7 +1028,7 @@
     "level": "Beginner",
     "duration": "6 weeks",
     "modules": 8,
-    "description": "Master Microsoft Power BI for business intelligence, from data modeling to interactive dashboards and reports.",
+    "description": "Power BI from data connection to published report: modelling relationships, writing measures in DAX, designing a layout that answers a question, and documenting definitions so the numbers stay trustworthy.",
     "outcomes": [
       "Connect to various data sources",
       "Transform and model data",
@@ -1128,7 +1128,7 @@
     "level": "Intermediate",
     "duration": "8 weeks",
     "modules": 10,
-    "description": "Build modern web applications with Flask, including AI integration, REST APIs, authentication, and deployment.",
+    "description": "Building and deploying a small web application with Flask: routing, templates, forms, sessions, a database layer and deployment. Aimed at analysts and engineers who need to ship an internal tool.",
     "outcomes": [
       "Build Flask applications from scratch",
       "Create RESTful APIs",
@@ -1248,7 +1248,7 @@
     "level": "Advanced",
     "duration": "10 weeks",
     "modules": 12,
-    "description": "Learn to deploy, monitor, and maintain machine learning models in production with modern MLOps practices.",
+    "description": "Running a model in production: versioning artefacts and prompts, automating evaluation runs, monitoring for drift and silent failure, and keeping a rollback path that works under pressure.",
     "outcomes": [
       "Build automated ML pipelines",
       "Deploy models to cloud platforms",

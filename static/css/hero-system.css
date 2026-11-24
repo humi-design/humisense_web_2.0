@@ -732,8 +732,8 @@ html:not(.js) .page-hero__fade { opacity: 1; transform: none; }
     align-items: flex-end;
     padding: 0.4rem;
     font-family: var(--font-mono);
-    font-size: 0.5rem;
-    letter-spacing: 0.06em;
+    font-size: 0.58rem;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--hero-mute);
     opacity: 0;
@@ -756,7 +756,10 @@ html:not(.js) .page-hero__fade { opacity: 1; transform: none; }
 .hero-grid__tile--tall { grid-row: span 2; aspect-ratio: auto; }
 
 .hero-grid__tile--solid {
-    background: linear-gradient(150deg, var(--magenta), var(--violet));
+    /* Rich Purple to Deep Blue keeps the tile vivid while giving white ink a
+       guaranteed floor (7.34:1 and 8.79:1). The previous magenta-to-violet
+       gradient left white at 3.3:1 on the violet end. */
+    background: linear-gradient(150deg, var(--c-purple, #5429c7), var(--c-deep-blue, #153a9a));
     border-color: transparent;
     color: #fff;
 }

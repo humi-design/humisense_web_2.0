@@ -594,7 +594,7 @@ INDUSTRIES = [
             'Incremental expansion as volume grows',
         ],
         'outcomes': [
-            'Enquiries get a response the same day, even during busy periods',
+            'Enquiries are acknowledged and triaged without waiting for someone to check a shared inbox',
             'Quoting stops consuming evenings',
             'Bookkeeping preparation takes less time',
             'The owner has a clear weekly view of the pipeline',
