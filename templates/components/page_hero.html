@@ -147,7 +147,7 @@
         </div>
 
         {# --- Variant visual -------------------------------------------- #}
-        {% if variant not in ['kinetic', 'slate'] %}
+        {% if variant not in ['kinetic'] %}
         <div class="page-hero__visual" aria-hidden="true">
 
             {% if variant == 'lattice' %}
@@ -165,7 +165,7 @@
                     </g>
                     <g>
                         <circle class="hero-lattice__halo" style="--d:0ms" cx="160" cy="160" r="34" fill="url(#latticeCore)"/>
-                        <circle class="hero-lattice__node" style="--d:520ms" cx="160" cy="160" r="20" fill="#2f5cff"/>
+                        <circle class="hero-lattice__node" style="--d:520ms" cx="160" cy="160" r="20" fill="#e8b23a"/>
                         <circle class="hero-lattice__node" style="--d:200ms" cx="60" cy="70" r="9" fill="#e8b23a"/>
                         <circle class="hero-lattice__node" style="--d:300ms" cx="268" cy="88" r="9" fill="#e8722e"/>
                         <circle class="hero-lattice__node" style="--d:400ms" cx="70" cy="240" r="9" fill="#d63a7e"/>
@@ -173,8 +173,8 @@
                     </g>
                     <defs>
                         <radialGradient id="latticeCore">
-                            <stop offset="0%" stop-color="#2f5cff" stop-opacity="0.34"/>
-                            <stop offset="100%" stop-color="#2f5cff" stop-opacity="0"/>
+                            <stop offset="0%" stop-color="#e8b23a" stop-opacity="0.42"/>
+                            <stop offset="100%" stop-color="#e8722e" stop-opacity="0"/>
                         </radialGradient>
                     </defs>
                     <text class="hero-lattice__label" x="60" y="54" text-anchor="middle">Engineering</text>
@@ -185,7 +185,7 @@
             </div>
             {% if items %}
             <ul class="hero-lattice__legend">
-                {% set swatches = ['#e8b23a', '#e8722e', '#d63a7e', '#7b4dff', '#2f5cff', '#12b5c9'] %}
+                {% set swatches = ['#e8b23a', '#e8722e', '#d63a7e', '#c8912a', '#7b4dff', '#12b5c9'] %}
                 {% for it in items %}
                 <li style="--d:{{ 700 + loop.index0 * 90 }}ms">
                     <span class="hero-lattice__swatch"
@@ -198,7 +198,7 @@
 
             {% elif variant == 'showcase' %}
             <div class="hero-showcase">
-                {% set accents = ['#2f5cff', '#e8722e', '#d63a7e'] %}
+                {% set accents = ['#e8b23a', '#e8722e', '#d63a7e'] %}
                 {% set labels = ['Speech', 'Agents', 'Automation'] %}
                 {% for i in range(3) %}
                 <div class="hero-showcase__card hero-showcase__card--{{ i + 1 }}" style="--d:{{ 260 + i * 160 }}ms">
@@ -299,6 +299,28 @@
                     {% endfor %}
                 </ul>
                 {% endif %}
+            </div>
+
+            {% elif variant == 'slate' %}
+            {# A record sheet rather than decoration: each row is a real
+               capability of the service, numbered like a specification. #}
+            <div class="hero-ledger">
+                <div class="hero-ledger__head">
+                    <span class="hero-ledger__tag">Specification</span>
+                    <span class="hero-ledger__live"><i></i>in scope</span>
+                </div>
+                <div class="hero-ledger__body">
+                    {% for it in items[:6] %}
+                    <div class="hero-ledger__row" style="--d:{{ 240 + loop.index0 * 90 }}ms">
+                        <span class="hero-ledger__idx">{{ '%02d' % loop.index }}</span>
+                        <span class="hero-ledger__name">{{ it.text if it is mapping else it }}</span>
+                        <span class="hero-ledger__mark"></span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="hero-ledger__foot">
+                    <span class="hero-ledger__bar"></span>
+                </div>
             </div>
 
             {% elif variant == 'course' %}

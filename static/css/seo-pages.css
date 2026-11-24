@@ -130,7 +130,7 @@
     top: 1.3rem;
     font-family: var(--font-mono);
     font-size: var(--t-xs);
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     letter-spacing: 0.06em;
 }
 
@@ -204,7 +204,7 @@
     gap: 0.6rem;
     font-family: var(--font-mono);
     font-size: var(--t-xs);
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     margin-top: 0.85rem;
 }
 
@@ -395,7 +395,7 @@ a.seo-card { color: inherit; }
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     margin: 0 0 0.75rem;
 }
 
@@ -427,7 +427,7 @@ a.seo-card { color: inherit; }
 
 .seo-aside-links a::before {
     content: '\2192';
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     font-size: 0.8em;
 }
 
@@ -435,7 +435,7 @@ a.seo-card { color: inherit; }
 
 .seo-aside-note {
     font-size: var(--t-xs) !important;
-    color: var(--ink-faint) !important;
+    color: var(--ink-meta) !important;
     margin: 0.85rem 0 0 !important;
 }
 
@@ -456,7 +456,7 @@ a.seo-card { color: inherit; }
     letter-spacing: 0.03em;
     color: var(--ink-mute);
     padding: 0.28rem 0.65rem;
-    border-radius: var(--r-pill);
+    border-radius: var(--r-sm);
     border: 1px solid var(--line);
     background: var(--bg-deep);
 }
@@ -529,7 +529,7 @@ a.seo-card { color: inherit; }
     align-items: center;
     gap: 0.5rem;
     font-size: var(--t-xs);
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     padding-bottom: var(--sp-5);
     margin-bottom: var(--sp-6);
     border-bottom: 1px solid var(--line);
@@ -540,7 +540,7 @@ a.seo-card { color: inherit; }
 .seo-updated {
     font-family: var(--font-mono);
     font-size: var(--t-xs);
-    color: var(--ink-faint);
+    color: var(--ink-meta);
 }
 
 /* --- Callout ------------------------------------------------------------ */
@@ -621,7 +621,7 @@ a.seo-card { color: inherit; }
 
 .seo-case-study-note {
     font-size: var(--t-xs) !important;
-    color: var(--ink-faint) !important;
+    color: var(--ink-meta) !important;
     padding-top: 0.6rem;
     border-top: 1px solid var(--line);
     margin-top: 0.75rem !important;

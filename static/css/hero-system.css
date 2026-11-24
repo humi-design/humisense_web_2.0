@@ -20,19 +20,15 @@
    ========================================================================== */
 
 /* ==========================================================================
-   01. PALETTE ADDITIONS
-   Warm accents for the hero compositions. The blue/violet base palette is
-   untouched; these are layered on top and resolve in both themes.
+   01. PALETTE BRIDGE
+   The warm palette is defined once, in humi.css :root, and is now the
+   brand's primary accent set. This file only aliases hero-local names so
+   hero styles stay readable; it must not redefine the palette, or the two
+   definitions drift apart in dark mode.
    ========================================================================== */
 
 :root {
-    --mustard: #e8b23a;
-    --mustard-deep: #c8912a;
     --sun: #f6cf5c;
-    --orange: #e8722e;
-    --orange-deep: #c8561c;
-    --magenta: #d63a7e;
-    --magenta-deep: #a81f5e;
     --cream: #f7f1e4;
     --charcoal: #14161c;
 
@@ -42,10 +38,7 @@
 }
 
 .dark {
-    --mustard: #f0bd4a;
     --sun: #ffd97a;
-    --orange: #f0813f;
-    --magenta: #e8578f;
     --cream: #22201c;
     --charcoal: #f3ede0;
 
@@ -117,23 +110,30 @@
     font-family: var(--font-display);
     font-size: clamp(2.4rem, 6.6vw, 5.4rem);
     font-weight: 600;
-    line-height: 0.98;
-    letter-spacing: -0.04em;
+    /* 1.02 keeps ascenders and descenders clear of the line above at 86px.
+       0.98 looked cramped once the title wrapped to three lines. Tracking is
+       eased to -0.03em: -0.04em closed the counters in Sora's lowercase. */
+    line-height: 1.02;
+    letter-spacing: -0.03em;
     margin: 0 0 var(--sp-5);
-    max-width: 18ch;
+    max-width: 20ch;
     text-wrap: balance;
     overflow-wrap: break-word;
     color: var(--hero-ink);
 }
 
+/* The emphasised phrase in the H1 is set in the deep warm tones. The bright
+   enamel versions of these hues measure 2.9:1 against warm white, which fails
+   even the 3:1 large-text threshold; the -ink tones hold 5.8:1 and read richer
+   at display size anyway. */
 .page-hero__title em,
 .page-hero__title .is-accent {
     font-style: normal;
     background: linear-gradient(
         96deg,
-        var(--orange) 0%,
-        var(--magenta) 52%,
-        var(--violet) 100%
+        var(--orange-ink) 0%,
+        var(--magenta-ink) 56%,
+        var(--blue-deep) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -145,9 +145,9 @@
 .page-hero--warm .page-hero__title .is-accent {
     background: linear-gradient(
         96deg,
-        var(--mustard-deep) 0%,
-        var(--orange) 48%,
-        var(--magenta) 100%
+        var(--mustard-ink) 0%,
+        var(--orange-ink) 50%,
+        var(--magenta-ink) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -600,7 +600,7 @@ html:not(.js) .page-hero__fade { opacity: 1; transform: none; }
     display: inline-block;
     margin-top: 0.6rem;
     padding: 0.2rem 0.55rem;
-    border-radius: var(--r-pill);
+    border-radius: var(--r-sm);
     font-family: var(--font-mono);
     font-size: 0.56rem;
     letter-spacing: 0.1em;
@@ -859,17 +859,24 @@ html:not(.js) .page-hero__fade { opacity: 1; transform: none; }
     width: 100%;
 }
 
+/* The chapter numeral is a solid mustard plate with dark ink, not gradient
+   type. At 8.5rem a mustard-on-orange gradient is both hard to read and the
+   most generic "AI landing page" gesture available; the plate reads as an
+   editorial folio instead. */
 .hero-story__numeral {
+    display: grid;
+    place-items: center;
+    min-width: clamp(3.4rem, 7vw, 5.2rem);
+    padding: 0.6rem 0.5rem 0.7rem;
     font-family: var(--font-display);
-    font-size: clamp(4rem, 11vw, 8.5rem);
+    font-size: clamp(2.1rem, 4.2vw, 3.4rem);
     font-weight: 700;
-    line-height: 0.8;
-    letter-spacing: -0.06em;
-    background: linear-gradient(180deg, var(--mustard), var(--orange));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: #16130a;
+    background: var(--mustard);
+    border-radius: var(--r-sm);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
     opacity: 0;
     transform: translate3d(0, 24px, 0);
     transition: opacity 800ms ease, transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -965,7 +972,14 @@ html:not(.js) .page-hero__fade { opacity: 1; transform: none; }
     width: 38%;
     height: 38%;
     border-radius: 50%;
-    background: linear-gradient(150deg, var(--magenta), var(--violet));
+    /* Runs between two deep stops so white copy keeps 4.8:1 across the whole
+       arc. The bright magenta is used elsewhere as a fill, not behind text. */
+    /* Three stops, all deep, so no point on the arc drops below 4.5:1 for the
+       white label — a two-stop run was touching 4.41:1 near the lighter end. */
+    background: linear-gradient(150deg,
+        var(--magenta-deep) 0%,
+        #8a2f7a 52%,
+        #6b3fd4 100%);
     color: #fff;
     text-align: center;
     box-shadow: var(--shadow-lg);
@@ -1016,6 +1030,126 @@ html:not(.js) .page-hero__fade { opacity: 1; transform: none; }
 /* ==========================================================================
    11. DETAIL PAGES — slate, course
    ========================================================================== */
+
+/* Slate: the specification ledger. Each row is a capability drawn from the
+   page's own data, so the column carries information rather than texture.
+   The marquee underneath stays as a quiet footer rule. */
+.hero-ledger {
+    width: 100%;
+    max-width: 34rem;
+    border: 1px solid var(--hero-hair);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.hero-ledger__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1.1rem;
+    border-bottom: 1px solid var(--hero-hair);
+    background: linear-gradient(100deg, var(--mustard-wash), transparent 62%);
+}
+
+.hero-ledger__tag {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-meta);
+}
+
+.hero-ledger__live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange-ink);
+}
+
+.hero-ledger__live i {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 50%;
+    background: var(--orange);
+    animation: hero-pulse 2.4s var(--ease-in-out) infinite;
+}
+
+.hero-ledger__body {
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-ledger__row {
+    display: grid;
+    grid-template-columns: 2.1rem 1fr auto;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.78rem 1.1rem;
+    border-bottom: 1px solid var(--hero-hair);
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+    transition:
+        opacity 560ms var(--ease-out),
+        transform 560ms var(--ease-out);
+    transition-delay: var(--d, 0ms);
+}
+
+.page-hero.is-in .hero-ledger__row { opacity: 1; transform: none; }
+
+.hero-ledger__row:nth-child(odd) {
+    background: color-mix(in srgb, var(--ink) 2.5%, transparent);
+}
+
+.hero-ledger__row:last-child { border-bottom: 0; }
+
+.hero-ledger__idx {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-meta);
+    font-variant-numeric: tabular-nums;
+}
+
+.hero-ledger__name {
+    font-size: var(--t-sm);
+    color: var(--ink);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* A tally mark, not a checkbox: it reads as a count of what is covered. */
+.hero-ledger__mark {
+    width: 1.6rem;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--mustard), var(--orange));
+}
+
+.hero-ledger__foot {
+    padding: 0.85rem 1.1rem;
+    border-top: 1px solid var(--hero-hair);
+}
+
+.hero-ledger__bar {
+    display: block;
+    height: 3px;
+    border-radius: 2px;
+    background:
+        linear-gradient(90deg,
+            var(--mustard) 0%, var(--mustard) 34%,
+            var(--orange) 34%, var(--orange) 67%,
+            var(--magenta) 67%, var(--magenta) 100%);
+    opacity: 0.9;
+}
 
 /* Slate: a horizontal marquee of the subject's keywords under a condensed
    title. Used for individual services, industries and products, where the
@@ -1267,7 +1401,7 @@ html:not(.js) .page-hero__fade { opacity: 1; transform: none; }
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.25rem;
-    border-radius: 999px;
+    border-radius: var(--r-sm);
     border: 1px solid var(--hero-hair);
     background: color-mix(in srgb, var(--hero-ink) 5%, transparent);
     font-family: var(--font-mono);
