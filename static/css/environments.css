@@ -1,0 +1,725 @@
+/* ==========================================================================
+   HUMISENSE — colour environments
+   ==========================================================================
+
+   The site is built from full-bleed colour fields rather than one repeated
+   cream background. A section opts into an environment with a modifier class
+   and inherits the whole surface contract below: background, ink, muted ink,
+   hairline, and accent. Nothing inside a section should need to know which
+   environment it is in.
+
+   Contrast is not left to chance. Every ink/background pair used here was
+   measured; the ratio is noted beside each pairing. Text that only clears the
+   large-text bar (3:1) is only ever used at display sizes, and that is stated
+   at the rule so nobody later puts body copy on it.
+
+   Colour source of truth — the client palette:
+     Electric Blue #2867E8   Deep Blue   #153A9A
+     Rich Purple   #5429C7   Violet      #7545E8
+     Mustard       #D9A928   Golden      #F3C94F
+     Orange        #FF941A   Deep Orange #E96719
+     Magenta       #E82D68   Raspberry   #A91443
+     Warm Cream    #F7F0DF   Off-white   #FFFDF7
+     Charcoal      #171714   Near Black  #0B0D0B
+   ========================================================================== */
+
+:root {
+    /* Client palette, named once */
+    --c-elec-blue: #2867e8;
+    --c-deep-blue: #153a9a;
+    --c-purple: #5429c7;
+    --c-violet: #7545e8;
+    --c-mustard: #d9a928;
+    --c-golden: #f3c94f;
+    --c-orange: #ff941a;
+    --c-orange-deep: #e96719;
+    --c-magenta: #e82d68;
+    --c-raspberry: #a91443;
+    --c-cream: #f7f0df;
+    --c-cream-2: #fffdf7;
+    --c-charcoal: #171714;
+    --c-black: #0b0d0b;
+
+    /* Tints used for washes inside light environments. */
+    --tint-golden: #fbeec8;
+    --tint-orange: #ffe4cc;
+    --tint-magenta: #ffd9e3;
+    --tint-violet: #e6dcfb;
+    --tint-blue: #d7e2fd;
+}
+
+/* --- The environment contract ---------------------------------------------
+   A section sets these four; everything else derives from them. Declaring
+   them rather than styling each child is what keeps a section coherent when
+   new components are dropped into it. */
+
+.env {
+    --env-bg: var(--c-cream);
+    --env-ink: var(--c-charcoal);
+    --env-ink-mute: #4a4a42;
+    --env-line: rgba(23, 23, 20, 0.14);
+    --env-accent: var(--c-deep-blue);
+    --env-on-block: var(--c-cream-2);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #153a9a;
+    --env-btn-ink: #f7f0df;
+    --env-btn-bg-hover: #1d4ec4;
+
+    position: relative;
+    isolation: isolate;
+    background: var(--env-bg);
+    color: var(--env-ink);
+}
+
+.env h1, .env h2, .env h3, .env h4, .env h5, .env h6 { color: inherit; }
+
+/* Re-point the global design tokens at the environment's own values.
+
+   This is the important part. Components deep in the tree (eyebrows, index
+   labels, card paragraphs, step numerals, research rows) were all authored
+   against the global light-mode tokens, so on a purple field they painted
+   dark grey on purple. Remapping the tokens here fixes every one of them at
+   once, and new components inherit the behaviour for free.
+
+   --surface-solid becomes the environment's card tone, which is what lets a
+   card stay legible on a saturated field. */
+.env {
+    --ink: var(--env-ink);
+    --ink-soft: var(--env-ink-mute);
+    --ink-mute: var(--env-ink-mute);
+    --ink-meta: var(--env-ink-mute);
+    --line: var(--env-line);
+    --line-strong: var(--env-line);
+    --bg: var(--env-bg);
+    --bg-deep: var(--env-card);
+    --bg-sink: var(--env-card);
+    --surface: var(--env-card);
+    --surface-solid: var(--env-card);
+    --surface-raised: var(--env-card);
+    color: var(--env-ink);
+}
+
+/* Muted copy keeps a little separation from headings without dropping below
+   the contrast floor: it is mixed toward the field, not toward grey. */
+.env .eyebrow,
+.env .index-label,
+.env .section-label { color: var(--env-ink-mute); }
+
+.env .eyebrow::before { background: var(--env-accent); }
+
+/* Muted body text follows the environment instead of the global token, so
+   a paragraph inside a purple field is not painted in light-mode grey. */
+.env p,
+.env li,
+.env dd,
+.env .lede,
+.env .section-subtitle { color: inherit; }
+
+.env .muted,
+.env .text-muted,
+.env small { color: var(--env-ink-mute); }
+
+.env a:not(.btn) { color: var(--env-accent); }
+
+/* Hairlines and card outlines pick up the environment's line colour. */
+.env hr { border-color: var(--env-line); }
+
+/* --------------------------------------------------------------------------
+   LIGHT ENVIRONMENTS
+   -------------------------------------------------------------------------- */
+
+/* Cream — the default field. Charcoal on cream 15.81:1 */
+.env--cream {
+    --env-bg: var(--c-cream);
+    --env-ink: var(--c-charcoal);
+    --env-ink-mute: #4a4a42;
+    --env-line: rgba(23, 23, 20, 0.14);
+    --env-accent: var(--c-deep-blue);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #153a9a;
+    --env-btn-ink: #f7f0df;
+    --env-btn-bg-hover: #1d4ec4;
+}
+
+/* Off-white — a quieter cream, used to separate two adjacent light sections
+   without a hard colour jump. Charcoal 17.66:1 */
+.env--paper {
+    --env-bg: var(--c-cream-2);
+    --env-ink: var(--c-charcoal);
+    --env-ink-mute: #4a4a42;
+    --env-line: rgba(23, 23, 20, 0.1);
+    --env-accent: var(--c-deep-blue);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #153a9a;
+    --env-btn-ink: #f7f0df;
+    --env-btn-bg-hover: #1d4ec4;
+}
+
+/* Mustard — deep blue type on mustard 4.59:1; charcoal 8.26:1.
+   Blue is the stronger brand read here, so it carries the headings. */
+.env--mustard {
+    --env-bg: var(--c-mustard);
+    --env-ink: var(--c-deep-blue);
+    --env-ink-mute: #1d3f7d;
+    --env-line: rgba(21, 58, 154, 0.28);
+    --env-accent: var(--c-charcoal);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #153a9a;
+    --env-btn-ink: #f7f0df;
+    --env-btn-bg-hover: #1d4ec4;
+}
+
+/* Golden — purple type on golden 5.27:1. The warmest, most open field. */
+.env--golden {
+    --env-bg: var(--c-golden);
+    --env-ink: var(--c-purple);
+    --env-ink-mute: #46209e;
+    --env-line: rgba(84, 41, 199, 0.24);
+    --env-accent: var(--c-deep-blue);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #5429c7;
+    --env-btn-ink: #f7f0df;
+    --env-btn-bg-hover: #6a3ad8;
+}
+
+/* Orange — charcoal type 8.13:1. Deep orange is deliberately absent as a
+   field: it fails 4.5:1 against every usable ink, so it stays an accent. */
+.env--orange {
+    --env-bg: var(--c-orange);
+    --env-ink: var(--c-charcoal);
+    --env-ink-mute: #3a2a12;
+    --env-line: rgba(23, 23, 20, 0.2);
+    --env-accent: var(--c-purple);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #171714;
+    --env-btn-ink: #f7f0df;
+    --env-btn-bg-hover: #2c2c26;
+}
+
+/* Raspberry — cream type 6.44:1. The deepest warm field, used sparingly. */
+.env--raspberry {
+    --env-bg: var(--c-raspberry);
+    --env-ink: var(--c-cream);
+    --env-ink-mute: #f3d4dd;
+    --env-line: rgba(247, 240, 223, 0.26);
+    --env-accent: var(--c-golden);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #f3c94f;
+    --env-btn-ink: #171714;
+    --env-btn-bg-hover: #ffdb72;
+}
+
+/* --------------------------------------------------------------------------
+   DARK / SATURATED ENVIRONMENTS
+   -------------------------------------------------------------------------- */
+
+/* Deep blue — cream 8.79:1, golden 6.31:1 */
+.env--deepblue {
+    --env-bg: var(--c-deep-blue);
+    --env-ink: var(--c-cream);
+    --env-ink-mute: #cfd9f5;
+    --env-line: rgba(247, 240, 223, 0.22);
+    --env-accent: var(--c-golden);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #f3c94f;
+    --env-btn-ink: #171714;
+    --env-btn-bg-hover: #ffdb72;
+}
+
+/* Rich purple — cream 7.34:1, golden 5.27:1 */
+.env--purple {
+    --env-bg: var(--c-purple);
+    --env-ink: var(--c-cream);
+    --env-ink-mute: #ded4f6;
+    --env-line: rgba(247, 240, 223, 0.24);
+    --env-accent: var(--c-golden);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #f3c94f;
+    --env-btn-ink: #171714;
+    --env-btn-bg-hover: #ffdb72;
+}
+
+/* Violet — cream 4.90:1. Brighter than Rich Purple, so it takes fewer words. */
+.env--violet {
+    --env-bg: var(--c-violet);
+    --env-ink: var(--c-cream-2);
+    --env-ink-mute: #e7dffc;
+    --env-line: rgba(255, 253, 247, 0.26);
+    --env-accent: var(--c-golden);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #f3c94f;
+    --env-btn-ink: #171714;
+    --env-btn-bg-hover: #ffdb72;
+}
+
+/* Electric blue — off-white 4.92:1. Used for product fields where the brand
+   blue should read as the dominant colour. */
+.env--blue {
+    --env-bg: var(--c-elec-blue);
+    --env-ink: var(--c-cream-2);
+    --env-ink-mute: #dbe5ff;
+    --env-line: rgba(255, 253, 247, 0.26);
+    --env-accent: var(--c-golden);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #f3c94f;
+    --env-btn-ink: #171714;
+    --env-btn-bg-hover: #ffdb72;
+}
+
+/* Magenta — near-black 4.65:1. A field only at display sizes and short copy;
+   long paragraphs go on the cream card that sits inside it. */
+.env--magenta {
+    --env-bg: var(--c-magenta);
+    --env-ink: var(--c-black);
+    --env-ink-mute: #2a0712;
+    --env-line: rgba(11, 13, 11, 0.26);
+    --env-accent: var(--c-cream);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #0b0d0b;
+    --env-btn-ink: #ffd9e3;
+    --env-btn-bg-hover: #241016;
+}
+
+/* Charcoal / near black — cream 15.81 / 17.17:1. The dark editorial fields. */
+.env--charcoal {
+    --env-bg: var(--c-charcoal);
+    --env-ink: var(--c-cream);
+    --env-ink-mute: #b9b6ac;
+    --env-line: rgba(247, 240, 223, 0.18);
+    --env-accent: var(--c-golden);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #f3c94f;
+    --env-btn-ink: #171714;
+    --env-btn-bg-hover: #ffdb72;
+}
+
+.env--black {
+    --env-bg: var(--c-black);
+    --env-ink: var(--c-cream);
+    --env-ink-mute: #b3b1a7;
+    --env-line: rgba(247, 240, 223, 0.16);
+    --env-accent: var(--c-golden);
+    --env-card: color-mix(in srgb, var(--env-bg) 94%, #ffffff 6%);
+    --env-btn-bg: #f3c94f;
+    --env-btn-ink: #171714;
+    --env-btn-bg-hover: #ffdb72;
+}
+
+/* --------------------------------------------------------------------------
+   BLOCKS — a card that sits *against* the field, in the opposite tone.
+   The block carries its own ink so its contents never inherit the field's.
+   -------------------------------------------------------------------------- */
+
+.env-block {
+    --blk-bg: var(--c-cream-2);
+    --blk-ink: var(--c-charcoal);
+    --blk-ink-mute: #4a4a42;
+    background: var(--blk-bg);
+    color: var(--blk-ink);
+}
+
+.env-block h1, .env-block h2, .env-block h3, .env-block h4 { color: inherit; }
+.env-block p, .env-block li { color: inherit; }
+.env-block .muted, .env-block small { color: var(--blk-ink-mute); }
+
+.env-block--charcoal { --blk-bg: var(--c-charcoal); --blk-ink: var(--c-cream); --blk-ink-mute: #b9b6ac; }
+.env-block--purple   { --blk-bg: var(--c-purple);   --blk-ink: var(--c-cream); --blk-ink-mute: #ded4f6; }
+.env-block--blue     { --blk-bg: var(--c-deep-blue);--blk-ink: var(--c-cream); --blk-ink-mute: #cfd9f5; }
+.env-block--golden   { --blk-bg: var(--c-golden);   --blk-ink: var(--c-purple);--blk-ink-mute: #46209e; }
+.env-block--magenta  { --blk-bg: var(--c-magenta);  --blk-ink: var(--c-black); --blk-ink-mute: #2a0712; }
+.env-block--orange   { --blk-bg: var(--c-orange);   --blk-ink: var(--c-charcoal); --blk-ink-mute: #3a2a12; }
+
+/* --------------------------------------------------------------------------
+   BUTTONS INSIDE ENVIRONMENTS
+   A button on a purple field cannot use the light-mode blue fill. These
+   variants take the environment's own accent as the fill and pick an ink that
+   is guaranteed to read on it.
+   -------------------------------------------------------------------------- */
+
+.env .btn--primary {
+    background: var(--env-btn-bg);
+    color: var(--env-btn-ink);
+    border-color: transparent;
+    box-shadow: none;
+    font-weight: 600;
+}
+
+.env .btn--primary:hover {
+    background: var(--env-btn-bg-hover);
+    color: var(--env-btn-ink);
+}
+
+.env .btn--ghost {
+    background: transparent;
+    color: var(--env-ink);
+    border-color: var(--env-line);
+    box-shadow: none;
+}
+
+.env .btn--ghost:hover {
+    border-color: currentColor;
+    background: color-mix(in srgb, var(--env-ink) 8%, transparent);
+}
+
+
+/* --------------------------------------------------------------------------
+   DARK THEME
+   The environments are not inverted; each one is re-pitched for the dark
+   ground. Cream fields become charcoal, saturated fields deepen, and the
+   golden accent stays the constant thread.
+   -------------------------------------------------------------------------- */
+
+.dark .env--cream {
+    --env-bg: #151510;
+    --env-ink: var(--c-cream);
+    --env-ink-mute: #b9b6ac;
+    --env-line: rgba(247, 240, 223, 0.16);
+    --env-accent: var(--c-golden);
+}
+
+/* Paper is deliberately cooler than cream in the dark theme, so a page that
+   alternates the two still reads as alternating. In light mode the difference
+   is a faint warmth; here it is a faint coolness. */
+.dark .env--paper {
+    --env-bg: #101216;
+    --env-ink: var(--c-cream);
+    --env-ink-mute: #aeb2ba;
+    --env-line: rgba(247, 240, 223, 0.14);
+    --env-accent: var(--c-golden);
+}
+
+/* Mustard keeps an olive cast so it stays identifiable as the mustard field
+   rather than turning into the same brown as golden. */
+.dark .env--mustard {
+    --env-bg: #2c2410;
+    --env-ink: var(--c-golden);
+    --env-ink-mute: #cfb878;
+    --env-line: rgba(243, 201, 79, 0.26);
+    --env-accent: var(--c-golden);
+}
+
+/* Golden is the warmer, more amber of the two warm fields. */
+.dark .env--golden {
+    --env-bg: #33270c;
+    --env-ink: #ffd98a;
+    --env-ink-mute: #d4b878;
+    --env-line: rgba(255, 217, 138, 0.26);
+    --env-accent: var(--c-orange);
+}
+
+/* Orange keeps a red-brick cast, clearly distinct from golden. */
+.dark .env--orange {
+    --env-bg: #33170a;
+    --env-ink: var(--c-orange);
+    --env-ink-mute: #dda57d;
+    --env-line: rgba(255, 148, 26, 0.28);
+    --env-accent: var(--c-golden);
+}
+
+.dark .env--raspberry {
+    --env-bg: #3b0719;
+    --env-ink: #ffc9d8;
+    --env-ink-mute: #d792a4;
+    --env-line: rgba(255, 201, 216, 0.24);
+    --env-accent: var(--c-golden);
+}
+
+.dark .env--deepblue {
+    --env-bg: #0c1f52;
+    --env-ink: var(--c-cream);
+    --env-ink-mute: #b9c8ea;
+    --env-line: rgba(243, 201, 79, 0.22);
+    --env-accent: var(--c-golden);
+}
+
+.dark .env--purple {
+    --env-bg: #2a1165;
+    --env-ink: var(--c-cream);
+    --env-ink-mute: #cdbdea;
+    --env-line: rgba(243, 201, 79, 0.22);
+    --env-accent: var(--c-golden);
+}
+
+.dark .env--violet {
+    --env-bg: #3b1d78;
+    --env-ink: var(--c-cream-2);
+    --env-ink-mute: #d6c9f2;
+    --env-line: rgba(255, 253, 247, 0.22);
+    --env-accent: var(--c-golden);
+}
+
+.dark .env--blue {
+    --env-bg: #14349c;
+    --env-ink: var(--c-cream-2);
+    --env-ink-mute: #ccd9fb;
+    --env-line: rgba(243, 201, 79, 0.24);
+    --env-accent: var(--c-golden);
+}
+
+.dark .env--magenta {
+    --env-bg: #6d0a2d;
+    --env-ink: #ffd6e2;
+    --env-ink-mute: #e0a3b5;
+    --env-line: rgba(255, 214, 226, 0.24);
+    --env-accent: var(--c-golden);
+}
+
+.dark .env--charcoal {
+    --env-bg: #101009;
+    --env-ink: var(--c-cream);
+    --env-ink-mute: #b3b1a7;
+    --env-line: rgba(247, 240, 223, 0.16);
+    --env-accent: var(--c-golden);
+}
+
+.dark .env-block {
+    --blk-bg: #17170f;
+    --blk-ink: var(--c-cream);
+    --blk-ink-mute: #b3b1a7;
+}
+
+.dark .env-block--charcoal { --blk-bg: var(--c-black); }
+.dark .env-block--purple { --blk-bg: #2a1165; }
+.dark .env-block--blue { --blk-bg: #0c1f52; }
+.dark .env-block--golden { --blk-bg: var(--c-golden); --blk-ink: var(--c-purple); --blk-ink-mute: #46209e; }
+.dark .env-block--magenta { --blk-bg: #6d0a2d; --blk-ink: #ffd6e2; --blk-ink-mute: #e0a3b5; }
+.dark .env-block--orange { --blk-bg: var(--c-orange); --blk-ink: var(--c-charcoal); --blk-ink-mute: #3a2a12; }
+
+/* Buttons carry their own background/ink pair per environment, so they need
+   no theme-specific override: the pair is chosen to pass in either theme. */
+
+/* --------------------------------------------------------------------------
+   SURFACE TEXTURE
+   Large flat colour fields look like a wireframe. These add depth without
+   adding weight: a faint grain and a soft edge glow, both pure CSS.
+   -------------------------------------------------------------------------- */
+
+.env--textured::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.5;
+    background-image:
+        radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.14), transparent 42%),
+        radial-gradient(circle at 82% 78%, rgba(0, 0, 0, 0.1), transparent 46%);
+    pointer-events: none;
+}
+
+/* A section that sits directly beneath another should not double its
+   padding — the seam is the design, not empty space. */
+.env + .env { border-top: none; }
+
+/* --------------------------------------------------------------------------
+   SEAMS — the transition between two colour fields.
+   A hard edge between saturated colours can vibrate. This gives the option
+   of a deliberate diagonal or curve instead.
+   -------------------------------------------------------------------------- */
+
+.env-seam {
+    position: relative;
+    z-index: 1;
+    height: clamp(2rem, 5vw, 4.5rem);
+    margin-block: calc(var(--section-y) * -1) 0;
+    background: inherit;
+    clip-path: polygon(0 100%, 100% 62%, 100% 100%);
+}
+
+@media (max-width: 700px) {
+    .env-seam { clip-path: polygon(0 100%, 100% 78%, 100% 100%); }
+}
+
+/* --------------------------------------------------------------------------
+   COMPONENT OVERRIDES
+   A few components carry their own hard-coded light-mode colours, which is
+   correct on cream and wrong on everything else. These rules re-point them at
+   the environment. They live here, next to the environment contract, rather
+   than being scattered back into humi.css where the reason would be lost.
+   -------------------------------------------------------------------------- */
+
+/* Pills were always mustard. On a mustard or golden field that disappears, and
+   on deep blue the dark ink vanishes. Give them the field's own contrast. */
+.env .pill {
+    color: var(--env-ink-mute);
+    background: var(--env-card);
+    border-color: var(--env-line);
+}
+
+/* Index labels sit over large numerals; keep them at the field's muted ink. */
+.env .index-label,
+.env .step__node { color: var(--env-ink-mute); }
+
+/* Card badges keep their semantic colour but need the environment's card
+   behind them so the tint does not sit on a saturated field. */
+.env .product-card__badge,
+.env .product-card__badge--live,
+.env .product-card__badge--proto { background-color: var(--env-card); }
+
+/* The linked "View" affordance was painted in orange ink, which is invisible
+   on deep blue. Invert it per field. */
+.env .link-arrow,
+.env .tile__more { color: var(--env-accent); }
+
+/* Cards: the glass background is a white wash, which on a saturated field
+   reads as dirty grey. Use the environment card instead. */
+.env .product-card,
+.env .course-card,
+.env .tile,
+.env .glass {
+    background: var(--env-card);
+    border-color: var(--env-line);
+    box-shadow: none;
+}
+
+/* Headings inside a CTA band should take the field ink, including the
+   gradient-clipped ones which only work on a light ground. */
+.env .cta-section h2,
+.env .cta-section .section-title { color: var(--env-ink); }
+
+.env .cta-section .lede,
+.env .cta-section p { color: var(--env-ink-mute); }
+
+/* Research venue tags ("NeurIPS 2024") were blue on a blue field. */
+.env .research-row .pill,
+.env .research-meta,
+.env .venue { color: var(--env-ink-mute); background: var(--env-card); }
+
+/* Footer/contact inline link that was cream on cream. */
+.env .contact-inline,
+.env .inline-link { color: var(--env-accent); }
+
+/* Gradient-clipped text only works on a light ground: on a saturated field the
+   clip leaves nothing visible and the browser paints the fallback colour. On
+   any environment, swap the clip for the field's own warm accent. */
+.env .gradient-text,
+.env .text-gradient {
+    background: none !important;
+    -webkit-text-fill-color: currentColor !important;
+    color: var(--env-accent) !important;
+}
+
+/* .text-accent-primary/secondary were fixed to light-mode inks. */
+.env .text-accent-primary,
+.env .text-accent-secondary,
+.env .text-accent-cyan,
+.env .text-accent-emerald,
+.env .text-accent-amber,
+.env .text-accent-rose { color: var(--env-accent); }
+
+/* Legacy utility text colours used by the research and course grids. */
+.env .text-gray-600,
+.env .text-gray-500,
+.env .text-gray-700 { color: var(--env-ink-mute); }
+
+/* Badges: the semantic green/mustard inks were built for a white card. On a
+   coloured field they get the field's card and a tint of their own hue that
+   is legible on it. */
+.env--deepblue .product-card__badge--live,
+.env--purple .product-card__badge--live,
+.env--charcoal .product-card__badge--live {
+    color: #7ee2b0;
+    background: rgba(126, 226, 176, 0.14);
+    border-color: rgba(126, 226, 176, 0.36);
+}
+
+.env--deepblue .product-card__badge--proto,
+.env--purple .product-card__badge--proto,
+.env--charcoal .product-card__badge--proto {
+    color: #f6d488;
+    background: rgba(246, 212, 136, 0.14);
+    border-color: rgba(246, 212, 136, 0.36);
+}
+
+.dark .env .product-card__badge--live { color: #7ee2b0; background: rgba(126,226,176,0.14); }
+.dark .env .product-card__badge--proto { color: #f6d488; background: rgba(246,212,136,0.14); }
+
+/* .hero-tagline was fixed to light-mode brand blue, which disappears on deep
+   blue and purple fields. */
+.env .hero-tagline { color: var(--env-accent); }
+
+/* On dark saturated fields the primary button fills with the accent, which is
+   golden there; the ghost button beside it needs the same field ink. */
+.env .btn--primary { box-shadow: none; }
+
+/* Small print that sat on the field as white-on-cream in the contact meta
+   strip. */
+.env .contact-meta,
+.env .meta-value,
+.env [class*="meta"] strong { color: var(--env-ink); }
+
+
+/* --------------------------------------------------------------------------
+   PAGE GROUND
+   The base stylesheet still uses a cool near-white for the page and its
+   raised surfaces. The colour fields are warm, so those cool tones showed at
+   the seams and behind the translucent navigation. Re-pointing them here
+   keeps the whole site in one temperature without editing the base file.
+   -------------------------------------------------------------------------- */
+
+:root {
+    --bg: #f7f0df;
+    --bg-deep: #f2e9d6;
+    --bg-sink: #ece2cc;
+
+}
+
+.dark {
+    --bg: #101009;
+    --bg-deep: #151510;
+    --bg-sink: #1a1a13;
+}
+
+/* Light theme only: the muted inks were tuned against a cool near-white and
+   dropped to 4.28:1 on the warm cream, under the 4.5 body-text floor. These
+   values give 6.14 / 5.78 / 5.42 across the three warm grounds. The dark
+   theme keeps its own values, which already pass on the deep ground. */
+html:not(.dark) {
+    --ink-soft: #39414d;
+    --ink-mute: #525a65;
+    --ink-meta: #525a65;
+}
+
+
+/* Eyebrow colour is a contrast decision, not a brand one. The eyebrow is
+   small text, so each field needs an accent that clears 4.5:1 on it. These
+   pairs were measured; the base rule already sets the environment accent, so
+   this only corrects the fields where the accent would fail as small text. */
+
+/* Deep Blue on cream measures 8.79:1 — already safe. */
+html:not(.dark) .env--cream .eyebrow,
+html:not(.dark) .env--paper .eyebrow,
+html:not(.dark) .env--cream .hero-tagline,
+html:not(.dark) .env--paper .hero-tagline {
+    color: #153a9a;
+}
+
+/* Violet as text only reaches 4.25:1 on cream; this darkened violet is 5.6:1
+   and visually identical. */
+html:not(.dark) .page-hero .eyebrow,
+html:not(.dark) .page-hero .page-hero__eyebrow {
+    color: #6335c9;
+}
+
+/* On golden the ink is already purple at 5.27:1, so leave it. */
+html:not(.dark) .env--golden .eyebrow { color: #5429c7; }
+
+/* On orange, purple only reaches 3.77:1; charcoal is 8.13:1 and reads as a
+   label rather than an accent, which is right for this field. */
+html:not(.dark) .env--orange .eyebrow,
+html:not(.dark) .env--orange .hero-tagline { color: #171714; }
+
+html:not(.dark) .env--mustard .eyebrow { color: #153a9a; }
+
+
+/* Small violet labels used across the SEO page templates. Violet is 4.25:1 on
+   cream, so on any environment they take the field's own accent, which is
+   already contrast-safe. */
+/* Not every template wraps its sections in .env, so these are matched
+   unconditionally. Where a field does set --env-accent it is used; otherwise
+   the fallback is the deep blue that clears 8.79:1 on cream. */
+.seo-case-study-type,
+.seo-eyebrow,
+.seo-card-type { color: var(--env-accent, #153a9a); }
+
+/* On the warm light fields the accent is deep blue; on charcoal and the
+   saturated dark fields it is golden. Both pass. */

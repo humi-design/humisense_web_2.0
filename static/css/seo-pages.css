@@ -452,7 +452,7 @@ a.seo-card { color: inherit; }
 
 .seo-tags li {
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: 0.78rem;
     letter-spacing: 0.03em;
     color: var(--ink-mute);
     padding: 0.28rem 0.65rem;
@@ -606,11 +606,16 @@ a.seo-card { color: inherit; }
     font-size: 0.64rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--violet);
+    /* Violet measures 4.25:1 on the warm cream, under the 4.5:1 small-text
+       floor. This darkened violet is the same hue at 5.6:1; on the dark ground
+       it inverts to the light violet, which clears 6.5:1. */
+    color: #6335c9;
     padding: 0.2rem 0.5rem;
     border-radius: var(--r-pill);
     border: 1px solid color-mix(in srgb, var(--violet) 28%, transparent);
 }
+
+.dark .seo-case-study-type { color: #b39bff; }
 
 .seo-case-study p {
     font-size: var(--t-sm);
@@ -620,7 +625,7 @@ a.seo-card { color: inherit; }
 }
 
 .seo-case-study-note {
-    font-size: var(--t-xs) !important;
+    font-size: var(--t-sm) !important;
     color: var(--ink-meta) !important;
     padding-top: 0.6rem;
     border-top: 1px solid var(--line);

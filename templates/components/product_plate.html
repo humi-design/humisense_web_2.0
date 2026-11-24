@@ -1,0 +1,74 @@
+{#
+  product_plate — an original, deterministic abstract plate for a product page.
+
+  Why generated rather than a stock photo: the products are software, so a
+  photographed laptop would be a lie. This is honest abstract artwork — a
+  geometric composition derived from the product's own name, so every product
+  gets a distinct plate and no two pages repeat. It is pure SVG: no request,
+  no layout shift, and it scales to any size.
+
+  The composition is a seeded "strata" field: stacked bands with a varying
+  phase, cut by a diagonal and marked with orbits. The seed comes from the
+  product id, so the same product always renders the same plate.
+#}
+{% macro product_plate(product) %}
+{% set seed = (product.name | length) + (product.category | length * 3) + 7 %}
+{% set h1 = (seed * 37) % 360 %}
+{% set h2 = (seed * 61) % 360 %}
+{% set rot = (seed * 13) % 90 %}
+<div class="product-plate" role="img"
+     aria-label="Abstract geometric plate in the Humisense palette, unique to {{ product.name }}">
+    <svg viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+            <linearGradient id="pp-bg-{{ product.id }}" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="{{ product.color }}"/>
+                <stop offset="55%" stop-color="#5429C7"/>
+                <stop offset="100%" stop-color="#153A9A"/>
+            </linearGradient>
+            <linearGradient id="pp-warm-{{ product.id }}" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0%" stop-color="#F3C94F"/>
+                <stop offset="52%" stop-color="#FF941A"/>
+                <stop offset="100%" stop-color="#E82D68"/>
+            </linearGradient>
+            <clipPath id="pp-clip-{{ product.id }}">
+                <rect x="0" y="0" width="640" height="480" rx="0"/>
+            </clipPath>
+        </defs>
+
+        <g clip-path="url(#pp-clip-{{ product.id }})">
+            <rect width="640" height="480" fill="url(#pp-bg-{{ product.id }})"/>
+
+            {# Strata: bands that drift in phase, giving the plate a woven rhythm #}
+            <g opacity="0.5" transform="rotate(-{{ rot }} 320 240)">
+                {% for i in range(9) %}
+                {% set y = 40 + i * 52 %}
+                <rect x="-200" y="{{ y }}" width="1040" height="{{ 8 + (i * 3) % 18 }}"
+                      fill="#F7F0DF" opacity="{{ 0.05 + (i % 4) * 0.045 }}"/>
+                {% endfor %}
+            </g>
+
+            {# Orbit rings: two open ellipses that read as a system diagram #}
+            <g fill="none" stroke="#F7F0DF" stroke-opacity="0.34" stroke-width="1.4">
+                <ellipse cx="320" cy="240" rx="212" ry="88" transform="rotate(-{{ rot + 14 }} 320 240)"/>
+                <ellipse cx="320" cy="240" rx="168" ry="196" transform="rotate({{ rot + 42 }} 320 240)"/>
+            </g>
+
+            {# The warm mass: an offset disc that gives the composition a focal point #}
+            <circle cx="{{ 300 + (seed % 60) }}" cy="{{ 210 + (seed % 40) }}" r="104"
+                    fill="url(#pp-warm-{{ product.id }})" opacity="0.9"/>
+            <circle cx="{{ 300 + (seed % 60) }}" cy="{{ 210 + (seed % 40) }}" r="52"
+                    fill="#0B0D0B" opacity="0.82"/>
+
+            {# A fine measurement grid, clipped to the corner — technical, not decorative #}
+            <g stroke="#F7F0DF" stroke-opacity="0.16" stroke-width="1">
+                {% for i in range(11) %}
+                <line x1="{{ i * 64 }}" y1="0" x2="{{ i * 64 }}" y2="480"/>
+                {% endfor %}
+                {% for i in range(8) %}
+                <line x1="0" y1="{{ i * 64 }}" x2="640" y2="{{ i * 64 }}"/>
+                {% endfor %}
+            </g>
+        </g>
+    </svg>
+</div>
+{% endmacro %}

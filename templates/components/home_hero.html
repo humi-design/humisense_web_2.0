@@ -1,0 +1,82 @@
+{# ==========================================================================
+   home_hero — the signature first screen.
+
+   Type left, sculpture right. The static SVG composition inside
+   [data-sculpture-fallback] is what renders first and is the permanent view
+   for reduced-motion and low-power devices; the WebGL canvas is layered over
+   it only when hero-3d.js confirms it can run.
+   ========================================================================== #}
+<section class="hero" aria-labelledby="hero-heading">
+    <div class="hero__inner">
+        <div class="hero__col">
+            <p class="hero__eyebrow">{{ eyebrow | default('AI automation &amp; intelligent systems') }}</p>
+
+            <span class="hero__wordmark" aria-hidden="true">HUMISENSE</span>
+
+            <h1 id="hero-heading" class="hero__title" data-hero-title>
+                We build what's <em>next.</em>
+            </h1>
+
+            <span class="hero__tagline">Make it happen.</span>
+
+            <p class="hero__lead">
+                Humisense is a global AI automation and intelligent solutions company.
+                We design, build and run the systems that move work forward — agents,
+                workflows, document pipelines and products.
+            </p>
+
+            <div class="hero__cta">
+                <a href="{{ url_for('services') }}" class="btn btn--primary btn--lg">
+                    Explore what we build
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                         stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+                <a href="{{ url_for('contact') }}" class="btn btn--ghost btn--lg">Let's work together</a>
+            </div>
+        </div>
+
+        <div class="hero__object">
+            <div id="hero-sculpture">
+                <div data-sculpture-canvas aria-hidden="true"></div>
+
+                {# Static composition. Designed to stand alone: four orbital
+                   bands in the brand hues around a warm core. #}
+                <div data-sculpture-fallback aria-hidden="true">
+                    <svg viewBox="0 0 400 400" role="presentation">
+                        <defs>
+                            <radialGradient id="sculptCore">
+                                <stop offset="0%" stop-color="#F3C94F"/>
+                                <stop offset="55%" stop-color="#FF941A" stop-opacity="0.85"/>
+                                <stop offset="100%" stop-color="#E82D68" stop-opacity="0"/>
+                            </radialGradient>
+                            <linearGradient id="sculptRingA" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#2867E8"/>
+                                <stop offset="100%" stop-color="#7545E8"/>
+                            </linearGradient>
+                            <linearGradient id="sculptRingB" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#F3C94F"/>
+                                <stop offset="100%" stop-color="#E82D68"/>
+                            </linearGradient>
+                        </defs>
+
+                        <circle cx="200" cy="200" r="92" fill="url(#sculptCore)" opacity="0.9"/>
+
+                        <ellipse class="sculpt-ring sculpt-ring--1" cx="200" cy="200" rx="168" ry="64"
+                                 transform="rotate(-18 200 200)" stroke="url(#sculptRingA)"/>
+                        <ellipse class="sculpt-ring sculpt-ring--2" cx="200" cy="200" rx="150" ry="118"
+                                 transform="rotate(34 200 200)"/>
+                        <ellipse class="sculpt-ring sculpt-ring--3" cx="200" cy="200" rx="176" ry="46"
+                                 transform="rotate(-52 200 200)" stroke="url(#sculptRingB)"/>
+                        <ellipse class="sculpt-ring sculpt-ring--4" cx="200" cy="200" rx="122" ry="152"
+                                 transform="rotate(76 200 200)"/>
+
+                        <circle cx="200" cy="200" r="26" fill="#F7F0DF" opacity="0.92"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <span class="hero__scroll" aria-hidden="true">Scroll</span>
+</section>

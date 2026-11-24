@@ -80,3 +80,21 @@ after editing them.
   this behaviour — update both together.
 - Product pages: `templates/product_detail.html` renders the API tab and the "View API
   Docs" button only when `product.api_example` is set; five of six products have none.
+
+## Phase 2 audit findings (2026-11-20)
+
+- Third-party assets are now vendored in `static/vendor/` — the site previously
+  loaded `lenis@1.0.42` from unpkg, **a version that does not exist** (39-byte error
+  page returned), so smooth scrolling was silently dead. Never point a `<script src>`
+  at an unpinned CDN URL; vendor it and confirm `window.<Global>` is defined.
+- `sweetalert2` is only used by `course_detail.html`, so it loads in that template's
+  `extra_scripts` block rather than site-wide in `base.html`.
+- GSAP and ScrollTrigger were unused by any live page and have been removed.
+- Heading hierarchy: card headings are `h3`; section headings must be `h2`. Tab panels
+  in `product_detail.html` have a visually-hidden `h2` so their `h3` children are legal.
+- Honest disclaimers (`.seo-case-study-note`), consent copy (`.consent__text`) and
+  deliverable lists (`.seo-tags li`) are body text, not micro-labels — keep them at
+  `--t-sm` / ≥0.78rem. `--t-xs` bottoms out at ~11.5px and is for eyebrows only.
+- Audit scripts live in `/tmp/aud` (Playwright): `regress.js` (routes/meta), `sem.js`
+  (headings), `crawl.js` (internal links), `contrast.js` (both themes), `qa.js`
+  (responsive/tiny text/alt), `formtest.js`, `cookietest.js`, `perf.js`, `schema.js`.

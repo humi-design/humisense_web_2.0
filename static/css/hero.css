@@ -1,0 +1,344 @@
+/* ==========================================================================
+   HUMISENSE — signature hero
+   ==========================================================================
+
+   The first screen is a deep blue field with a warm glow behind the
+   sculpture. Type sits left, the object right, and on narrow screens they
+   stack with the object reduced rather than hidden.
+
+   The static composition is the source of truth: it is what renders with no
+   JS, no WebGL and reduced motion. The canvas mounts over it only once the
+   module confirms it can run.
+   ========================================================================== */
+
+.hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+        radial-gradient(120% 90% at 78% 18%, rgba(232, 45, 104, 0.22), transparent 58%),
+        radial-gradient(110% 80% at 12% 82%, rgba(255, 148, 26, 0.16), transparent 55%),
+        radial-gradient(90% 70% at 50% 0%, rgba(117, 69, 232, 0.5), transparent 62%),
+        linear-gradient(168deg, #153a9a 0%, #5429c7 46%, #24115e 100%);
+    color: var(--c-cream);
+}
+
+/* A fine grid gives the field structure without a visible pattern edge. */
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image:
+        linear-gradient(rgba(247, 240, 223, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(247, 240, 223, 0.055) 1px, transparent 1px);
+    background-size: 74px 74px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 20%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 20%, transparent 78%);
+    pointer-events: none;
+}
+
+.hero__inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    align-items: center;
+    gap: clamp(1rem, 3vw, 3rem);
+    width: 100%;
+    max-width: var(--shell-wide);
+    min-height: clamp(620px, 92svh, 900px);
+    margin-inline: auto;
+    padding: clamp(7rem, 12vh, 9rem) var(--gutter) clamp(3rem, 6vh, 5rem);
+}
+
+/* --- Type column --------------------------------------------------------- */
+
+.hero__col {
+    position: relative;
+    z-index: 3;
+    max-width: 40rem;
+}
+
+.hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: clamp(1rem, 2vw, 1.6rem);
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-golden);
+}
+
+.hero__eyebrow::before {
+    content: '';
+    width: 1.6rem;
+    height: 2px;
+    background: var(--c-orange);
+}
+
+/* The wordmark is set huge but tracked in, so it reads as a mark rather than
+   a word in a sentence. */
+.hero__wordmark {
+    display: block;
+    margin: 0 0 clamp(0.6rem, 1.4vw, 1.1rem);
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 7.4vw, 5.6rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+    color: var(--c-cream);
+}
+
+.hero__tagline {
+    display: block;
+    margin-bottom: clamp(1.2rem, 2.4vw, 2rem);
+    font-family: var(--font-mono);
+    font-size: clamp(0.7rem, 1.3vw, 0.9rem);
+    font-weight: 500;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: rgba(247, 240, 223, 0.72);
+}
+
+/* The headline carries the gradient. Warm tones on the dark field keep the
+   contrast above 4.5:1 for the golden stops and above 3:1 at the magenta. */
+.hero__title {
+    margin: 0 0 clamp(1.1rem, 2.2vw, 1.7rem);
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 4.4vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.032em;
+    color: var(--c-cream);
+    text-wrap: balance;
+}
+
+.hero__title em {
+    font-style: normal;
+    background: linear-gradient(96deg, var(--c-golden) 0%, var(--c-orange) 52%, var(--c-magenta) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.hero__lead {
+    max-width: 34rem;
+    margin: 0 0 clamp(1.6rem, 3vw, 2.4rem);
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    line-height: 1.62;
+    color: rgba(247, 240, 223, 0.84);
+}
+
+.hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.hero__cta .btn--primary {
+    background: var(--c-golden);
+    color: var(--c-charcoal);
+    border-color: transparent;
+}
+
+.hero__cta .btn--primary:hover {
+    background: var(--c-orange);
+}
+
+.hero__cta .btn--ghost {
+    color: var(--c-cream);
+    border-color: rgba(247, 240, 223, 0.34);
+}
+
+.hero__cta .btn--ghost:hover {
+    border-color: var(--c-cream);
+    background: rgba(247, 240, 223, 0.08);
+}
+
+/* --- Object column ------------------------------------------------------- */
+
+.hero__object {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    min-height: clamp(340px, 52vh, 560px);
+}
+
+#hero-sculpture {
+    position: relative;
+    width: min(100%, 620px);
+    aspect-ratio: 1 / 1;
+}
+
+[data-sculpture-canvas] {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+}
+
+/* The static composition: three orbital bands and a warm core, drawn in SVG.
+   It is visible until WebGL takes over, and it is what reduced-motion users
+   and low-power devices see permanently. */
+[data-sculpture-fallback] {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 1;
+    transition: opacity 0.9s ease;
+}
+
+#hero-sculpture.has-webgl [data-sculpture-fallback] {
+    opacity: 0;
+    pointer-events: none;
+}
+
+[data-sculpture-fallback] svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.sculpt-ring {
+    fill: none;
+    stroke-width: 2.4;
+    transform-origin: center;
+}
+
+.sculpt-ring--1 { stroke: var(--c-elec-blue); animation: sculpt-spin 26s linear infinite; }
+.sculpt-ring--2 { stroke: var(--c-violet); animation: sculpt-spin 34s linear infinite reverse; }
+.sculpt-ring--3 { stroke: var(--c-golden); animation: sculpt-spin 20s linear infinite; }
+.sculpt-ring--4 { stroke: var(--c-magenta); opacity: 0.75; animation: sculpt-spin 42s linear infinite reverse; }
+
+@keyframes sculpt-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* No canvas and no motion: hold the rings still rather than spinning them. */
+#hero-sculpture.is-static .sculpt-ring,
+.is-static .sculpt-ring {
+    animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sculpt-ring { animation: none; }
+}
+
+/* --- Scroll cue ---------------------------------------------------------- */
+
+.hero__scroll {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(1rem, 3vh, 2.2rem);
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(247, 240, 223, 0.6);
+}
+
+.hero__scroll::after {
+    content: '';
+    width: 1px;
+    height: 2.4rem;
+    background: linear-gradient(180deg, rgba(247, 240, 223, 0.55), transparent);
+    animation: scroll-cue 2.6s ease-in-out infinite;
+}
+
+@keyframes scroll-cue {
+    0%, 100% { transform: scaleY(0.4); opacity: 0.4; }
+    50% { transform: scaleY(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero__scroll::after { animation: none; }
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+    .hero__inner {
+        grid-template-columns: 1fr;
+        gap: clamp(1rem, 4vw, 2rem);
+        min-height: 0;
+        padding-top: clamp(6.5rem, 10vh, 8rem);
+        padding-bottom: clamp(3rem, 7vh, 5rem);
+    }
+    .hero__col { max-width: 46rem; order: 1; }
+    .hero__object { order: 2; min-height: clamp(280px, 42vh, 400px); }
+    #hero-sculpture { width: min(100%, 420px); }
+    .hero__scroll { display: none; }
+}
+
+@media (max-width: 640px) {
+    .hero__wordmark { font-size: clamp(2.4rem, 11vw, 3.4rem); }
+    .hero__tagline { letter-spacing: 0.3em; }
+    .hero__cta .btn { width: 100%; justify-content: center; }
+    .hero__object { min-height: clamp(240px, 36vh, 320px); }
+    #hero-sculpture { width: min(100%, 300px); }
+}
+
+/* --- Dark theme ---------------------------------------------------------
+   The hero is already dark by design, so it only deepens. */
+
+.dark .hero {
+    background:
+        radial-gradient(120% 90% at 78% 18%, rgba(232, 45, 104, 0.18), transparent 58%),
+        radial-gradient(110% 80% at 12% 82%, rgba(255, 148, 26, 0.12), transparent 55%),
+        radial-gradient(90% 70% at 50% 0%, rgba(84, 41, 199, 0.34), transparent 62%),
+        linear-gradient(168deg, #0c1f52 0%, #2a1165 46%, #0b0d0b 100%);
+}
+
+/* ==========================================================================
+   PRODUCT PLATES
+   Original generated artwork for product pages and cards. Pure SVG with no
+   request cost; the aspect ratio is fixed so it never shifts layout.
+   ========================================================================== */
+
+.product-plate {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--r-lg);
+    aspect-ratio: 4 / 3;
+    background: var(--c-deep-blue);
+    box-shadow: 0 24px 60px -32px rgba(11, 13, 11, 0.55);
+}
+
+.product-plate svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Cards get a cropped band of the plate as a header, which gives the grid
+   a colour anchor without adding a request. */
+.product-card__plate {
+    margin: calc(clamp(1.5rem, 2.6vw, 2rem) * -1) calc(clamp(1.5rem, 2.6vw, 2rem) * -1) 0;
+    overflow: hidden;
+    aspect-ratio: 16 / 7;
+    border-bottom: 1px solid var(--line);
+}
+
+.product-card__plate svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 640px) {
+    .product-plate { aspect-ratio: 3 / 2; }
+    .product-card__plate { aspect-ratio: 2 / 1; }
+}
