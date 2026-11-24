@@ -5,32 +5,17 @@
 {% endblock %}
 
 {% block content %}
-<section class="page-header">
-    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
-    <div class="page-header-content">
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-            <a href="{{ url_for('home') }}">Home</a>
-            <span class="breadcrumbs-separator">/</span>
-            <a href="{{ url_for('blog') }}">Blog</a>
-            <span class="breadcrumbs-separator">/</span>
-            <span aria-current="page">{{ article.category }}</span>
-        </nav>
-        <span class="hero-tagline">{{ article.category }}</span>
-        <h1 class="page-header-title">{{ article.h1 }}</h1>
-        <p class="page-header-subtitle">{{ article.description }}</p>
-        <p class="seo-byline">
-            <span>By the Humisense implementation team</span>
-            <span class="seo-byline-sep">·</span>
-            <time datetime="{{ article.published }}">Published {{ article.published }}</time>
-            {% if article.updated and article.updated != article.published %}
-            <span class="seo-byline-sep">·</span>
-            <time datetime="{{ article.updated }}">Updated {{ article.updated }}</time>
-            {% endif %}
-            <span class="seo-byline-sep">·</span>
-            <span>{{ article.reading_time }} min read</span>
-        </p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='slate',
+    eyebrow=article.category,
+    title=article.h1,
+    lead=article.description,
+    breadcrumbs=[{'label': 'Blog', 'url': url_for('blog')}, {'label': article.category}],
+    note='By the Humisense implementation team &middot; Published ' ~ article.published ~
+         (' &middot; Updated ' ~ article.updated if article.updated and article.updated != article.published else '') ~
+         ' &middot; ' ~ article.reading_time ~ ' min read'
+) }}
 
 <section class="section">
     <div class="section-container">

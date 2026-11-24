@@ -5,21 +5,16 @@
 {% endblock %}
 
 {% block content %}
-<section class="page-header">
-    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
-    <div class="page-header-content">
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-            <a href="{{ url_for('home') }}">Home</a>
-            <span class="breadcrumbs-separator">/</span>
-            <span aria-current="page">Blog</span>
-        </nav>
-        <span class="hero-tagline">IMPLEMENTATION NOTES</span>
-        <h1 class="page-header-title">AI Automation Blog</h1>
-        <p class="page-header-subtitle">
-            Practical guides on automating business processes with AI, written from implementation work rather than theory.
-        </p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='data',
+    eyebrow='Implementation notes',
+    title='Field notes from ~real automation work.~',
+    lead='Practical guides on automating business processes with AI, written from implementation work rather than theory.',
+    primary_text='Browse articles', primary_url='#article-list',
+    secondary_text='Talk to us', secondary_url=url_for('contact'),
+    breadcrumbs=[{'label': 'Blog'}]
+) }}
 
 <section class="section">
     <div class="section-container">

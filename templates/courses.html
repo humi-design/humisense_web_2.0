@@ -2,22 +2,29 @@
 
 
 {% block content %}
-<!-- Page Header -->
-<section class="page-header">
-    <div class="page-header-bg">
-        <div class="page-header-gradient"></div>
-    </div>
-    <div class="page-header-content">
-        <span class="hero-tagline">MAKE IT HAPPEN</span>
-        <h1 class="page-header-title">AI Academy</h1>
-        <p class="page-header-subtitle">
-            Master AI technologies with hands-on courses taught by industry experts. From Python to LLMs, build the skills of tomorrow.
-        </p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='grid',
+    eyebrow='AI Academy',
+    title='Learn the systems ~you will run.~',
+    lead='Hands-on courses in the technologies Humisense implements every day. Build working automations, not slide decks.',
+    primary_text='Browse courses', primary_url='#course-list',
+    secondary_text='Ask about training', secondary_url=url_for('contact'),
+    items=[
+        {'text': 'Fundamentals', 'cls': 'hero-grid__tile--accent'},
+        {'text': 'Prompting', 'cls': ''},
+        {'text': 'Agents', 'cls': 'hero-grid__tile--solid'},
+        {'text': 'Workflows', 'cls': ''},
+        {'text': 'Documents', 'cls': 'hero-grid__tile--wide'},
+        {'text': 'Evaluation', 'cls': ''},
+        {'text': 'Deployment', 'cls': 'hero-grid__tile--tall'},
+        {'text': 'Operations', 'cls': ''},
+        {'text': 'Governance', 'cls': ''},
+    ]
+) }}
 
 <!-- Learning Paths -->
-<section class="section">
+<section class="section" id="course-list">
     <div class="section-container">
         <div class="section-header" data-animate>
             <span class="section-label">

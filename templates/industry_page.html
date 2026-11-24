@@ -5,25 +5,17 @@
 {% endblock %}
 
 {% block content %}
-<section class="page-header">
-    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
-    <div class="page-header-content">
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-            <a href="{{ url_for('home') }}">Home</a>
-            <span class="breadcrumbs-separator">/</span>
-            <a href="{{ url_for('industries') }}">Industries</a>
-            <span class="breadcrumbs-separator">/</span>
-            <span aria-current="page">{{ industry.eyebrow }}</span>
-        </nav>
-        <span class="hero-tagline">MAKE IT HAPPEN</span>
-        <h1 class="page-header-title">{{ industry.h1 }}</h1>
-        <p class="page-header-subtitle">{{ industry.summary }}</p>
-        <div class="seo-hero-actions">
-            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg" data-cta="industry-hero">Discuss your operation</a>
-            <a href="{{ url_for('industries') }}" class="btn btn-secondary btn-lg">All industries</a>
-        </div>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant=industry.hero_variant|default('flow'),
+    eyebrow=industry.eyebrow,
+    title=industry.hero_title|default(industry.h1),
+    lead=industry.summary,
+    primary_text='Discuss your operation', primary_url=url_for('contact'),
+    secondary_text='All industries', secondary_url=url_for('industries'),
+    breadcrumbs=[{'label': 'Industries', 'url': url_for('industries')}, {'label': industry.eyebrow}],
+    items=(industry.challenges or [])[:6]
+) }}
 
 <section class="section">
     <div class="section-container">

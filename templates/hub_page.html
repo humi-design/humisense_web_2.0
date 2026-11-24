@@ -5,19 +5,15 @@
 {% endblock %}
 
 {% block content %}
-<section class="page-header">
-    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
-    <div class="page-header-content">
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-            <a href="{{ url_for('home') }}">Home</a>
-            <span class="breadcrumbs-separator">/</span>
-            <span aria-current="page">{{ hub.eyebrow }}</span>
-        </nav>
-        <span class="hero-tagline">{{ hub.tagline }}</span>
-        <h1 class="page-header-title">{{ hub.h1 }}</h1>
-        <p class="page-header-subtitle">{{ hub.intro }}</p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant=hub.hero_variant|default('lattice'),
+    eyebrow=hub.tagline,
+    title=hub.hero_title|default(hub.h1),
+    lead=hub.intro,
+    primary_text='Discuss your process', primary_url=url_for('contact'),
+    breadcrumbs=[{'label': hub.eyebrow}]
+) }}
 
 <section class="section">
     <div class="section-container">

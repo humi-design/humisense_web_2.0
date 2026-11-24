@@ -2,22 +2,18 @@
 
 
 {% block content %}
-<!-- Page Header -->
-<section class="page-header">
-    <div class="page-header-bg">
-        <div class="page-header-gradient"></div>
-    </div>
-    <div class="page-header-content">
-        <span class="hero-tagline">MAKE IT HAPPEN</span>
-        <h1 class="page-header-title">AI Research Lab</h1>
-        <p class="page-header-subtitle">
-            Advancing the boundaries of artificial intelligence through rigorous scientific exploration and practical innovation.
-        </p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='data',
+    eyebrow='Research',
+    title='Applied research, ~not press releases.~',
+    lead='We publish what we build and measure: extraction accuracy, workflow reliability and the failure modes that matter in production.',
+    primary_text='Read the work', primary_url='#research-list',
+    secondary_text='Talk to the team', secondary_url=url_for('contact')
+) }}
 
 <!-- Mission Section -->
-<section class="section">
+<section class="section" id="research-list">
     <div class="section-container">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4xl items-center">
             <div data-animate>

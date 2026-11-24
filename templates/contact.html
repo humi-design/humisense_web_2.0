@@ -2,19 +2,22 @@
 
 
 {% block content %}
-<!-- Page Header -->
-<section class="page-header">
-    <div class="page-header-bg">
-        <div class="page-header-gradient"></div>
-    </div>
-    <div class="page-header-content">
-        <span class="hero-tagline">MAKE IT HAPPEN</span>
-        <h1 class="page-header-title">Get in Touch</h1>
-        <p class="page-header-subtitle">
-            Ready to transform your business with AI? We'd love to hear from you.
-        </p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='signal',
+    eyebrow='Contact',
+    title='Tell us what is ~slowing you down.~',
+    lead='Describe the process that costs you the most time. We will tell you honestly whether automation fits, and what it would take.',
+    items=[
+        {'label': 'General', 'text': 'info@humisense.com'},
+        {'label': 'Support', 'text': 'support@humisense.com'},
+        {'label': 'Careers', 'text': 'careers@humisense.com'},
+    ],
+    meta=[
+        {'label': 'Response', 'value': 'Within 1 business day'},
+        {'label': 'First step', 'value': 'A 30-minute process review'},
+    ]
+) }}
 
 <!-- Contact Section -->
 <section class="section">

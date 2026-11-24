@@ -1,0 +1,312 @@
+{# ==========================================================================
+   page_hero — the single hero entry point for every public page.
+
+   One frame, one type scale, one spacing rhythm. The `variant` argument picks
+   the visual composition and the motion concept, so pages stay consistent
+   while each one looks and moves differently.
+
+   variant   kinetic | lattice | showcase | flow | grid | data | story
+             | signal | slate | course
+   title     may contain <em>…</em> for the gradient accent
+   items     variant-specific list (flow chips, grid tiles, story rows,
+             signal channels, marquee phrases, course steps)
+   meta      list of {label, value} pairs shown as a definition row
+   ========================================================================== #}
+
+{%- macro accentise(text) -%}
+{#- Wrap ~…~ runs in the gradient accent span. Everything else is escaped, so
+    this is safe to use with dynamic values such as service headings. -#}
+{%- if '~' in text -%}
+    {%- set parts = text.split('~') -%}
+    {%- for part in parts -%}
+        {%- if loop.index0 % 2 == 0 -%}{{ part }}
+        {%- else -%}<em>{{ part }}</em>
+        {%- endif -%}
+    {%- endfor -%}
+{%- else -%}
+    {{- text -}}
+{%- endif -%}
+{%- endmacro -%}
+
+{% macro page_hero(
+    variant,
+    eyebrow=None,
+    title='',
+    lead=None,
+    primary_text=None, primary_url=None,
+    secondary_text=None, secondary_url=None,
+    items=[],
+    meta=[],
+    breadcrumbs=[],
+    note=None,
+    warm=False
+) %}
+{%- set split = variant in ['lattice', 'showcase', 'flow', 'grid', 'data', 'story', 'signal', 'slate', 'course'] -%}
+<section class="page-hero page-hero--{{ variant }}{% if split %} page-hero--split{% endif %}{% if warm %} page-hero--warm{% endif %}"
+         aria-labelledby="hero-heading">
+
+    {# ---------------------------------------------------------------- #}
+    {% if variant == 'kinetic' %}
+    <div class="hero__bg" aria-hidden="true">
+        <div class="grid-veil"></div>
+        <div class="ambient ambient--blue" style="width:44vw;height:44vw;top:-8%;left:-6%;"></div>
+        <div class="ambient ambient--violet" style="width:38vw;height:38vw;top:2%;right:-4%;"></div>
+        <div class="ambient ambient--amber" style="width:40vw;height:26vw;bottom:-6%;left:32%;"></div>
+    </div>
+    {% endif %}
+
+    <div class="page-hero__inner">
+        <div class="page-hero__col">
+
+            {% if variant == 'kinetic' %}
+            <div class="hero-kinetic__float hero-kinetic__float--a" aria-hidden="true">
+                <strong>Workflow engine</strong>
+                <span>processing</span>
+            </div>
+            <div class="hero-kinetic__float hero-kinetic__float--b" aria-hidden="true">
+                <strong>Document intake</strong>
+                <span>142 fields extracted</span>
+            </div>
+            <div class="hero-kinetic__stage">
+                <span class="hero-kinetic__word" aria-hidden="true">
+                    HUMISENSE
+                    <span class="hero-kinetic__plate hero-kinetic__plate--a">HUMISENSE</span>
+                    <span class="hero-kinetic__plate hero-kinetic__plate--b">HUMISENSE</span>
+                    <span class="hero-kinetic__plate hero-kinetic__plate--c">HUMISENSE</span>
+                </span>
+                <div class="hero-kinetic__rule" aria-hidden="true"></div>
+            </div>
+            {% endif %}
+
+            {% if breadcrumbs %}
+            <nav class="breadcrumbs" aria-label="Breadcrumb">
+                <a href="{{ url_for('home') }}">Home</a>
+                {% for crumb in breadcrumbs %}
+                <span class="breadcrumbs-separator">/</span>
+                {% if crumb.url and not loop.last %}
+                <a href="{{ crumb.url }}">{{ crumb.label }}</a>
+                {% else %}
+                <span aria-current="page">{{ crumb.label }}</span>
+                {% endif %}
+                {% endfor %}
+            </nav>
+            {% endif %}
+
+            {% if eyebrow %}<p class="page-hero__eyebrow page-hero__fade" style="--d:0ms">{{ eyebrow }}</p>{% endif %}
+
+            <h1 id="hero-heading" class="page-hero__title" data-hero-title>{{ accentise(title) }}</h1>
+
+            {% if lead %}
+            <p class="page-hero__lead page-hero__fade" style="--d:360ms">{{ lead }}</p>
+            {% endif %}
+
+            {% if primary_text or secondary_text %}
+            <div class="page-hero__cta page-hero__fade" style="--d:460ms">
+                {% if primary_text %}
+                <a href="{{ primary_url }}" class="btn btn--primary btn--lg">
+                    {{ primary_text }}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                         stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+                {% endif %}
+                {% if secondary_text %}
+                <a href="{{ secondary_url }}" class="btn btn--ghost btn--lg">{{ secondary_text }}</a>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if note %}
+            <p class="page-hero__note page-hero__fade" style="--d:540ms">{{ note }}</p>
+            {% endif %}
+
+            {% if meta %}
+            <dl class="page-hero__meta page-hero__fade" style="--d:560ms">
+                {% for m in meta %}
+                <div>
+                    <dt>{{ m.label }}</dt>
+                    <dd>{{ m.value }}</dd>
+                </div>
+                {% endfor %}
+            </dl>
+            {% endif %}
+        </div>
+
+        {# --- Variant visual -------------------------------------------- #}
+        {% if variant not in ['kinetic', 'slate'] %}
+        <div class="page-hero__visual" aria-hidden="true">
+
+            {% if variant == 'lattice' %}
+            <div class="hero-lattice">
+                <svg viewBox="0 0 320 320" role="presentation">
+                    <g>
+                        <path class="hero-lattice__link" style="--d:200ms" d="M60 70 L160 160"/>
+                        <path class="hero-lattice__link" style="--d:280ms" d="M160 160 L268 88"/>
+                        <path class="hero-lattice__link" style="--d:360ms" d="M160 160 L70 240"/>
+                        <path class="hero-lattice__link" style="--d:440ms" d="M160 160 L250 250"/>
+                        <path class="hero-lattice__link" style="--d:520ms" d="M60 70 L70 240"/>
+                        <path class="hero-lattice__link" style="--d:600ms" d="M268 88 L250 250"/>
+                        <path class="hero-lattice__link" style="--d:680ms" d="M60 70 L268 88"/>
+                        <path class="hero-lattice__link" style="--d:760ms" d="M70 240 L250 250"/>
+                    </g>
+                    <g>
+                        <circle class="hero-lattice__halo" style="--d:0ms" cx="160" cy="160" r="34" fill="url(#latticeCore)"/>
+                        <circle class="hero-lattice__node" style="--d:520ms" cx="160" cy="160" r="20" fill="#2f5cff"/>
+                        <circle class="hero-lattice__node" style="--d:200ms" cx="60" cy="70" r="9" fill="#e8b23a"/>
+                        <circle class="hero-lattice__node" style="--d:300ms" cx="268" cy="88" r="9" fill="#e8722e"/>
+                        <circle class="hero-lattice__node" style="--d:400ms" cx="70" cy="240" r="9" fill="#d63a7e"/>
+                        <circle class="hero-lattice__node" style="--d:500ms" cx="250" cy="250" r="9" fill="#7b4dff"/>
+                    </g>
+                    <defs>
+                        <radialGradient id="latticeCore">
+                            <stop offset="0%" stop-color="#2f5cff" stop-opacity="0.34"/>
+                            <stop offset="100%" stop-color="#2f5cff" stop-opacity="0"/>
+                        </radialGradient>
+                    </defs>
+                    <text class="hero-lattice__label" x="60" y="54" text-anchor="middle">Engineering</text>
+                    <text class="hero-lattice__label" x="268" y="72" text-anchor="middle">AI</text>
+                    <text class="hero-lattice__label" x="70" y="264" text-anchor="middle">Data</text>
+                    <text class="hero-lattice__label" x="250" y="274" text-anchor="middle">Automation</text>
+                </svg>
+            </div>
+            {% if items %}
+            <ul class="hero-lattice__legend">
+                {% set swatches = ['#e8b23a', '#e8722e', '#d63a7e', '#7b4dff', '#2f5cff', '#12b5c9'] %}
+                {% for it in items %}
+                <li style="--d:{{ 700 + loop.index0 * 90 }}ms">
+                    <span class="hero-lattice__swatch"
+                          style="background:{{ it.color if it is mapping and it.color else swatches[loop.index0 % 6] }}"></span>
+                    {{ it.text if it is mapping else it }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            {% elif variant == 'showcase' %}
+            <div class="hero-showcase">
+                {% set accents = ['#2f5cff', '#e8722e', '#d63a7e'] %}
+                {% set labels = ['Speech', 'Agents', 'Automation'] %}
+                {% for i in range(3) %}
+                <div class="hero-showcase__card hero-showcase__card--{{ i + 1 }}" style="--d:{{ 260 + i * 160 }}ms">
+                    <div class="hero-showcase__bar">
+                        <span class="hero-showcase__dot"></span>
+                        <span class="hero-showcase__dot"></span>
+                        <span class="hero-showcase__dot"></span>
+                    </div>
+                    <div class="hero-showcase__body">
+                        <div class="hero-showcase__accent" style="background:linear-gradient(90deg,{{ accents[i] }},{{ accents[(i+1) % 3] }})"></div>
+                        <div class="hero-showcase__line"></div>
+                        <div class="hero-showcase__line"></div>
+                        <div class="hero-showcase__line"></div>
+                        <span class="hero-showcase__pill">{{ labels[i] }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% elif variant == 'flow' %}
+            <div class="hero-flow">
+                <div class="hero-flow__col hero-flow__col--manual">
+                    {% for it in items[:3] %}
+                    <div class="hero-flow__chip hero-flow__chip--manual" style="--d:{{ 300 + loop.index0 * 120 }}ms">
+                        {{ it.text if it is mapping else it }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="hero-flow__core">
+                    <span>AI</span><span>core</span>
+                </div>
+                <div class="hero-flow__col hero-flow__col--auto">
+                    {% for it in items[3:6] %}
+                    <div class="hero-flow__chip hero-flow__chip--auto" style="--d:{{ 700 + loop.index0 * 120 }}ms">
+                        {{ it.text if it is mapping else it }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% elif variant == 'grid' %}
+            <div class="hero-grid">
+                {% for it in items %}
+                <div class="hero-grid__tile {{ it.cls if it is mapping and it.cls else '' }}"
+                     style="--d:{{ 240 + loop.index0 * 70 }}ms">
+                    {{ it.text if it is mapping else it }}
+                </div>
+                {% endfor %}
+            </div>
+
+            {% elif variant == 'data' %}
+            <div class="hero-data">
+                <div class="hero-data__chart">
+                    {% set heights = [42, 68, 55, 82, 64, 94, 76, 58] %}
+                    {% for h in heights %}
+                    <div class="hero-data__bar {% if loop.index0 % 3 == 1 %}hero-data__bar--cool{% elif loop.index0 % 3 == 2 %}hero-data__bar--gold{% endif %}"
+                         style="height:{{ h }}%;--d:{{ 260 + loop.index0 * 80 }}ms"></div>
+                    {% endfor %}
+                    <svg class="hero-data__trace" viewBox="0 0 100 100" preserveAspectRatio="none" role="presentation">
+                        <path d="M2 78 L16 52 L30 62 L44 34 L58 46 L72 20 L86 30 L98 12"/>
+                    </svg>
+                </div>
+                <div class="hero-data__caption">
+                    <span>Observed signal</span>
+                    <span>n = 8</span>
+                </div>
+            </div>
+
+            {% elif variant == 'story' %}
+            <div class="hero-story">
+                <div class="hero-story__numeral">01</div>
+                <div class="hero-story__stack">
+                    {% for it in items %}
+                    <dl class="hero-story__row" style="--d:{{ 320 + loop.index0 * 120 }}ms">
+                        <dt>{{ it.label if it is mapping else 'Step ' ~ loop.index }}</dt>
+                        <dd>{{ it.text if it is mapping else it }}</dd>
+                    </dl>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% elif variant == 'signal' %}
+            <div>
+                <div class="hero-signal">
+                    <div class="hero-signal__ring hero-signal__ring--1" style="--d:200ms"></div>
+                    <div class="hero-signal__ring hero-signal__ring--2" style="--d:320ms"></div>
+                    <div class="hero-signal__ring hero-signal__ring--3" style="--d:440ms"></div>
+                    <div class="hero-signal__pulse"></div>
+                    <div class="hero-signal__core">
+                        <small>Reply</small>
+                        <span>Within 1 business day</span>
+                    </div>
+                </div>
+                {% if items %}
+                <ul class="hero-signal__list">
+                    {% for it in items %}
+                    <li><b>{{ it.label if it is mapping else '—' }}</b> {{ it.text if it is mapping else it }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+
+            {% elif variant == 'course' %}
+            <div class="hero-course">
+                <span class="hero-course__fill"></span>
+                {% for it in items %}
+                <div class="hero-course__step {% if loop.index0 < 1 %}hero-course__step--done{% endif %}"
+                     style="--d:{{ 300 + loop.index0 * 130 }}ms">{{ it.text if it is mapping else it }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if variant == 'slate' and items %}
+        <div class="hero-slate__marquee" aria-hidden="true">
+            <div class="hero-slate__track">
+                {% for it in items %}<span>{{ it.text if it is mapping else it }}</span>{% endfor %}
+                {% for it in items %}<span>{{ it.text if it is mapping else it }}</span>{% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endmacro %}

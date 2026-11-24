@@ -635,6 +635,8 @@ main > .min-h-screen { min-height: calc(100svh - var(--nav-h)); }
 .ambient--blue { background: radial-gradient(circle, rgba(47,92,255,0.34), transparent 68%); }
 .ambient--violet { background: radial-gradient(circle, rgba(123,77,255,0.3), transparent 68%); }
 .ambient--cyan { background: radial-gradient(circle, rgba(18,181,201,0.24), transparent 68%); }
+.ambient--amber { background: radial-gradient(circle, rgba(232,178,58,0.3), transparent 68%); }
+.ambient--magenta { background: radial-gradient(circle, rgba(214,58,126,0.26), transparent 68%); }
 
 /* Fine grid texture, used behind hero and process */
 .grid-veil {
