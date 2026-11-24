@@ -2,22 +2,29 @@
 
 
 {% block content %}
-<!-- Page Header -->
-<section class="page-header">
-    <div class="page-header-bg">
-        <div class="page-header-gradient"></div>
-    </div>
-    <div class="page-header-content">
-        <span class="hero-tagline">MAKE IT HAPPEN</span>
-        <h1 class="page-header-title">AI Academy</h1>
-        <p class="page-header-subtitle">
-            Master AI technologies with hands-on courses taught by industry experts. From Python to LLMs, build the skills of tomorrow.
-        </p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='grid',
+    eyebrow='AI Academy',
+    title='Learn the systems ~you will run.~',
+    lead='Hands-on courses in the technologies Humisense implements every day. Build working automations, not slide decks.',
+    primary_text='Browse courses', primary_url='#course-list',
+    secondary_text='Ask about training', secondary_url=url_for('contact'),
+    items=[
+        {'text': 'Fundamentals', 'cls': 'hero-grid__tile--accent'},
+        {'text': 'Prompting', 'cls': ''},
+        {'text': 'Agents', 'cls': 'hero-grid__tile--solid'},
+        {'text': 'Workflows', 'cls': ''},
+        {'text': 'Documents', 'cls': 'hero-grid__tile--wide'},
+        {'text': 'Evaluation', 'cls': ''},
+        {'text': 'Deployment', 'cls': 'hero-grid__tile--tall'},
+        {'text': 'Operations', 'cls': ''},
+        {'text': 'Governance', 'cls': ''},
+    ]
+) }}
 
 <!-- Learning Paths -->
-<section class="section">
+<section class="section" id="course-list">
     <div class="section-container">
         <div class="section-header" data-animate>
             <span class="section-label">
@@ -43,8 +50,8 @@
                 <h3 class="text-xl font-bold mb-sm">AI Foundations</h3>
                 <p class="text-secondary mb-lg">Start your AI journey with Python fundamentals and basic machine learning concepts.</p>
                 <div class="flex flex-wrap gap-sm mb-lg">
-                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Beginner</span>
-                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary">6 courses</span>
+                    <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">Beginner</span>
+                    <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">6 courses</span>
                 </div>
                 <a href="{{ url_for('course_detail', course_id='python-ai') }}" class="btn btn-primary w-full justify-center">
                     Start Path
@@ -60,8 +67,8 @@
                 <h3 class="text-xl font-bold mb-sm">ML Engineering</h3>
                 <p class="text-secondary mb-lg">Deep dive into machine learning algorithms, model training, and production deployment.</p>
                 <div class="flex flex-wrap gap-sm mb-lg">
-                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Intermediate</span>
-                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary">8 courses</span>
+                    <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">Intermediate</span>
+                    <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">8 courses</span>
                 </div>
                 <a href="{{ url_for('course_detail', course_id='machine-learning') }}" class="btn btn-primary w-full justify-center">
                     Start Path
@@ -77,8 +84,8 @@
                 <h3 class="text-xl font-bold mb-sm">GenAI Mastery</h3>
                 <p class="text-secondary mb-lg">Master generative AI, LLMs, and build production-ready AI applications.</p>
                 <div class="flex flex-wrap gap-sm mb-lg">
-                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Advanced</span>
-                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary">10 courses</span>
+                    <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">Advanced</span>
+                    <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">10 courses</span>
                 </div>
                 <a href="{{ url_for('course_detail', course_id='generative-ai') }}" class="btn btn-primary w-full justify-center">
                     Start Path

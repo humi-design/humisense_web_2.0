@@ -3,46 +3,28 @@
 
 {% block content %}
 <!-- Page Header / Hero Section -->
-<section class="page-header">
-    <div class="page-header-bg">
-        <div class="page-header-gradient"></div>
-    </div>
-    <div class="page-header-content">
-        <span class="course-level {{ course.level|lower }}">{{ course.level }}</span>
-        <h1 class="page-header-title gradient-text">{{ course.name }}</h1>
-        <p class="page-header-subtitle">{{ course.description }}</p>
-        
-        <div class="flex flex-wrap justify-center gap-xl mt-2xl mb-2xl">
-            <div class="flex items-center gap-sm text-secondary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: {{ course.color }}">
-                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-                </svg>
-                <span>{{ course.duration }}</span>
-            </div>
-            <div class="flex items-center gap-sm text-secondary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: {{ course.color }}">
-                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
-                </svg>
-                <span>{{ course.modules }} Modules</span>
-            </div>
-            <div class="flex items-center gap-sm text-secondary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: {{ course.color }}">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-                <span>Certificate Included</span>
-            </div>
-        </div>
-        
-        <a href="#enroll" class="btn btn-primary btn-lg">
-            <span class="flex items-center gap-2">
-                Enroll Now
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-                </svg>
-            </span>
-        </a>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='course',
+    eyebrow=course.level ~ ' · ' ~ course.duration ~ ' · ' ~ course.modules ~ ' modules',
+    title=course.name,
+    lead=course.description,
+    primary_text='Enrol now', primary_url='#enroll',
+    secondary_text='All courses', secondary_url=url_for('courses'),
+    breadcrumbs=[{'label': 'Academy', 'url': url_for('courses')}, {'label': course.name}],
+    items=[
+        {'text': 'Foundations and setup'},
+        {'text': 'Core techniques'},
+        {'text': 'Building the workflow'},
+        {'text': 'Testing and evaluation'},
+        {'text': 'Deploying and operating'},
+    ],
+    meta=[
+        {'label': 'Level', 'value': course.level},
+        {'label': 'Duration', 'value': course.duration},
+        {'label': 'Format', 'value': course.modules ~ ' modules'},
+    ]
+) }}
 
 <!-- Learning Outcomes -->
 <section class="section">
@@ -92,7 +74,7 @@
             <div class="card mb-lg overflow-hidden">
                 <div class="p-xl">
                     <div class="flex items-center gap-lg mb-lg">
-                        <div class="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-white flex-shrink-0" style="background-color: {{ course.color }};">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center font-bold flex-shrink-0" style="background-color: {{ course.color }}; color: #16130a;">
                             {{ module.module }}
                         </div>
                         <h3 class="text-lg font-semibold">{{ module.title }}</h3>

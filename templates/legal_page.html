@@ -5,18 +5,15 @@
 {% endblock %}
 
 {% block content %}
-<section class="page-header">
-    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
-    <div class="page-header-content">
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-            <a href="{{ url_for('home') }}">Home</a>
-            <span class="breadcrumbs-separator">/</span>
-            <span aria-current="page">{{ legal.title }}</span>
-        </nav>
-        <h1 class="page-header-title">{{ legal.title }}</h1>
-        <p class="page-header-subtitle">{{ legal.summary }}</p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='slate',
+    eyebrow='Legal',
+    title=legal.title,
+    lead=legal.summary,
+    breadcrumbs=[{'label': legal.title}],
+    items=[]
+) }}
 
 <section class="section">
     <div class="section-container">

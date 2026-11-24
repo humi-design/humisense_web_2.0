@@ -4,105 +4,10 @@
    Builds on the tokens in humi.css; no new colours or fonts are introduced.
    ========================================================================== */
 
-/* --- Page header -------------------------------------------------------- */
+/* Shared primitives (.page-header, .section-container, .breadcrumbs,
+   .hero-tagline, .faq-*, .cta-*) live in humi.css section 04. */
 
-.page-header {
-    position: relative;
-    padding: calc(var(--nav-h) + clamp(3rem, 7vw, 6rem)) 0 clamp(3rem, 6vw, 5rem);
-    overflow: hidden;
-    isolation: isolate;
-}
 
-.page-header-bg {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    overflow: hidden;
-}
-
-.page-header-gradient {
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(ellipse 55% 60% at 18% 10%, rgba(47, 92, 255, 0.12), transparent 64%),
-        radial-gradient(ellipse 45% 50% at 85% 20%, rgba(123, 77, 255, 0.11), transparent 64%);
-}
-
-.dark .page-header-gradient {
-    background:
-        radial-gradient(ellipse 55% 60% at 18% 10%, rgba(47, 92, 255, 0.2), transparent 64%),
-        radial-gradient(ellipse 45% 50% at 85% 20%, rgba(123, 77, 255, 0.18), transparent 64%);
-}
-
-.page-header-content {
-    width: 100%;
-    max-width: var(--shell);
-    margin-inline: auto;
-    padding-inline: var(--gutter);
-}
-
-.page-header-content > * {
-    max-width: 52rem;
-}
-
-.page-header-title {
-    font-size: clamp(2rem, 4.4vw, 3.4rem);
-    font-weight: 600;
-    letter-spacing: -0.032em;
-    line-height: 1.08;
-    margin: 0 0 var(--sp-4);
-}
-
-.page-header-subtitle {
-    font-size: var(--t-lg);
-    line-height: 1.6;
-    color: var(--ink-soft);
-    margin: 0 0 var(--sp-5);
-    max-width: 46rem;
-}
-
-.hero-tagline {
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: var(--t-xs);
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: var(--sp-3);
-}
-
-/* --- Breadcrumbs -------------------------------------------------------- */
-
-.breadcrumbs {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.45rem;
-    font-size: var(--t-xs);
-    color: var(--ink-faint);
-    margin-bottom: var(--sp-5);
-}
-
-.breadcrumbs a {
-    color: var(--ink-mute);
-    transition: color var(--dur-fast);
-}
-
-.breadcrumbs a:hover { color: var(--blue); }
-
-.breadcrumbs-separator { opacity: 0.5; }
-
-.breadcrumbs [aria-current='page'] { color: var(--ink-soft); }
-
-/* --- Layout ------------------------------------------------------------- */
-
-.section-container {
-    width: 100%;
-    max-width: var(--shell);
-    margin-inline: auto;
-    padding-inline: var(--gutter);
-}
 
 .seo-layout {
     display: grid;
@@ -225,7 +130,7 @@
     top: 1.3rem;
     font-family: var(--font-mono);
     font-size: var(--t-xs);
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     letter-spacing: 0.06em;
 }
 
@@ -299,7 +204,7 @@
     gap: 0.6rem;
     font-family: var(--font-mono);
     font-size: var(--t-xs);
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     margin-top: 0.85rem;
 }
 
@@ -490,7 +395,7 @@ a.seo-card { color: inherit; }
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     margin: 0 0 0.75rem;
 }
 
@@ -522,7 +427,7 @@ a.seo-card { color: inherit; }
 
 .seo-aside-links a::before {
     content: '\2192';
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     font-size: 0.8em;
 }
 
@@ -530,7 +435,7 @@ a.seo-card { color: inherit; }
 
 .seo-aside-note {
     font-size: var(--t-xs) !important;
-    color: var(--ink-faint) !important;
+    color: var(--ink-meta) !important;
     margin: 0.85rem 0 0 !important;
 }
 
@@ -551,7 +456,7 @@ a.seo-card { color: inherit; }
     letter-spacing: 0.03em;
     color: var(--ink-mute);
     padding: 0.28rem 0.65rem;
-    border-radius: var(--r-pill);
+    border-radius: var(--r-sm);
     border: 1px solid var(--line);
     background: var(--bg-deep);
 }
@@ -579,64 +484,6 @@ a.seo-card { color: inherit; }
 .seo-inline-links a:hover {
     border-bottom-color: var(--blue);
 }
-
-/* --- FAQ accordion ------------------------------------------------------ */
-
-.faq-list {
-    border-top: 1px solid var(--line);
-    margin-bottom: var(--sp-5);
-}
-
-.faq-item { border-bottom: 1px solid var(--line); }
-
-.faq-question {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1.25rem;
-    width: 100%;
-    padding: 1.15rem 0;
-    text-align: left;
-    font-family: var(--font-display);
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: -0.012em;
-    color: var(--ink);
-    line-height: 1.45;
-    transition: color var(--dur-fast);
-}
-
-.faq-question:hover { color: var(--blue); }
-
-.faq-icon {
-    flex-shrink: 0;
-    margin-top: 0.15rem;
-    color: var(--ink-faint);
-    transition: transform var(--dur-base) var(--ease-out), color var(--dur-fast);
-}
-
-.faq-item.is-open .faq-icon {
-    transform: rotate(45deg);
-    color: var(--blue);
-}
-
-.faq-answer {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows var(--dur-base) var(--ease-out);
-}
-
-.faq-item.is-open .faq-answer { grid-template-rows: 1fr; }
-
-.faq-answer-content {
-    overflow: hidden;
-    font-size: var(--t-sm);
-    line-height: 1.7;
-    color: var(--ink-mute);
-    padding-right: 2.5rem;
-}
-
-.faq-item.is-open .faq-answer-content { padding-bottom: 1.15rem; }
 
 /* --- Article ------------------------------------------------------------ */
 
@@ -682,7 +529,7 @@ a.seo-card { color: inherit; }
     align-items: center;
     gap: 0.5rem;
     font-size: var(--t-xs);
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     padding-bottom: var(--sp-5);
     margin-bottom: var(--sp-6);
     border-bottom: 1px solid var(--line);
@@ -693,7 +540,7 @@ a.seo-card { color: inherit; }
 .seo-updated {
     font-family: var(--font-mono);
     font-size: var(--t-xs);
-    color: var(--ink-faint);
+    color: var(--ink-meta);
 }
 
 /* --- Callout ------------------------------------------------------------ */
@@ -774,7 +621,7 @@ a.seo-card { color: inherit; }
 
 .seo-case-study-note {
     font-size: var(--t-xs) !important;
-    color: var(--ink-faint) !important;
+    color: var(--ink-meta) !important;
     padding-top: 0.6rem;
     border-top: 1px solid var(--line);
     margin-top: 0.75rem !important;
@@ -835,65 +682,6 @@ a.seo-card { color: inherit; }
     text-underline-offset: 2px;
 }
 
-/* --- CTA band ----------------------------------------------------------- */
-
-.cta-section {
-    position: relative;
-    padding-block: clamp(3.5rem, 7vw, 6rem);
-    margin-top: clamp(2rem, 4vw, 3rem);
-    border-top: 1px solid var(--line);
-    overflow: hidden;
-    isolation: isolate;
-}
-
-.cta-bg {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-}
-
-.cta-gradient {
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(ellipse 50% 80% at 50% 110%, rgba(47, 92, 255, 0.14), transparent 68%),
-        radial-gradient(ellipse 40% 60% at 78% 0%, rgba(123, 77, 255, 0.1), transparent 64%);
-}
-
-.dark .cta-gradient {
-    background:
-        radial-gradient(ellipse 50% 80% at 50% 110%, rgba(47, 92, 255, 0.22), transparent 68%),
-        radial-gradient(ellipse 40% 60% at 78% 0%, rgba(123, 77, 255, 0.16), transparent 64%);
-}
-
-.cta-content {
-    width: 100%;
-    max-width: var(--shell);
-    margin-inline: auto;
-    padding-inline: var(--gutter);
-    text-align: center;
-}
-
-.cta-title {
-    font-size: clamp(1.6rem, 3.4vw, 2.6rem);
-    letter-spacing: -0.03em;
-    margin: 0 0 var(--sp-3);
-}
-
-.cta-subtitle {
-    font-size: var(--t-lg);
-    color: var(--ink-mute);
-    max-width: 42rem;
-    margin: 0 auto var(--sp-5);
-}
-
-.cta-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.75rem;
-}
-
 /* --- Hero actions ------------------------------------------------------- */
 
 .seo-hero-actions {
@@ -915,8 +703,74 @@ a.seo-card { color: inherit; }
 }
 
 @media (max-width: 620px) {
-    .seo-hero-actions .btn,
-    .cta-buttons .btn { width: 100%; }
+    .seo-hero-actions .btn { width: 100%; }
     .seo-steps li { padding-left: 2.5rem; }
-    .faq-answer-content { padding-right: 0; }
+}
+
+/* --- Masterclass hero extras --------------------------------------------
+   Instructor identity and live seat count. Both are real data from the
+   Masterclass record, so they sit with the hero facts rather than compete
+   with the headline. */
+
+.mc-hero-extras {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+}
+
+.mc-hero-instructor {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.mc-hero-instructor img,
+.mc-hero-instructor__initial {
+    width: 48px;
+    height: 48px;
+    flex: none;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--hero-hair);
+}
+
+.mc-hero-instructor__initial {
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--hero-ink);
+    background: color-mix(in srgb, var(--mustard) 22%, transparent);
+}
+
+.mc-hero-instructor__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--t-sm);
+    font-weight: 600;
+    color: var(--hero-ink);
+}
+
+.mc-hero-instructor__role {
+    margin: 0.15rem 0 0;
+    font-size: var(--t-xs);
+    color: var(--hero-mute);
+}
+
+.mc-hero-seats {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    letter-spacing: 0.04em;
+    color: var(--hero-mute);
+    white-space: nowrap;
+}
+
+.mc-hero-seats span {
+    color: var(--orange);
+    font-weight: 700;
 }

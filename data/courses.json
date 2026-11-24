@@ -523,7 +523,7 @@
     "id": "llm-engineering",
     "name": "LLM Engineering",
     "icon": "cpu",
-    "color": "#8B5CF6",
+    "color": "#A78BFA",
     "level": "Advanced",
     "duration": "10 weeks",
     "modules": 12,

@@ -5,75 +5,20 @@
 {# ===================================================================
    HERO — liquid-glass wordmark
    =================================================================== #}
-<section class="hero" aria-labelledby="hero-heading">
-    <div class="hero__bg" aria-hidden="true">
-        <div class="grid-veil"></div>
-        <div class="ambient ambient--blue" style="width:44vw;height:44vw;top:-8%;left:-6%;"></div>
-        <div class="ambient ambient--violet" style="width:38vw;height:38vw;top:2%;right:-4%;"></div>
-        <div class="ambient ambient--cyan" style="width:40vw;height:26vw;bottom:-6%;left:32%;"></div>
-    </div>
-
-    <div class="hero__float" style="top:19%;right:6.5%;" aria-hidden="true">
-        <div class="float-panel">
-            <strong>Workflow engine</strong>
-            <div class="float-panel__row"><span class="dot-live"></span>processing</div>
-            <div class="spark">
-                <i style="height:38%"></i><i style="height:62%"></i><i style="height:44%"></i>
-                <i style="height:80%"></i><i style="height:56%"></i><i style="height:94%"></i>
-                <i style="height:70%"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="hero__float" style="bottom:23%;right:11%;" aria-hidden="true">
-        <div class="float-panel">
-            <strong>Document intake</strong>
-            <div class="float-panel__row">142 fields extracted</div>
-        </div>
-    </div>
-
-    <div class="hero__inner">
-        <p class="eyebrow" data-reveal>The intelligence behind what's next</p>
-
-        <div class="wordmark" data-wordmark>
-            <div class="wordmark__stage">
-                <div class="wordmark__letters" aria-hidden="true">
-                    <span class="wordmark__letter">H</span><span class="wordmark__letter">U</span><span class="wordmark__letter">M</span><span class="wordmark__letter">I</span><span class="wordmark__letter">S</span><span class="wordmark__letter">E</span><span class="wordmark__letter">N</span><span class="wordmark__letter">S</span><span class="wordmark__letter">E</span>
-                </div>
-                <span class="wordmark__sheen" aria-hidden="true"></span>
-                <span class="wordmark__reflection" aria-hidden="true"></span>
-            </div>
-            <h1 id="hero-heading" class="visually-hidden">Humisense</h1>
-        </div>
-
-        <div class="hero__copy">
-            <p class="hero__title" data-reveal data-reveal-delay="1">
-                We don't just imagine the future.<br>
-                <em>We make it happen.</em>
-            </p>
-
-            <p class="hero__sub" data-reveal data-reveal-delay="2">
-                We build intelligent digital experiences, AI-powered products and
-                automation systems that help businesses move beyond possibilities.
-            </p>
-
-            <div class="hero__cta" data-reveal data-reveal-delay="3">
-                <a href="{{ url_for('services') }}" class="btn btn--primary btn--lg">
-                    Explore what we build
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                         stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-                <a href="{{ url_for('contact') }}" class="btn btn--ghost btn--lg">Let's work together</a>
-            </div>
-
-            <div class="scroll-cue" data-reveal data-reveal-delay="4">
-                <span class="scroll-cue__track" aria-hidden="true"></span>
-                Scroll
-            </div>
-        </div>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='kinetic',
+    eyebrow="The intelligence behind what's next",
+    title='We build what\'s ~next.~',
+    lead='Humisense is a global AI automation and intelligent solutions company. We design, build and run the systems that move work forward: agents, workflows, document pipelines and products.',
+    primary_text='Explore what we build', primary_url=url_for('services'),
+    secondary_text="Let's work together", secondary_url=url_for('contact'),
+    meta=[
+        {'label': 'Focus', 'value': 'AI automation & products'},
+        {'label': 'Model', 'value': 'Implementation partner'},
+        {'label': 'Reach', 'value': 'Remote, worldwide'},
+    ]
+) }}
 
 {# ===================================================================
    CAPABILITY STRIP

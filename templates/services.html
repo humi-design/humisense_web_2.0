@@ -6,22 +6,29 @@
 {% endblock %}
 
 {% block content %}
-<!-- Page Header -->
-<section class="page-header">
-    <div class="page-header-bg">
-        <div class="page-header-gradient"></div>
-    </div>
-    <div class="page-header-content">
-        <span class="hero-tagline">MAKE IT HAPPEN</span>
-        <h1 class="page-header-title">AI Services</h1>
-        <p class="page-header-subtitle">
-            From strategy to implementation, our team of AI experts helps you build, deploy, and scale intelligent solutions that drive business outcomes.
-        </p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='lattice',
+    eyebrow='Services',
+    title='Complex problems. ~Intelligent solutions.~',
+    lead='Strategy, engineering and AI implementation in one team. We map the process, build the automation and stay until it runs in production.',
+    primary_text='Discuss your process', primary_url=url_for('contact'),
+    secondary_text='See all services', secondary_url='#core-services',
+    items=[
+        {'text': 'AI automation', 'color': '#e8b23a'},
+        {'text': 'Workflow engineering', 'color': '#e8722e'},
+        {'text': 'Document intelligence', 'color': '#d63a7e'},
+        {'text': 'Custom AI agents', 'color': '#7b4dff'},
+    ],
+    meta=[
+        {'label': 'Engagement', 'value': 'Discovery to production'},
+        {'label': 'Delivery', 'value': 'Fixed scope or retained'},
+        {'label': 'Reach', 'value': 'Remote, worldwide'},
+    ]
+) }}
 
 <!-- Core AI Automation Services -->
-<section class="section">
+<section class="section" id="core-services">
     <div class="section-container">
         <div class="section-header" data-animate>
             <span class="section-label">Core Focus</span>
@@ -96,7 +103,7 @@
                 Broader capability that supports an automation programme when it is needed.
             </p>
         </div>
-        <div class="services-grid stagger-children" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+        <div class="services-grid stagger-children">
             {% for service in services %}
             <div class="service-card" style="padding: 2rem;">
                 <div class="service-icon" style="background: {{ service.color }}15; color: {{ service.color }}; width: 56px; height: 56px; border-radius: 1rem;">
@@ -159,7 +166,7 @@
                 </ul>
                 <div class="flex flex-wrap gap-sm mb-lg">
                     {% for tech in service.technologies[:4] %}
-                    <span class="text-xs px-3 py-1 rounded-full bg-tertiary text-secondary">{{ tech }}</span>
+                    <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary text-secondary">{{ tech }}</span>
                     {% endfor %}
                 </div>
                 <p class="text-sm font-semibold text-accent">{{ service.starting_price }}</p>

@@ -5,25 +5,21 @@
 {% endblock %}
 
 {% block content %}
-<section class="page-header">
-    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
-    <div class="page-header-content">
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-            <a href="{{ url_for('home') }}">Home</a>
-            <span class="breadcrumbs-separator">/</span>
-            <a href="{{ url_for('services') }}">Services</a>
-            <span class="breadcrumbs-separator">/</span>
-            <span aria-current="page">{{ service.eyebrow }}</span>
-        </nav>
-        <span class="hero-tagline">MAKE IT HAPPEN</span>
-        <h1 class="page-header-title">{{ service.h1 }}</h1>
-        <p class="page-header-subtitle">{{ service.summary }}</p>
-        <div class="seo-hero-actions">
-            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg" data-cta="service-hero">Discuss your process</a>
-            <a href="{{ url_for('services') }}" class="btn btn-secondary btn-lg">All services</a>
-        </div>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant=service.hero_variant|default('slate'),
+    eyebrow=service.eyebrow,
+    title=service.hero_title|default(service.h1),
+    lead=service.summary,
+    primary_text='Discuss your process', primary_url=url_for('contact'),
+    secondary_text='All services', secondary_url=url_for('services'),
+    breadcrumbs=[{'label': 'Services', 'url': url_for('services')}, {'label': service.eyebrow}],
+    items=service.technologies or service.capabilities or [],
+    meta=[
+        {'label': 'Engagement', 'value': 'Discovery to production'},
+        {'label': 'Delivery', 'value': 'Remote, worldwide'},
+    ]
+) }}
 
 <section class="section">
     <div class="section-container">

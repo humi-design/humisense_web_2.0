@@ -5,23 +5,16 @@
 {% endblock %}
 
 {% block content %}
-<section class="page-header">
-    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
-    <div class="page-header-content">
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-            <a href="{{ url_for('home') }}">Home</a>
-            <span class="breadcrumbs-separator">/</span>
-            <span aria-current="page">Case studies</span>
-        </nav>
-        <span class="hero-tagline">HOW THE WORK LOOKS</span>
-        <h1 class="page-header-title">Reference Implementations</h1>
-        <p class="page-header-subtitle">
-            These are reference implementations: they describe the problem, the approach and the
-            components involved. Client names and commercial figures are published only where the
-            client has approved disclosure, so they are not included here.
-        </p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='grid',
+    eyebrow='Reference implementations',
+    title='Systems we have ~actually shipped.~',
+    lead='Reference builds and prototypes, each labelled with its real stage. We do not publish client names or results we cannot evidence.',
+    primary_text='Discuss a similar build', primary_url=url_for('contact'),
+    secondary_text='See services', secondary_url=url_for('services'),
+    breadcrumbs=[{'label': 'Case studies'}]
+) }}
 
 <section class="section">
     <div class="section-container">

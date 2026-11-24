@@ -2,22 +2,18 @@
 
 
 {% block content %}
-<!-- Page Header -->
-<section class="page-header">
-    <div class="page-header-bg">
-        <div class="page-header-gradient"></div>
-    </div>
-    <div class="page-header-content">
-        <span class="hero-tagline">MAKE IT HAPPEN</span>
-        <h1 class="page-header-title">AI Research Lab</h1>
-        <p class="page-header-subtitle">
-            Advancing the boundaries of artificial intelligence through rigorous scientific exploration and practical innovation.
-        </p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='data',
+    eyebrow='Research',
+    title='Applied research, ~not press releases.~',
+    lead='We publish what we build and measure: extraction accuracy, workflow reliability and the failure modes that matter in production.',
+    primary_text='Read the work', primary_url='#research-list',
+    secondary_text='Talk to the team', secondary_url=url_for('contact')
+) }}
 
 <!-- Mission Section -->
-<section class="section">
+<section class="section" id="research-list">
     <div class="section-container">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4xl items-center">
             <div data-animate>
@@ -110,9 +106,9 @@
                         <h4 class="text-xl font-semibold mt-sm mb-sm">Emergent Reasoning in Multi-Agent Systems</h4>
                         <p class="text-secondary mb-lg">We present a novel framework for enabling autonomous reasoning in multi-agent AI systems, demonstrating significant improvements in complex task completion.</p>
                         <div class="flex flex-wrap gap-sm">
-                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Multi-Agent</span>
-                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Reasoning</span>
-                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Emergent Behavior</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">Multi-Agent</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">Reasoning</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">Emergent Behavior</span>
                         </div>
                     </div>
                     <a href="#" class="btn btn-secondary">Read Paper</a>
@@ -126,9 +122,9 @@
                         <h4 class="text-xl font-semibold mt-sm mb-sm">Scalable Voice Synthesis with Emotional Intelligence</h4>
                         <p class="text-secondary mb-lg">A new approach to voice synthesis that captures emotional nuance while maintaining real-time performance for production applications.</p>
                         <div class="flex flex-wrap gap-sm">
-                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Voice AI</span>
-                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Generative Models</span>
-                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Emotion Detection</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">Voice AI</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">Generative Models</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">Emotion Detection</span>
                         </div>
                     </div>
                     <a href="#" class="btn btn-secondary">Read Paper</a>
@@ -142,9 +138,9 @@
                         <h4 class="text-xl font-semibold mt-sm mb-sm">Context-Aware Conversational AI for Enterprise</h4>
                         <p class="text-secondary mb-lg">Building on transformer architectures, we introduce enterprise-specific optimizations for conversational AI that maintain context across extended interactions.</p>
                         <div class="flex flex-wrap gap-sm">
-                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">NLP</span>
-                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Conversational AI</span>
-                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Enterprise</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">NLP</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">Conversational AI</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-tertiary">Enterprise</span>
                         </div>
                     </div>
                     <a href="#" class="btn btn-secondary">Read Paper</a>

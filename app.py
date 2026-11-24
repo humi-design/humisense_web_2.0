@@ -312,8 +312,25 @@ def _not_found_seo():
     )
 
 
+# Each service page gets its own hero composition and movement, so the pages
+# read as distinct rather than one template repeated ten times.
+SERVICE_HERO_VARIANTS = {
+    'ai-automation': 'flow',
+    'ai-workflow-automation': 'flow',
+    'ai-agents': 'lattice',
+    'rfq-automation': 'slate',
+    'quotation-automation': 'slate',
+    'document-automation': 'grid',
+    'sales-automation': 'flow',
+    'lead-generation-automation': 'slate',
+    'business-process-automation': 'flow',
+    'ai-consulting': 'story',
+}
+
+
 def _service_page(slug):
-    service = SERVICES_BY_SLUG[slug]
+    service = dict(SERVICES_BY_SLUG[slug])
+    service['hero_variant'] = SERVICE_HERO_VARIANTS.get(slug, 'slate')
     path = '/' + slug
     faq_node = {
         '@type': 'FAQPage',
@@ -350,8 +367,21 @@ def _service_page(slug):
     )
 
 
+# Industries lead with different compositions: the document-heavy ones show a
+# pipeline, the commercial ones show the sales lattice.
+INDUSTRY_HERO_VARIANTS = {
+    'manufacturing': 'flow',
+    'industrial-distribution': 'slate',
+    'wholesale': 'showcase',
+    'b2b-businesses': 'lattice',
+    'professional-services': 'story',
+    'small-businesses': 'grid',
+}
+
+
 def _industry_page(slug):
-    industry = INDUSTRIES_BY_SLUG[slug]
+    industry = dict(INDUSTRIES_BY_SLUG[slug])
+    industry['hero_variant'] = INDUSTRY_HERO_VARIANTS.get(slug, 'slate')
     path = f'/industries/{slug}'
     faq_node = {
         '@type': 'FAQPage',
@@ -414,7 +444,7 @@ _register_service_routes()
 
 @app.route('/industries')
 def industries():
-    hub = industry_hub()
+    hub = dict(industry_hub(), hero_variant='lattice')
     return render_template(
         'hub_page.html', hub=hub,
         seo=seo_lib.page('industries', jsonld=_graph(
@@ -445,7 +475,7 @@ def industry_page(slug):
 
 @app.route('/resources')
 def resources():
-    hub = resources_hub()
+    hub = dict(resources_hub(), hero_variant='data')
     return render_template(
         'hub_page.html', hub=hub,
         seo=seo_lib.page('resources', jsonld=_graph(

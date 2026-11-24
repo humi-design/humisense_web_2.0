@@ -7,7 +7,9 @@ Repository context for agents working on the Humisense website.
 - Flask application factory-less single `app.py` (~800 lines), SQLAlchemy models in `models.py`,
   WTForms in `forms.py`, extensions in `extensions.py`, business logic in `services/`.
 - Templates: Jinja2, extending `templates/base.html`. Design system lives in
-  `static/css/premium.css` (CSS custom properties `--color-*`, `--text-*`, `--space-*`).
+  `static/css/humi.css` (CSS custom properties: `--ink*`, `--bg*`, `--line*` for colour,
+  `--r-*` for radii, `--sp-*` for spacing). `base.html` links `humi.css`, `legacy.css`
+  and `hero-system.css`; `seo-pages.css` is linked per page by the SEO templates.
   Tailwind is loaded via CDN config in `base.html` for utility classes only.
 - Content is data, not templates: `content/*.py` holds services, industries, articles,
   FAQs, legal and hub copy. Routes render those dicts through shared templates.
@@ -66,7 +68,8 @@ after editing them.
 
 - British spelling in prose ("optimisation", "organisation"), except in code identifiers.
 - Templates keep existing class names; new SEO page styles go in `static/css/seo-pages.css`
-  and must reuse the `--color-*` / `--text-*` / `--space-*` tokens from `premium.css`.
+  and must reuse the `--ink*` / `--bg*` / `--line*` / `--r-*` / `--sp-*` tokens from `humi.css`.
+  Small chips and labels use `--r-sm`; `--r-pill` is reserved for navigation links.
 - Analytics: `static/js/analytics.js` pushes to `dataLayer` for GTM container
   `GTM-WJKSCNR3`. Events: `cta_click`, `contact_email_click`, `contact_phone_click`,
   `generate_lead`, `scroll_depth`. No personal data in events.

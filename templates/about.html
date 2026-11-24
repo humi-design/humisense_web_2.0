@@ -2,21 +2,21 @@
 
 
 {% block content %}
-<!-- Page Header -->
-<section class="page-header">
-    <div class="page-header-bg">
-        <div class="page-header-gradient"></div>
-    </div>
-    <div class="page-header-content">
-        <span class="hero-tagline">MAKE IT HAPPEN</span>
-        <h1 class="page-header-title">About HUMISENSE</h1>
-        <p class="page-header-subtitle">
-            Humisense is a global AI automation and intelligent business solutions company.
-            We implement the systems, integrate them with existing platforms and hand them
-            over running.
-        </p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='story',
+    eyebrow='About',
+    title='A technology partner, ~not a tool vendor.~',
+    lead='Humisense is a global AI automation and intelligent business solutions company. We implement the systems, integrate them with existing platforms and hand them over running.',
+    primary_text='Work with us', primary_url=url_for('contact'),
+    secondary_text='What we do', secondary_url=url_for('services'),
+    items=[
+        {'label': 'What we do', 'text': 'AI automation, agents, document processing and custom software'},
+        {'label': 'How we work', 'text': 'Discovery, narrow scope, production delivery, then measured expansion'},
+        {'label': 'Who we serve', 'text': 'Manufacturing, distribution, B2B and professional services'},
+        {'label': 'Where', 'text': 'Remote-first, working with clients in any timezone'},
+    ]
+) }}
 
 <!-- Mission & Vision -->
 <section class="section">

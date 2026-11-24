@@ -33,30 +33,53 @@
     --surface-solid: #ffffff;
     --surface-raised: rgba(255, 255, 255, 0.9);
 
-    /* Ink */
+    /* Ink — every token clears 4.5:1 on --bg AND on --bg-deep,
+       because small labels sit on both. --ink-faint is decorative
+       only; --ink-meta is the lightest tone allowed for real text. */
     --ink: #0d1117;
     --ink-soft: #3d4652;
-    --ink-mute: #6b7480;
+    --ink-mute: #5c6572;
     --ink-faint: #98a0ab;
+    --ink-meta: #656e7b;
 
     /* Lines */
     --line: rgba(13, 17, 23, 0.08);
     --line-strong: rgba(13, 17, 23, 0.14);
 
-    /* Accents — electric blue primary, violet secondary */
+    /* Accents — the hum of the brand is warm: mustard, orange, magenta.
+       These bright tones are FILLS, not text: mustard on warm white is
+       1.85:1. Each has an -ink variant that is safe for type and borders.
+       Blue survives as a structural cool note so warm vibrancy has a foil. */
+    --mustard: #e8b23a;
+    --mustard-deep: #c8912a;
+    --mustard-ink: #8a6410;
+    --mustard-wash: #fdf3da;
+
+    --orange: #e8722e;
+    --orange-deep: #c8561c;
+    --orange-ink: #a8430f;
+    --orange-wash: #fdeee4;
+
+    --magenta: #d63a7e;
+    --magenta-deep: #a81f5e;
+    --magenta-ink: #9c1a52;
+    --magenta-wash: #fce9f1;
+
     --blue: #2f5cff;
     --blue-deep: #1e3fd8;
     --blue-soft: #6b8cff;
     --violet: #7b4dff;
+    --violet-ink: #6435e8;
     --violet-soft: #a98bff;
     --cyan: #12b5c9;
+    --cyan-ink: #0b6b78;
     --amber: #d98a2b;
 
     /* Liquid gradients used by the wordmark and accents */
-    --liquid-1: #2f5cff;
-    --liquid-2: #7b4dff;
-    --liquid-3: #12b5c9;
-    --liquid-4: #b98bff;
+    --liquid-1: #e8b23a;
+    --liquid-2: #e8722e;
+    --liquid-3: #d63a7e;
+    --liquid-4: #7b4dff;
 
     /* Glass */
     --glass-bg: rgba(255, 255, 255, 0.55);
@@ -75,11 +98,15 @@
     --glow-violet: 0 0 70px rgba(123, 77, 255, 0.16);
 
     /* Radii */
-    --r-xs: 6px;
-    --r-sm: 10px;
-    --r-md: 16px;
-    --r-lg: 22px;
-    --r-xl: 32px;
+    /* Radii — a card is 10px, an image 6px, a field 4px. Large radii made
+       every surface read as a floating pill; structure now comes from
+       hairlines and alignment instead. */
+    --r-2xs: 3px;
+    --r-xs: 4px;
+    --r-sm: 6px;
+    --r-md: 10px;
+    --r-lg: 14px;
+    --r-xl: 20px;
     --r-pill: 999px;
 
     /* Type */
@@ -135,18 +162,43 @@
 
     --ink: #f2f4f8;
     --ink-soft: #c3cad6;
-    --ink-mute: #8b95a5;
-    --ink-faint: #616b7c;
+    --ink-mute: #98a2b3;
+    --ink-faint: #7b8698;
+    --ink-meta: #9aa4b4;
 
     --line: rgba(255, 255, 255, 0.09);
     --line-strong: rgba(255, 255, 255, 0.16);
+
+    /* Warm tones lift on dark ground: the bright fills stay vivid, and
+       the -ink variants invert to light tints that read on #07080c. */
+    --mustard: #f0bd4a;
+    --mustard-deep: #e8b23a;
+    --mustard-ink: #f5cd72;
+    --mustard-wash: rgba(240, 189, 74, 0.12);
+
+    --orange: #f0813f;
+    --orange-deep: #e8722e;
+    --orange-ink: #f79a63;
+    --orange-wash: rgba(240, 129, 63, 0.12);
+
+    --magenta: #e8578f;
+    --magenta-deep: #d63a7e;
+    --magenta-ink: #f286ae;
+    --magenta-wash: rgba(232, 87, 143, 0.12);
 
     --blue: #5c82ff;
     --blue-deep: #4066ff;
     --blue-soft: #8aa5ff;
     --violet: #9b74ff;
+    --violet-ink: #bda2ff;
     --violet-soft: #bda2ff;
     --cyan: #2fd4e8;
+    --cyan-ink: #7fe3ef;
+
+    --liquid-1: #f0bd4a;
+    --liquid-2: #f0813f;
+    --liquid-3: #e8578f;
+    --liquid-4: #9b74ff;
 
     --glass-bg: rgba(255, 255, 255, 0.045);
     --glass-border: rgba(255, 255, 255, 0.12);
@@ -245,6 +297,9 @@ h1, h2, h3, h4, h5 {
     letter-spacing: -0.025em;
     margin: 0;
     text-wrap: balance;
+    /* Long unbreakable words (product names, compound nouns in translated
+       content) must never widen the layout. */
+    overflow-wrap: break-word;
 }
 
 h1 { font-size: var(--t-3xl); font-weight: 600; }
@@ -285,8 +340,11 @@ p:last-child { margin-bottom: 0; }
 
 .muted { color: var(--ink-mute); }
 
+/* Gradient ink is reserved for a single emphasised word in a display
+   heading. It runs between two -ink tones so it keeps 4.5:1 contrast;
+   the bright enamel tones would drop to ~2:1 as text. */
 .gradient-ink {
-    background: linear-gradient(100deg, var(--blue) 0%, var(--violet) 48%, var(--cyan) 100%);
+    background: linear-gradient(100deg, var(--orange-ink) 0%, var(--magenta-ink) 58%, var(--blue-deep) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -298,7 +356,7 @@ p:last-child { margin-bottom: 0; }
     font-family: var(--font-mono);
     font-size: var(--t-xs);
     letter-spacing: 0.1em;
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     font-variant-numeric: tabular-nums;
 }
 
@@ -337,6 +395,261 @@ p:last-child { margin-bottom: 0; }
 }
 
 .section-head--center .eyebrow { justify-content: center; }
+
+/* --- Content container --------------------------------------------------
+   The single horizontal measure for page content. Every page uses this or
+   .shell; nothing may sit flush against the viewport edge. */
+
+.section-container {
+    width: 100%;
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+/* --- Page header -------------------------------------------------------
+   Standard masthead for interior pages. The top padding clears the fixed
+   navigation, so no page needs its own offset. */
+
+.page-header {
+    position: relative;
+    padding: calc(var(--nav-h) + clamp(3rem, 7vw, 6rem)) 0 clamp(3rem, 6vw, 5rem);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.page-header-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.page-header-gradient {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 55% 60% at 18% 10%, rgba(47, 92, 255, 0.12), transparent 64%),
+        radial-gradient(ellipse 45% 50% at 85% 20%, rgba(123, 77, 255, 0.11), transparent 64%);
+}
+
+.dark .page-header-gradient {
+    background:
+        radial-gradient(ellipse 55% 60% at 18% 10%, rgba(47, 92, 255, 0.2), transparent 64%),
+        radial-gradient(ellipse 45% 50% at 85% 20%, rgba(123, 77, 255, 0.18), transparent 64%);
+}
+
+.page-header-content {
+    width: 100%;
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+.page-header-content > * { max-width: 52rem; }
+
+.page-header-title {
+    font-size: clamp(2rem, 4.4vw, 3.4rem);
+    font-weight: 600;
+    letter-spacing: -0.032em;
+    line-height: 1.08;
+    margin: 0 0 var(--sp-4);
+}
+
+.page-header-subtitle {
+    font-size: var(--t-lg);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0 0 var(--sp-5);
+    max-width: 46rem;
+}
+
+.hero-tagline {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: var(--sp-3);
+}
+
+/* --- Breadcrumbs -------------------------------------------------------- */
+
+.breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: var(--t-xs);
+    color: var(--ink-meta);
+    margin-bottom: var(--sp-5);
+}
+
+.breadcrumbs a {
+    color: var(--ink-mute);
+    transition: color var(--dur-fast);
+}
+
+/* Hover uses the warm ink tone: --orange on warm white is 2.93:1 and fails,
+   so the accessible -ink variant carries the interaction affordance. */
+.breadcrumbs a:hover { color: var(--orange-ink); }
+
+/* The separator is punctuation, not content: it keeps full opacity so it
+   stays legible, and is hidden from assistive tech by aria-hidden. */
+.breadcrumbs-separator {
+    opacity: 1;
+    color: var(--ink-meta);
+}
+.breadcrumbs [aria-current='page'] { color: var(--ink-soft); }
+
+/* --- FAQ accordion ------------------------------------------------------ */
+
+.faq-list {
+    border-top: 1px solid var(--line);
+    margin-bottom: var(--sp-5);
+}
+
+.faq-item { border-bottom: 1px solid var(--line); }
+
+.faq-question {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.25rem;
+    width: 100%;
+    padding: 1.15rem 0;
+    text-align: left;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.012em;
+    color: var(--ink);
+    line-height: 1.45;
+    transition: color var(--dur-fast);
+}
+
+.faq-question:hover { color: var(--blue); }
+
+.faq-icon {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: var(--ink-meta);
+    transition: transform var(--dur-base) var(--ease-out), color var(--dur-fast);
+}
+
+.faq-item.is-open .faq-icon {
+    transform: rotate(45deg);
+    color: var(--blue);
+}
+
+.faq-answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--dur-base) var(--ease-out);
+}
+
+.faq-item.is-open .faq-answer { grid-template-rows: 1fr; }
+
+.faq-answer-content {
+    overflow: hidden;
+    font-size: var(--t-sm);
+    line-height: 1.7;
+    color: var(--ink-mute);
+    padding-right: 2.5rem;
+}
+
+.faq-item.is-open .faq-answer-content { padding-bottom: 1.15rem; }
+
+/* --- CTA band ----------------------------------------------------------- */
+
+.cta-section {
+    position: relative;
+    padding-block: clamp(3.5rem, 7vw, 6rem);
+    margin-top: clamp(2rem, 4vw, 3rem);
+    border-top: 1px solid var(--line);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.cta-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+}
+
+.cta-gradient {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 50% 80% at 50% 110%, rgba(47, 92, 255, 0.14), transparent 68%),
+        radial-gradient(ellipse 40% 60% at 78% 0%, rgba(123, 77, 255, 0.1), transparent 64%);
+}
+
+.dark .cta-gradient {
+    background:
+        radial-gradient(ellipse 50% 80% at 50% 110%, rgba(47, 92, 255, 0.22), transparent 68%),
+        radial-gradient(ellipse 40% 60% at 78% 0%, rgba(123, 77, 255, 0.16), transparent 64%);
+}
+
+.cta-content {
+    width: 100%;
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    text-align: center;
+}
+
+.cta-title {
+    font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+    letter-spacing: -0.03em;
+    margin: 0 0 var(--sp-3);
+}
+
+.cta-subtitle {
+    font-size: var(--t-lg);
+    color: var(--ink-mute);
+    max-width: 42rem;
+    margin: 0 auto var(--sp-5);
+}
+
+.cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+/* --- Breadcrumb-only masthead ------------------------------------------
+   Pages whose H1 lives in the section below the breadcrumbs still need the
+   same clearance as .page-header, or their top spacing differs. */
+
+.page-masthead {
+    padding-top: calc(var(--nav-h) + clamp(3rem, 7vw, 6rem));
+    padding-bottom: var(--sp-4);
+}
+
+/* Full-bleed pages that centre their own hero must still clear the fixed
+   navigation, or the centred block sits underneath it. */
+main > .min-h-screen { min-height: calc(100svh - var(--nav-h)); }
+
+/* Grid and flex children default to min-width:auto, so a long word can force
+   a track wider than its container and push the page sideways. Named grid
+   containers (.services-grid, .stats-grid, …) need the reset too. */
+.grid > *,
+.flex > *,
+.services-grid > *,
+.products-grid > *,
+.courses-grid > *,
+.stats-grid > *,
+.research-grid > *,
+.case-studies-grid > *,
+.seo-layout > *,
+.footer__grid > *,
+.process > *,
+.field-row > * { min-width: 0; }
+
 
 /* ==========================================================================
    05. MATERIALS
@@ -385,6 +698,8 @@ p:last-child { margin-bottom: 0; }
 .ambient--blue { background: radial-gradient(circle, rgba(47,92,255,0.34), transparent 68%); }
 .ambient--violet { background: radial-gradient(circle, rgba(123,77,255,0.3), transparent 68%); }
 .ambient--cyan { background: radial-gradient(circle, rgba(18,181,201,0.24), transparent 68%); }
+.ambient--amber { background: radial-gradient(circle, rgba(232,178,58,0.3), transparent 68%); }
+.ambient--magenta { background: radial-gradient(circle, rgba(214,58,126,0.26), transparent 68%); }
 
 /* Fine grid texture, used behind hero and process */
 .grid-veil {
@@ -411,8 +726,8 @@ p:last-child { margin-bottom: 0; }
     align-items: center;
     justify-content: center;
     gap: 0.55rem;
-    padding: 0.85rem 1.6rem;
-    border-radius: var(--r-pill);
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--r-sm);
     font-size: var(--t-sm);
     font-weight: 600;
     letter-spacing: -0.005em;
@@ -430,30 +745,46 @@ p:last-child { margin-bottom: 0; }
 
 .btn svg { flex-shrink: 0; }
 
+/* The primary action is mustard with near-black ink: 9.79:1, the highest
+   contrast pairing in the system. No gradient — a flat warm fill reads as
+   a decision, where a blue-violet gradient read as generic SaaS. */
 .btn--primary {
-    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-deep) 55%, var(--violet) 100%);
-    color: #fff;
-    box-shadow: 0 1px 1px rgba(255,255,255,0.24) inset,
-                0 8px 22px -8px rgba(47, 92, 255, 0.6);
+    background: var(--mustard);
+    color: #16130a;
+    border-color: var(--mustard-deep);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.42) inset,
+                0 1px 2px rgba(13, 17, 23, 0.14),
+                0 6px 16px -8px rgba(200, 145, 42, 0.55);
+    font-weight: 600;
 }
 
 .btn--primary:hover {
-    box-shadow: 0 1px 1px rgba(255,255,255,0.3) inset,
-                0 14px 34px -10px rgba(47, 92, 255, 0.7);
+    background: var(--mustard-deep);
+    border-color: var(--mustard-deep);
+    color: #100e06;
     transform: translateY(-1px);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset,
+                0 2px 4px rgba(13, 17, 23, 0.16),
+                0 12px 26px -10px rgba(200, 145, 42, 0.62);
 }
 
+.btn--primary:focus-visible {
+    outline: 2px solid var(--orange-ink);
+    outline-offset: 3px;
+}
+
+/* Secondary is a hairline, not a glass pane. The hover tint is magenta-wash
+   so the two actions read as a warm pair rather than brand + neutral. */
 .btn--ghost {
-    background: var(--glass-bg);
+    background: transparent;
     color: var(--ink);
     border-color: var(--line-strong);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
 }
 
 .btn--ghost:hover {
-    background: var(--surface-raised);
-    border-color: var(--ink-faint);
+    background: var(--magenta-wash);
+    border-color: var(--magenta-ink);
+    color: var(--magenta-ink);
     transform: translateY(-1px);
 }
 
@@ -463,7 +794,7 @@ p:last-child { margin-bottom: 0; }
     font-weight: 600;
 }
 
-.btn--quiet:hover { color: var(--blue); }
+.btn--quiet:hover { color: var(--orange-ink); }
 
 .btn--lg { padding: 1.05rem 2rem; font-size: var(--t-base); }
 
@@ -476,8 +807,10 @@ p:last-child { margin-bottom: 0; }
     gap: 0.45rem;
     font-size: var(--t-sm);
     font-weight: 600;
-    color: var(--blue);
+    color: var(--orange-ink);
 }
+
+.link-arrow:hover { color: var(--magenta-ink); }
 
 .link-arrow svg {
     transition: transform var(--dur-fast) var(--ease-out);
@@ -608,7 +941,7 @@ p:last-child { margin-bottom: 0; }
 
 .icon-btn:hover {
     color: var(--ink);
-    border-color: var(--ink-faint);
+    border-color: var(--ink-meta);
     transform: translateY(-1px);
 }
 
@@ -693,7 +1026,7 @@ p:last-child { margin-bottom: 0; }
 .drawer__list a span {
     font-family: var(--font-mono);
     font-size: 0.7rem;
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     letter-spacing: 0.1em;
 }
 
@@ -788,30 +1121,28 @@ p:last-child { margin-bottom: 0; }
     /* liquid glass read: gradient fill, bright inner edge, soft depth */
     background: linear-gradient(
         168deg,
-        color-mix(in srgb, var(--blue) 92%, white) 0%,
-        var(--blue) 26%,
-        var(--violet) 58%,
-        var(--cyan) 88%
+        var(--orange-deep) 0%,
+        var(--magenta-ink) 46%,
+        var(--blue-deep) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
     filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.55))
-            drop-shadow(0 10px 26px rgba(47, 92, 255, 0.22));
+            drop-shadow(0 10px 26px rgba(200, 145, 42, 0.2));
 }
 
 .dark .wordmark__letter {
     background: linear-gradient(
         168deg,
-        #cfe0ff 0%,
-        var(--blue-soft) 24%,
-        var(--violet-soft) 60%,
-        var(--cyan) 92%
+        var(--mustard-ink) 0%,
+        var(--orange-ink) 42%,
+        var(--blue-soft) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
-    filter: drop-shadow(0 0 26px rgba(92, 130, 255, 0.4))
+    filter: drop-shadow(0 0 26px rgba(240, 189, 74, 0.26))
             drop-shadow(0 1px 0 rgba(255, 255, 255, 0.16));
 }
 
@@ -920,7 +1251,7 @@ p:last-child { margin-bottom: 0; }
     font-size: var(--t-xs);
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: var(--ink-meta);
 }
 
 .scroll-cue__track {
@@ -1154,10 +1485,10 @@ p:last-child { margin-bottom: 0; }
     font-size: 0.68rem;
     font-family: var(--font-mono);
     letter-spacing: 0.02em;
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     padding: 0.2rem 0.5rem;
-    border-radius: var(--r-pill);
-    border: 1px solid var(--line);
+    border-radius: var(--r-2xs);
+    border: 1px solid var(--line-strong);
 }
 
 .tile__more {
@@ -1230,6 +1561,9 @@ p:last-child { margin-bottom: 0; }
 
 .product-card:hover::before { opacity: 1; }
 
+/* Stage badges. The tone is the darkest step of each hue so the label clears
+   4.5:1 on its own tint — the light amber and green used previously measured
+   2.6:1 and 3.2:1 and were unreadable at this size. */
 .product-card__badge {
     align-self: flex-start;
     font-family: var(--font-mono);
@@ -1237,21 +1571,35 @@ p:last-child { margin-bottom: 0; }
     letter-spacing: 0.1em;
     text-transform: uppercase;
     padding: 0.24rem 0.55rem;
-    border-radius: var(--r-pill);
+    border-radius: var(--r-2xs);
     border: 1px solid var(--line-strong);
-    color: var(--ink-mute);
+    color: var(--ink-meta);
 }
 
 .product-card__badge--live {
-    color: #0f9d63;
-    border-color: rgba(15, 157, 99, 0.3);
-    background: rgba(15, 157, 99, 0.08);
+    color: #0a5f3c;
+    border-color: rgba(10, 95, 60, 0.32);
+    background: rgba(10, 95, 60, 0.08);
 }
 
 .product-card__badge--proto {
-    color: var(--amber);
-    border-color: rgba(217, 138, 43, 0.3);
-    background: rgba(217, 138, 43, 0.08);
+    color: var(--mustard-ink);
+    border-color: rgba(138, 100, 16, 0.32);
+    background: var(--mustard-wash);
+}
+
+/* On a dark card the light-mode inks above fall to 2.2:1. The tints stay,
+   the labels lift to the mid step of each hue. */
+.dark .product-card__badge--live {
+    color: #4ecf9a;
+    border-color: rgba(78, 207, 154, 0.34);
+    background: rgba(78, 207, 154, 0.1);
+}
+
+.dark .product-card__badge--proto {
+    color: #f0bd4a;
+    border-color: rgba(240, 189, 74, 0.34);
+    background: rgba(240, 189, 74, 0.1);
 }
 
 .product-card h3 {
@@ -1370,7 +1718,7 @@ p:last-child { margin-bottom: 0; }
     font-size: var(--t-xs);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     margin-bottom: 0.4rem;
 }
 
@@ -1505,7 +1853,7 @@ p:last-child { margin-bottom: 0; }
 .field textarea { resize: vertical; min-height: 7rem; line-height: 1.6; }
 
 .field input::placeholder,
-.field textarea::placeholder { color: var(--ink-faint); }
+.field textarea::placeholder { color: var(--ink-meta); }
 
 .field input:focus,
 .field select:focus,
@@ -1530,7 +1878,7 @@ p:last-child { margin-bottom: 0; }
 
 .form-note {
     font-size: var(--t-xs);
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     line-height: 1.55;
     margin-top: 0.9rem;
 }
@@ -1606,7 +1954,7 @@ p:last-child { margin-bottom: 0; }
     font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: var(--ink-meta);
     margin: 0 0 1rem;
 }
 
@@ -1636,7 +1984,7 @@ p:last-child { margin-bottom: 0; }
     padding-top: 1.75rem;
     border-top: 1px solid var(--line);
     font-size: var(--t-xs);
-    color: var(--ink-faint);
+    color: var(--ink-meta);
 }
 
 .footer__bar nav {
@@ -1696,22 +2044,35 @@ p:last-child { margin-bottom: 0; }
     gap: 0.4rem;
 }
 
+/* Tags are rectangles, not capsules. 61 pill-shaped chips on the homepage
+   read as a template tic; a squared tag with a warm hairline reads as an
+   annotation made by a person. */
 .pill {
     font-family: var(--font-mono);
     font-size: 0.66rem;
-    letter-spacing: 0.04em;
-    color: var(--ink-mute);
-    padding: 0.24rem 0.6rem;
-    border-radius: var(--r-pill);
-    border: 1px solid var(--line);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-meta);
+    padding: 0.22rem 0.5rem;
+    border-radius: var(--r-2xs);
+    border: 1px solid var(--line-strong);
+    background: var(--mustard-wash);
+    white-space: nowrap;
 }
 
 /* --- Legacy button aliases ---------------------------------------------- */
 /* Older templates still emit btn-primary / btn-secondary / btn-outline.
    Mapping them here keeps every page on one visual system. */
 
-.btn-primary { background: linear-gradient(135deg, var(--blue) 0%, var(--blue-deep) 55%, var(--violet) 100%); color: #fff; box-shadow: 0 1px 1px rgba(255,255,255,0.24) inset, 0 8px 22px -8px rgba(47,92,255,0.6); }
-.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 1px 1px rgba(255,255,255,0.3) inset, 0 14px 34px -10px rgba(47,92,255,0.7); }
+/* Legacy alias kept so older templates still resolve; it now delegates to
+   the same warm primary rather than carrying a second blue gradient. */
+.btn-primary {
+    background: var(--mustard);
+    color: #16130a;
+    border-color: var(--mustard-deep);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.42) inset, 0 6px 16px -8px rgba(200,145,42,0.55);
+}
+.btn-primary:hover { background: var(--mustard-deep); transform: translateY(-1px); color: #100e06; }
 
 .btn-secondary, .btn-outline {
     background: var(--glass-bg);
@@ -1723,7 +2084,7 @@ p:last-child { margin-bottom: 0; }
 
 .btn-secondary:hover, .btn-outline:hover {
     background: var(--surface-raised);
-    border-color: var(--ink-faint);
+    border-color: var(--ink-meta);
     transform: translateY(-1px);
 }
 
@@ -1765,6 +2126,10 @@ p:last-child { margin-bottom: 0; }
     .hero { min-height: auto; padding-top: calc(var(--nav-h) + 3rem); }
     .hero__cta .btn { width: 100%; }
     .wordmark__reflection { display: none; }
+
+    /* Stack CTA buttons and reclaim FAQ text width on small screens. */
+    .cta-buttons .btn { width: 100%; }
+    .faq-answer-content { padding-right: 0; }
 }
 
 /* ==========================================================================

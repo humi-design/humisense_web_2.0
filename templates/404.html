@@ -1,23 +1,40 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-<section class="min-h-screen flex items-center justify-center hero-gradient grid-pattern">
-    <div class="text-center px-4">
-        <div class="text-9xl font-bold text-primary-500/20 mb-4">404</div>
-        <h1 class="text-4xl md:text-5xl font-bold mb-6">Page Not Found</h1>
-        <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
-            Sorry, we couldn't find the page you're looking for. It might have been moved or doesn't exist.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ url_for('home') }}" class="btn btn-primary text-lg px-8 py-4">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                </svg>
-                Back to Home
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='kinetic',
+    eyebrow='404',
+    title='This page ~is not here.~',
+    lead='The address may have changed, or the link that sent you here was mistyped.',
+    primary_text='Back to home', primary_url=url_for('home'),
+    secondary_text='Talk to us', secondary_url=url_for('contact'),
+    items=[
+        {'label': 'Services', 'text': 'AI automation, agents and document processing'},
+        {'label': 'Industries', 'text': 'Manufacturing, distribution and B2B'},
+        {'label': 'Resources', 'text': 'Guides and direct answers'},
+    ]
+) }}
+
+<section class="section">
+    <div class="section-container">
+        <h2 class="section-title">Where you were probably going</h2>
+        <div class="seo-cards">
+            <a class="seo-card" href="{{ url_for('services') }}">
+                <h3>Services</h3>
+                <p>Everything we implement, from single workflows to full agent systems.</p>
             </a>
-            <a href="{{ url_for('contact') }}" class="btn btn-outline text-lg px-8 py-4">
-                Contact Support
+            <a class="seo-card" href="{{ url_for('industries') }}">
+                <h3>Industries</h3>
+                <p>How automation differs in manufacturing, distribution and services.</p>
+            </a>
+            <a class="seo-card" href="{{ url_for('blog') }}">
+                <h3>Blog</h3>
+                <p>Implementation notes written from real builds.</p>
+            </a>
+            <a class="seo-card" href="{{ url_for('faqs') }}">
+                <h3>FAQs</h3>
+                <p>Direct answers to the questions we get before every project.</p>
             </a>
         </div>
     </div>

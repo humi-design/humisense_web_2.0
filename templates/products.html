@@ -5,25 +5,18 @@
 {% endblock %}
 
 {% block content %}
-<section class="page-header">
-    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
-    <div class="page-header-content">
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-            <a href="{{ url_for('home') }}">Home</a>
-            <span class="breadcrumbs-separator">/</span>
-            <span aria-current="page">Products</span>
-        </nav>
-        <span class="hero-tagline">The ecosystem</span>
-        <h1 class="page-header-title">Products we build and run</h1>
-        <p class="page-header-subtitle">
-            Some of what we build for clients becomes something we operate ourselves.
-            Each entry states its actual stage: available today, in prototype, or in
-            development. Nothing here is described as finished before it is.
-        </p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='showcase',
+    eyebrow='The ecosystem',
+    title='Products we ~build and run.~',
+    lead='Some of what we build for clients becomes something we operate ourselves. Each entry states its actual stage: available today, in prototype, or in development. Nothing here is described as finished before it is.',
+    primary_text='See the range', primary_url='#product-list',
+    secondary_text='Start a project', secondary_url=url_for('contact'),
+    breadcrumbs=[{'label': 'Products'}]
+) }}
 
-<section class="section">
+<section class="section" id="product-list">
     <div class="section-container">
         <div class="product-grid">
             {% for product in products %}

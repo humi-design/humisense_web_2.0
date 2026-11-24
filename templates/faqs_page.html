@@ -5,21 +5,22 @@
 {% endblock %}
 
 {% block content %}
-<section class="page-header">
-    <div class="page-header-bg"><div class="page-header-gradient"></div></div>
-    <div class="page-header-content">
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-            <a href="{{ url_for('home') }}">Home</a>
-            <span class="breadcrumbs-separator">/</span>
-            <span aria-current="page">FAQs</span>
-        </nav>
-        <span class="hero-tagline">DIRECT ANSWERS</span>
-        <h1 class="page-header-title">AI Automation FAQs</h1>
-        <p class="page-header-subtitle">
-            Straight answers to the questions businesses ask before starting an AI automation project.
-        </p>
-    </div>
-</section>
+{% from 'components/page_hero.html' import page_hero %}
+{{ page_hero(
+    variant='story',
+    eyebrow='Direct answers',
+    title='Questions we get ~before every project.~',
+    lead='Straight answers to the questions businesses ask before starting an AI automation project.',
+    primary_text='Ask your own question', primary_url=url_for('contact'),
+    secondary_text='See services', secondary_url=url_for('services'),
+    breadcrumbs=[{'label': 'FAQs'}],
+    items=[
+        {'label': 'Scope', 'text': 'Which processes are worth automating first'},
+        {'label': 'Cost', 'text': 'What drives the price of an implementation'},
+        {'label': 'Risk', 'text': 'How errors are caught before they reach customers'},
+        {'label': 'Timeline', 'text': 'What a first production release looks like'},
+    ]
+) }}
 
 <section class="section">
     <div class="section-container">

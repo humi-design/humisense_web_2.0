@@ -204,11 +204,12 @@ Removed from the live site:
 
   | Asset | Raw | Gzipped |
   | --- | --- | --- |
-  | `humi.css` | 47 KB | 9.6 KB |
-  | `premium.css` | 59 KB | 8.9 KB |
-  | `seo-pages.css` | 20 KB | 3.6 KB |
+  | `humi.css` | 56 KB | 12.4 KB |
+  | `legacy.css` | 17 KB | 4.2 KB |
+  | `hero-system.css` | 39 KB | 8.8 KB |
+  | `seo-pages.css` | 16 KB | 3.2 KB |
   | `humi.js` | 17 KB | 4.1 KB |
-  | `analytics.js` | 2.8 KB | 1.0 KB |
+  | `analytics.js` | 2 KB | 1.0 KB |
 
 - Server render time measured locally: 3.4–4.4 ms TTFB on the homepage across five runs.
 - Lab Core Web Vitals (LCP/INP/CLS) still need a deployed origin — see section 4.
