@@ -13,7 +13,7 @@
 ) }}
 
 <!-- Mission Section -->
-<section class="section" id="research-list">
+<section class="section env env--charcoal" id="research-list">
     <div class="section-container">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4xl items-center">
             <div data-animate>
@@ -54,7 +54,7 @@
 </section>
 
 <!-- Research Areas -->
-<section class="section bg-secondary">
+<section class="section env env--paper">
     <div class="section-container">
         <div class="section-header" data-animate>
             <span class="section-label">
@@ -74,7 +74,7 @@
             {% for area in research_areas %}
             <div class="card hover:border-primary/30 transition-all duration-300">
                 <div class="text-3xl mb-lg">{% if area.id == 'agentic_ai' %}🤖{% elif area.id == 'multi_agent' %}🔗{% elif area.id == 'generative_ai' %}🎨{% elif area.id == 'explainable_ai' %}🔍{% elif area.id == 'healthcare_ai' %}🏥{% elif area.id == 'nlp' %}💬{% elif area.id == 'computer_vision' %}👁️{% elif area.id == 'ai_accessibility' %}♿{% else %}🧠{% endif %}</div>
-                <h4 class="text-lg font-semibold mb-sm">{{ area.name }}</h4>
+                <h3 class="text-lg font-semibold mb-sm">{{ area.name }}</h3>
                 <p class="text-sm text-secondary">{{ area.description }}</p>
             </div>
             {% endfor %}
@@ -83,7 +83,7 @@
 </section>
 
 <!-- Publications -->
-<section class="section">
+<section class="section env env--deepblue">
     <div class="section-container">
         <div class="section-header" data-animate>
             <span class="section-label">
@@ -151,7 +151,7 @@
 </section>
 
 <!-- Research Timeline -->
-<section class="section bg-secondary">
+<section class="section env env--cream">
     <div class="section-container">
         <div class="section-header" data-animate>
             <span class="section-label">
@@ -169,17 +169,17 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-xl stagger-children">
             <div class="card">
                 <div class="text-sm font-semibold text-accent-primary mb-md">2024 Q4</div>
-                <h4 class="text-lg font-semibold mb-sm">Agent Orchestration Framework</h4>
+                <h3 class="text-lg font-semibold mb-sm">Agent Orchestration Framework</h3>
                 <p class="text-sm text-secondary">Open-source framework for coordinating multiple AI agents in complex workflows.</p>
             </div>
             <div class="card">
                 <div class="text-sm font-semibold text-accent-secondary mb-md">2025 Q1</div>
-                <h4 class="text-lg font-semibold mb-sm">Multimodal Understanding</h4>
+                <h3 class="text-lg font-semibold mb-sm">Multimodal Understanding</h3>
                 <p class="text-sm text-secondary">Research into AI systems that can seamlessly understand and generate across text, image, audio, and video.</p>
             </div>
             <div class="card">
                 <div class="text-sm font-semibold text-accent-cyan mb-md">2025 Q2</div>
-                <h4 class="text-lg font-semibold mb-sm">Healthcare AI Suite</h4>
+                <h3 class="text-lg font-semibold mb-sm">Healthcare AI Suite</h3>
                 <p class="text-sm text-secondary">Specialized AI tools for medical imaging, clinical documentation, and drug discovery.</p>
             </div>
         </div>
@@ -187,7 +187,7 @@
 </section>
 
 <!-- Submit Research -->
-<section class="section">
+<section class="section env env--paper">
     <div class="section-container">
         <div class="card p-4xl text-center bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20" data-animate>
             <span class="hero-tagline">Collaboration</span>
@@ -203,7 +203,7 @@
 </section>
 
 <!-- CTA Section -->
-<section class="cta-section">
+<section class="section cta-section env env--raspberry">
     <div class="cta-bg">
         <div class="cta-gradient"></div>
     </div>
@@ -218,8 +218,8 @@
             <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
                 Contact Research Team
             </a>
-            <a href="https://github.com/humisense" class="btn btn-secondary btn-lg" target="_blank">
-                View Open Source
+            <a href="{{ url_for('courses') }}" class="btn btn-secondary btn-lg">
+                Explore the Academy
             </a>
         </div>
     </div>

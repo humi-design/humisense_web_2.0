@@ -31,37 +31,24 @@
 ) }}
 
 <!-- Product detail body -->
-<section class="section">
+<section class="section env env--paper">
     <div class="section-container">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4xl items-center">
             <div data-animate>
                 <p class="text-lg text-tertiary">{{ product.description }}</p>
             </div>
             <div class="relative" data-animate data-delay="200">
-                <div class="card p-2xl bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
-                    <div class="aspect-video rounded-xl bg-tertiary flex items-center justify-center">
-                        <div class="text-center">
-                            <div class="w-20 h-20 mx-auto mb-lg rounded-2xl flex items-center justify-center"
-                                 style="background: {{ product.color }}30; color: {{ product.color }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round">
-                                    <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/>
-                                </svg>
-                            </div>
-                            <p class="text-lg font-semibold">{{ product.name }}</p>
-                            <p class="text-sm text-muted">Interactive demo</p>
-                        </div>
-                    </div>
-                </div>
+                {% from 'components/product_plate.html' import product_plate %}
+                {{ product_plate(product) }}
             </div>
         </div>
     </div>
 </section>
 
 <!-- Features & Details Tabs -->
-<section class="section bg-secondary">
+<section class="section env env--deepblue" aria-labelledby="features-heading">
     <div class="section-container">
+        <h2 id="features-heading" class="visually-hidden">{{ product.name }} features, benefits and API reference</h2>
         <div class="tabs">
             <button class="tab active" data-tab="features">Features</button>
             <button class="tab" data-tab="benefits">Benefits</button>
@@ -111,7 +98,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
                 {% for use_case in product.use_cases %}
                 <div class="card">
-                    <h4 class="text-lg font-semibold mb-sm">{{ use_case.title }}</h4>
+                    <h3 class="text-lg font-semibold mb-sm">{{ use_case.title }}</h3>
                     <p class="text-secondary">{{ use_case.description }}</p>
                 </div>
                 {% endfor %}
@@ -132,7 +119,7 @@
             </div>
             
             <div class="mt-2xl">
-                <h4 class="text-lg font-semibold mb-lg">API Details</h4>
+                <h3 class="text-lg font-semibold mb-lg">API Details</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
                     <div class="card">
                         <span class="text-sm text-muted mb-sm block">Method</span>
@@ -154,7 +141,7 @@
 </section>
 
 <!-- Architecture Section -->
-<section class="section">
+<section class="section env env--charcoal">
     <div class="section-container">
         <div class="section-header" data-animate>
             <span class="section-label">
@@ -172,17 +159,17 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-xl stagger-children">
             <div class="card text-center">
                 <div class="w-12 h-12 mx-auto mb-lg rounded-xl bg-primary/10 flex items-center justify-center text-accent-primary font-bold text-lg">1</div>
-                <h4 class="text-lg font-semibold mb-sm">Integrate</h4>
+                <h3 class="text-lg font-semibold mb-sm">Integrate</h3>
                 <p class="text-sm text-secondary">Add our SDK to your application with just a few lines of code.</p>
             </div>
             <div class="card text-center">
                 <div class="w-12 h-12 mx-auto mb-lg rounded-xl bg-secondary/10 flex items-center justify-center text-accent-secondary font-bold text-lg">2</div>
-                <h4 class="text-lg font-semibold mb-sm">Configure</h4>
+                <h3 class="text-lg font-semibold mb-sm">Configure</h3>
                 <p class="text-sm text-secondary">Customize the AI behavior to match your specific requirements.</p>
             </div>
             <div class="card text-center">
                 <div class="w-12 h-12 mx-auto mb-lg rounded-xl bg-cyan-500/10 flex items-center justify-center text-accent-cyan font-bold text-lg">3</div>
-                <h4 class="text-lg font-semibold mb-sm">Deploy</h4>
+                <h3 class="text-lg font-semibold mb-sm">Deploy</h3>
                 <p class="text-sm text-secondary">Launch to production with our scalable, reliable infrastructure.</p>
             </div>
         </div>
@@ -190,7 +177,7 @@
 </section>
 
 <!-- CTA Section -->
-<section class="cta-section">
+<section class="section cta-section env env--orange">
     <div class="cta-bg">
         <div class="cta-gradient"></div>
     </div>

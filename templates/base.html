@@ -13,9 +13,13 @@
             var root = document.documentElement;
             root.classList.add('js');
             try {
+                /* Light is the default on a first visit. Dark is applied only
+                   when the visitor has chosen it and that choice was saved.
+                   The operating-system preference is deliberately not
+                   consulted: this site designs its own light identity and
+                   should not silently override it. */
                 var saved = localStorage.getItem('humi-theme');
-                var dark = saved === 'dark' ||
-                    (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                var dark = saved === 'dark';
                 if (dark) {
                     root.classList.add('dark');
                     root.style.colorScheme = 'dark';
@@ -95,6 +99,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/humi.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/legacy.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/hero-system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/environments.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hero.css') }}">
 
     {% block extra_head %}{% endblock %}
 </head>
@@ -128,11 +134,15 @@
         </div>
     </div>
 
-    <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+    <script src="{{ url_for('static', filename='vendor/lenis.min.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/humi.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/hero-system.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/analytics.js') }}" defer></script>
+
+    {# The 3D hero loads only where it is used, and only after the page is
+       interactive. Three.js is vendored so a CDN outage cannot break the
+       first screen. #}
+    {% block hero_scripts %}{% endblock %}
 
     {% block extra_scripts %}{% endblock %}
 </body>

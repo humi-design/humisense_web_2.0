@@ -5,25 +5,41 @@
 {# ===================================================================
    HERO — liquid-glass wordmark
    =================================================================== #}
-{% from 'components/page_hero.html' import page_hero %}
-{{ page_hero(
-    variant='kinetic',
-    eyebrow="The intelligence behind what's next",
-    title='We build what\'s ~next.~',
-    lead='Humisense is a global AI automation and intelligent solutions company. We design, build and run the systems that move work forward: agents, workflows, document pipelines and products.',
-    primary_text='Explore what we build', primary_url=url_for('services'),
-    secondary_text="Let's work together", secondary_url=url_for('contact'),
-    meta=[
-        {'label': 'Focus', 'value': 'AI automation & products'},
-        {'label': 'Model', 'value': 'Implementation partner'},
-        {'label': 'Reach', 'value': 'Remote, worldwide'},
-    ]
-) }}
+{% include 'components/home_hero.html' %}
+
+{% block hero_scripts %}
+{# Three.js is 600 KB. It is only worth downloading on a device that can
+   actually render the sculpture, so the fetch itself is gated on the same
+   conditions the hero uses. Small screens, low-memory and low-core devices
+   keep the designed static composition and never pay for the library. #}
+<script>
+  (function () {
+    var capable = window.matchMedia('(min-width: 721px)').matches &&
+      !(navigator.deviceMemory && navigator.deviceMemory < 4) &&
+      !(navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
+    if (!capable) return;
+    try {
+      var c = document.createElement('canvas');
+      if (!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')))) return;
+    } catch (e) { return; }
+
+    var load = function (src, next) {
+      var s = document.createElement('script');
+      s.src = src; s.defer = true;
+      if (next) s.onload = next;
+      document.head.appendChild(s);
+    };
+    load('{{ url_for('static', filename='vendor/three.min.js') }}', function () {
+      load('{{ url_for('static', filename='js/hero-3d.js') }}');
+    });
+  })();
+</script>
+{% endblock %}
 
 {# ===================================================================
    CAPABILITY STRIP
    =================================================================== #}
-<section class="section section--tight" aria-label="What we do">
+<section class="section section--tight env env--paper" aria-label="What we do">
     <div class="shell">
         <dl class="capstrip" data-reveal>
             <div>
@@ -49,7 +65,7 @@
 {# ===================================================================
    SERVICES
    =================================================================== #}
-<section class="section" id="services" aria-labelledby="services-heading">
+<section class="section env env--cream env--textured" id="services" aria-labelledby="services-heading">
     <div class="shell">
         <div class="section-head" data-reveal>
             <p class="eyebrow">What we build</p>
@@ -92,7 +108,7 @@
 {# ===================================================================
    PRODUCTS
    =================================================================== #}
-<section class="section" id="products" aria-labelledby="products-heading">
+<section class="section env env--deepblue" id="products" aria-labelledby="products-heading">
     <div class="shell">
         <div class="section-head" data-reveal>
             <p class="eyebrow">The ecosystem</p>
@@ -142,7 +158,7 @@
 {# ===================================================================
    PROCESS
    =================================================================== #}
-<section class="section" id="process" aria-labelledby="process-heading">
+<section class="section env env--golden" id="process" aria-labelledby="process-heading">
     <div class="shell">
         <div class="section-head" data-reveal>
             <p class="eyebrow">How we work</p>
@@ -187,7 +203,7 @@
 {# ===================================================================
    ACADEMY
    =================================================================== #}
-<section class="section" id="academy" aria-labelledby="academy-heading">
+<section class="section env env--paper" id="academy" aria-labelledby="academy-heading">
     <div class="shell">
         <div class="split">
             <div class="split__sticky" data-reveal>
@@ -224,7 +240,7 @@
 {# ===================================================================
    RESEARCH
    =================================================================== #}
-<section class="section" id="research" aria-labelledby="research-heading">
+<section class="section env env--charcoal" id="research" aria-labelledby="research-heading">
     <div class="shell">
         <div class="section-head" data-reveal>
             <p class="eyebrow">Research &amp; innovation</p>
@@ -263,7 +279,7 @@
 {# ===================================================================
    ABOUT
    =================================================================== #}
-<section class="section" aria-labelledby="about-heading">
+<section class="section env env--cream" aria-labelledby="about-heading">
     <div class="shell">
         <div class="split split--rev">
             <div data-reveal>
@@ -312,7 +328,7 @@
 {# ===================================================================
    CONTACT
    =================================================================== #}
-<section class="section" id="contact-cta" aria-labelledby="cta-heading">
+<section class="section env env--orange env--textured" id="contact-cta" aria-labelledby="cta-heading">
     <div class="shell">
         <div class="glass" style="padding:clamp(2rem,5vw,4.5rem);position:relative;overflow:hidden;"
              data-reveal>
@@ -326,7 +342,7 @@
                     Tell us what you are trying to solve. If automation is not the right answer,
                     we will tell you that too.
                 </p>
-                <div class="hero__cta" style="margin-top:2rem;margin-bottom:0;">
+                <div class="cta-buttons" style="justify-content:flex-start;margin-top:2rem;">
                     <a href="{{ url_for('contact') }}" class="btn btn--primary btn--lg">
                         Start a conversation
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
