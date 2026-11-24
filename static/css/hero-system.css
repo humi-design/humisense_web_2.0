@@ -196,6 +196,45 @@
     color: var(--hero-ink);
 }
 
+/* --- Optional banner backdrop ------------------------------------------
+   A page that supplies its own photography keeps it, dimmed hard enough that
+   the type still passes contrast. The scrim is not optional: an undimmed
+   photo behind display type fails readability more often than not. */
+.page-hero__banner {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.page-hero__banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.page-hero__banner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(100deg, var(--hero-bg) 6%, rgba(8, 12, 28, 0.86) 46%, rgba(8, 12, 28, 0.55) 100%);
+}
+
+/* --- Caller block -------------------------------------------------------
+   Escape hatch for a page with real, page-specific furniture (an instructor
+   card, a seat counter). The page owns the markup; the frame owns position. */
+.page-hero__caller {
+    margin-top: var(--sp-5);
+    padding-top: var(--sp-5);
+    border-top: 1px solid var(--hero-hair);
+}
+
+.page-hero__caller :is(h2, h3, p) { margin-top: 0; }
+
+.page-hero__caller :is(a, button) { font-size: var(--t-sm); }
+
 /* --- Word-mask reveal ---------------------------------------------------
    The headline is split into word spans. Each sits in an overflow-clipped
    box, so the entrance reads as type rising out of an edge rather than
@@ -1219,4 +1258,21 @@ html:not(.js) .page-hero__fade { opacity: 1; transform: none; }
 
     .hero-showcase__card--1 { --rot: -5deg; --tx: -6%; --ty: -4%; }
     .hero-showcase__card--3 { --rot: 9deg; --tx: 12%; --ty: 7%; }
+}
+
+/* A primary CTA with no destination (registration closed, event expired)
+   renders as a status chip so it never looks clickable. */
+.page-hero__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 999px;
+    border: 1px solid var(--hero-hair);
+    background: color-mix(in srgb, var(--hero-ink) 5%, transparent);
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--hero-mute);
 }

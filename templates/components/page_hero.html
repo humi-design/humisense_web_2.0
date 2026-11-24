@@ -39,11 +39,19 @@
     meta=[],
     breadcrumbs=[],
     note=None,
+    banner=None,
+    caller=None,
     warm=False
 ) %}
 {%- set split = variant in ['lattice', 'showcase', 'flow', 'grid', 'data', 'story', 'signal', 'slate', 'course'] -%}
 <section class="page-hero page-hero--{{ variant }}{% if split %} page-hero--split{% endif %}{% if warm %} page-hero--warm{% endif %}"
          aria-labelledby="hero-heading">
+
+    {% if banner %}
+    <div class="page-hero__banner" aria-hidden="true">
+        <img src="{{ banner }}" alt="" loading="eager" decoding="async">
+    </div>
+    {% endif %}
 
     {# ---------------------------------------------------------------- #}
     {% if variant == 'kinetic' %}
@@ -102,13 +110,17 @@
 
             {% if primary_text or secondary_text %}
             <div class="page-hero__cta page-hero__fade" style="--d:460ms">
-                {% if primary_text %}
+                {% if primary_text and primary_url %}
                 <a href="{{ primary_url }}" class="btn btn--primary btn--lg">
                     {{ primary_text }}
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                          stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 </a>
+                {% elif primary_text %}
+                {#- A primary action with no destination is a status, not a button.
+                    Rendering an anchor here produced href="None". -#}
+                <span class="page-hero__status">{{ primary_text }}</span>
                 {% endif %}
                 {% if secondary_text %}
                 <a href="{{ secondary_url }}" class="btn btn--ghost btn--lg">{{ secondary_text }}</a>
@@ -130,6 +142,8 @@
                 {% endfor %}
             </dl>
             {% endif %}
+
+            {% if caller %}<div class="page-hero__caller page-hero__fade" style="--d:620ms">{{ caller() }}</div>{% endif %}
         </div>
 
         {# --- Variant visual -------------------------------------------- #}
