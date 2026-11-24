@@ -98,3 +98,46 @@ after editing them.
 - Audit scripts live in `/tmp/aud` (Playwright): `regress.js` (routes/meta), `sem.js`
   (headings), `crawl.js` (internal links), `contrast.js` (both themes), `qa.js`
   (responsive/tiny text/alt), `formtest.js`, `cookietest.js`, `perf.js`, `schema.js`.
+
+## Phase 3: content integrity + accessibility verification (2026-11-24)
+
+Verified state — all 60 sitemap URLs return 200 with unique title/description/canonical,
+no accidental noindex, no broken internal links, no horizontal mobile overflow at 390px.
+
+Content-integrity fixes this pass:
+- Generic AI-template copy removed from `data/services.json` (12 descriptions),
+  `data/courses.json` (11 descriptions), `templates/services.html` CTA,
+  `templates/about.html` CTA (also killed a dead `href="#"` "View Careers" button).
+- Unverified response-time promises removed: "within 24 hours" in `app.py` (flash +
+  JSON reply), `templates/contact.html`, `templates/course_detail.html`; "same day,
+  even during busy periods" outcome in `content/industries.py`.
+- `data/products.json` already carries honest `stage` (`live`/`development`/
+  `prototype`) and `pricing` copy — `templates/products.html` renders stage badges.
+  Prototype/development products explicitly say "not available for purchase".
+  Do not add a `stage` default that implies availability.
+
+Contrast: root cause was `.env` blocks remapping `--ink` to cream while
+`.btn-secondary`/`.btn-outline` kept a glass-white background. Fixed with env-scoped
+legacy aliases in `static/css/environments.css`. `.hero-grid__tile--solid` in
+`hero-system.css` now uses Rich Purple→Deep Blue so white ink clears 7:1. Remaining
+"failures" in the audit are false positives: gradient `background-clip:text` wordmarks
+and low-opacity watermarks — both computed against `rgba(0,0,0,0)`.
+
+Performance (measured locally, Playwright + PerformanceObserver):
+- CLS 0.064 homepage / 0 content pages. LCP 148–172ms homepage, 1.2–1.5s content.
+- `three.min.js` (594KB) loads only on ≥721px with ≥4 deviceMemory/hardwareConcurrency,
+  gated on WebGL support. Mobile homepage transfers 199KB / 13 requests — never fetches it.
+  Keep that gate; removing it would hand phones a 600KB bill for a hero.
+
+Accessibility: 14 tab stops all show a visible focus ring; `prefers-reduced-motion`
+forces every hero element to `opacity:1; transform:none` (verified no text left hidden).
+Single GTM container `GTM-WJKSCNR3` (head script + body noscript), consent defaults
+set before it.
+
+Fabrication guard: `Organization` schema carries only real details (Mumbai address,
+`info@humisense.com`, `+91-8424849942`). No `aggregateRating`, `review`, `award`,
+`numberOfEmployees` or `sameAs` — keep it that way. Case studies are labelled
+"Reference implementation"; blog `Article` author is `#organization`, not a fake person.
+`/research` "Working notes" is driven by `data/research.json`; `data/team.json` is `[]`
+so the team section correctly renders nothing.
+
