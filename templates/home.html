@@ -10,13 +10,16 @@
 {% block hero_scripts %}
 {# Three.js is 600 KB. It is only worth downloading on a device that can
    actually render the sculpture, so the fetch itself is gated on the same
-   conditions the hero uses. Small screens, low-memory and low-core devices
-   keep the designed static composition and never pay for the library. #}
+   conditions the hero uses. Small screens, low-memory, low-core devices and
+   visitors who asked for reduced motion keep the designed static composition
+   and never pay for the library. #}
 <script>
   (function () {
     var capable = window.matchMedia('(min-width: 721px)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
       !(navigator.deviceMemory && navigator.deviceMemory < 4) &&
-      !(navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
+      !(navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) &&
+      !(navigator.connection && navigator.connection.saveData);
     if (!capable) return;
     try {
       var c = document.createElement('canvas');
