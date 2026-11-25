@@ -141,3 +141,36 @@ Fabrication guard: `Organization` schema carries only real details (Mumbai addre
 `/research` "Working notes" is driven by `data/research.json`; `data/team.json` is `[]`
 so the team section correctly renders nothing.
 
+
+## Home hero (3D sculpture)
+
+`static/js/hero-3d.js` is an IIFE that mounts into `#hero-sculpture`, using
+`[data-sculpture-canvas]` as the canvas host and `[data-sculpture-fallback]` as the
+static SVG. It must keep exporting `goStatic`, `dispose` and `resize`.
+
+Jinja gotcha that cost real debugging time: **never declare `{% block hero_scripts %}`
+inside `{% block content %}`**. Jinja renders a nested block both in place *and* where
+`base.html` calls it, so the loader runs twice — two canvases, two copies of Three.js,
+and a page error from the second scene reading a disposed buffer. The block belongs at
+top level in `templates/home.html`.
+
+The scene's render loop and the theme handler both write material properties. They
+disagree unless everything derives from the single `BASE` table in the scene; an
+earlier version had `frame()` resetting glass opacity to literals every frame, which
+silently discarded every theme adjustment.
+
+Colour: the environment map must not be white-dominant. With near-mirror glass
+(roughness ≤0.07) white panels wash the brand tint out completely and bright pixels
+measure saturation 0.00. Coloured env panels + glass roughness ≈0.15 + exposure ≈0.80
+keeps hue (target: <6% of pixels below 0.15 saturation).
+
+Performance: measure with `renderer.info` before optimising. The PMREM environment and
+`MeshPhysicalMaterial` clearcoat dominate, not triangle count (~10.7k tris, 36 calls).
+SwiftShader/llvmpipe report WebGL but render at ~5fps, so both the loader in
+`templates/home.html` and `softwareRenderer()` in the scene detect them and serve the
+static composition without downloading Three.js. When testing the WebGL path locally,
+spoof a hardware GPU string in the Playwright harness — never in the site code.
+
+The static fallback is what reduced-motion, mobile and low-end visitors see
+permanently, so it must carry the full composition on its own. Check its contrast
+separately (target std ≥20 per channel, p5-to-p95 range ≥60).
