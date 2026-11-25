@@ -1,27 +1,30 @@
-/**
- * HUMISENSE — The Intelligence Core.
- *
- * One bespoke WebGL composition for the homepage hero. Not a brain, an atom
- * or a globe: a crystalline "H" monogram (the brand mark) suspended inside a
- * live neural mesh, ringed by autonomous agent modules, with information
- * streaming in and processed data flowing back out. The entrance runs in five
- * choreographed stages, then settles into an ambient loop that never restarts.
- *
- * Layers, outermost in:
- *   streams  — particles riding curved paths into and out of the core
- *   agents   — 7 modules, each a different structure in a different hue
- *   neural   — nodes and pulsing edges: the network the core thinks through
- *   crystal  — the H monogram: faceted shards around a luminous heart
- *
- * Everything degrades. No WebGL, reduced motion, save-data or a very weak
- * device fall back to the designed static composition already in the DOM; the
- * canvas only ever mounts on top of it.
- *
- * Performance: no post-processing chain (the bloom is additive sprite work,
- * which is far cheaper), points/instanced particles, a hard DPR cap, a
- * per-tier quality ladder, a frame budget on weak devices, and a pause
- * whenever the hero leaves the viewport or the tab is hidden.
- */
+/* ==========================================================================
+   hero-3d — "CONFLUENCE"
+
+   A signature hero sculpture for Humisense. One carved monolith, split by a
+   fault, its upper mass displaced and rotated above the lower. A precision
+   glass chamber sits in the cleft. Luminous information enters from below,
+   converges in the chamber, and leaves through the upper mass.
+
+   Solid matter represents engineering. Living light represents intelligence.
+   Their meeting point is the fault.
+
+   Design notes
+   ------------
+   - The masses are lofted from squircle cross-sections (superellipse
+     exponent 7-9), which gives flat machined faces with tight radii rather
+     than the soft look of a scaled primitive.
+   - Every solid uses MeshStandardMaterial driven by a procedural PMREM
+     environment, so metal reads as metal instead of a lit flat colour.
+   - The living layer is deliberately small: three open splines, ~120
+     particles, one chamber flare. Nothing here is random.
+   - The object is never spun. Motion is a slow drift plus parallax.
+
+   Contract with the page: this module owns [data-sculpture-canvas] inside
+   #hero-sculpture and toggles has-webgl / is-static. Everything else in the
+   hero belongs to the template.
+   ========================================================================== */
+
 (function () {
     'use strict';
 
@@ -49,6 +52,22 @@
         }
     }
 
+    /* A software rasteriser advertises WebGL but cannot sustain this scene, so
+       it must be treated as incapable rather than merely low-end. */
+    function softwareRenderer() {
+        try {
+            var c = document.createElement('canvas');
+            var gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+            if (!gl) return false;
+            var ext = gl.getExtension('WEBGL_debug_renderer_info');
+            if (!ext) return false;
+            var name = String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) || '');
+            return /swiftshader|llvmpipe|software|basic render|microsoft basic/i.test(name);
+        } catch (e) {
+            return false;
+        }
+    }
+
     function goStatic() {
         root.classList.remove('has-webgl');
         root.classList.add('is-static');
@@ -60,23 +79,23 @@
     var narrow = window.matchMedia('(max-width: 720px)').matches;
 
     if (!webglAvailable() || typeof THREE === 'undefined' || saveData ||
-        mem < 2 || cores < 2 || reduceMotion.matches) {
+        mem < 2 || cores < 2 || reduceMotion.matches || softwareRenderer()) {
         goStatic();
         return;
     }
 
-    /* Quality ladder. `low` is the dedicated mobile composition: the same
-       system, fewer agents, a third of the particles, a capped frame rate. */
+    /* Quality ladder. `low` keeps the same silhouette with fewer particles
+       and no environment-map supersampling. */
     var TIER = narrow ? 'low' : (mem >= 4 && cores >= 4 ? 'high' : 'mid');
 
     var PROFILE = {
-        high: { nodes: 46, edges: 92, agents: 7, curves: 5, perCurve: 26, motes: 240, dpr: 1.8, fps: 60 },
-        mid: { nodes: 34, edges: 60, agents: 6, curves: 4, perCurve: 16, motes: 140, dpr: 1.5, fps: 60 },
-        low: { nodes: 20, edges: 30, agents: 4, curves: 3, perCurve: 9, motes: 60, dpr: 1.25, fps: 30 }
+        high: { particles: 130, streams: 3, ringSegs: 44, envSigma: 0.16, dpr: 1.5, fps: 60, antialias: true },
+        mid: { particles: 84, streams: 3, ringSegs: 36, envSigma: 0.22, dpr: 1.4, fps: 60, antialias: true },
+        low: { particles: 44, streams: 2, ringSegs: 28, envSigma: 0.30, dpr: 1.2, fps: 30, antialias: false }
     }[TIER];
 
     /* ------------------------------------------------------------------
-       Palette — the full brand ramp, every hue with a job
+       Palette
        ------------------------------------------------------------------ */
 
     var C = {
@@ -94,7 +113,7 @@
     };
 
     /* ------------------------------------------------------------------
-       Renderer and scene
+       Renderer
        ------------------------------------------------------------------ */
 
     var width = canvasHost.clientWidth || 1;
@@ -103,7 +122,7 @@
     var renderer;
     try {
         renderer = new THREE.WebGLRenderer({
-            antialias: TIER !== 'low',
+            antialias: PROFILE.antialias,
             alpha: true,
             powerPreference: 'high-performance'
         });
@@ -115,51 +134,29 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, PROFILE.dpr));
     renderer.setSize(width, height, false);
     renderer.setClearAlpha(0);
-    if (THREE.sRGBEncoding && 'outputEncoding' in renderer) {
+    if ('outputEncoding' in renderer && THREE.sRGBEncoding) {
         renderer.outputEncoding = THREE.sRGBEncoding;
+    }
+    if (THREE.ACESFilmicToneMapping) {
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 0.80;
     }
     renderer.domElement.style.pointerEvents = 'none';
     canvasHost.appendChild(renderer.domElement);
 
     var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 120);
-    camera.position.set(0, 0, 11.2);
+    var camera = new THREE.PerspectiveCamera(33, width / height, 0.1, 120);
+    camera.position.set(0, 0.1, 9.6);
 
     var world = new THREE.Group();
     scene.add(world);
 
-    /* Disposal ledger — every geometry, material and texture registers here
-       so one teardown frees the GPU. */
+    /* Disposal ledger — every geometry, material and texture registers here. */
     var disposables = [];
     function track(obj) { disposables.push(obj); return obj; }
 
     /* ------------------------------------------------------------------
-       Shared texture: a soft radial glow, drawn once
-       ------------------------------------------------------------------ */
-
-    function makeGlowTexture() {
-        var s = 128;
-        var cv = document.createElement('canvas');
-        cv.width = cv.height = s;
-        var ctx = cv.getContext('2d');
-        var g = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
-        g.addColorStop(0.0, 'rgba(255,255,255,1)');
-        g.addColorStop(0.28, 'rgba(255,255,255,0.55)');
-        g.addColorStop(0.62, 'rgba(255,255,255,0.14)');
-        g.addColorStop(1.0, 'rgba(255,255,255,0)');
-        ctx.fillStyle = g;
-        ctx.fillRect(0, 0, s, s);
-        var tex = new THREE.CanvasTexture(cv);
-        tex.needsUpdate = true;
-        return track(tex);
-    }
-
-    var glowTex = makeGlowTexture();
-
-    /* ------------------------------------------------------------------
-       Theme. The hero stage is dark in both themes; dark mode is deeper and
-       lets the core burn harder. The observer means the toggle costs no
-       reload and no second scene.
+       Theme
        ------------------------------------------------------------------ */
 
     var theme = { dark: docEl.classList.contains('dark'), t: 0 };
@@ -173,661 +170,715 @@
     }
 
     /* ------------------------------------------------------------------
-       Shaders
+       Procedural studio environment
+
+       A tiny emissive room rendered to a PMREM cube. This is what makes the
+       metal read as metal: the surfaces reflect large soft panels rather
+       than a flat colour. It costs one render at startup.
        ------------------------------------------------------------------ */
 
-    /* Crystal: fresnel-lit glass. The edge term carries colour; the body
-       stays nearly clear so stacked shards read as real depth. */
-    var CRYSTAL_VERT = [
-        'varying vec3 vN;',
-        'varying vec3 vV;',
-        'varying vec3 vP;',
-        'void main() {',
-        '  vec4 wp = modelMatrix * vec4(position, 1.0);',
-        '  vP = wp.xyz;',
-        '  vN = normalize(mat3(modelMatrix) * normal);',
-        '  vV = normalize(cameraPosition - wp.xyz);',
-        '  gl_Position = projectionMatrix * viewMatrix * wp;',
-        '}'
-    ].join('\n');
+    var envMap = null;
 
-    var CRYSTAL_FRAG = [
-        'uniform vec3 uBody;',
-        'uniform vec3 uEdge;',
-        'uniform vec3 uGlow;',
-        'uniform float uOpacity;',
-        'uniform float uPower;',
-        'uniform float uTime;',
-        'uniform float uPulse;',
-        'varying vec3 vN;',
-        'varying vec3 vV;',
-        'varying vec3 vP;',
-        'void main() {',
-        '  float f = pow(1.0 - clamp(dot(normalize(vN), normalize(vV)), 0.0, 1.0), uPower);',
-        '  float band = 0.5 + 0.5 * sin(vP.y * 5.0 + uTime * 1.15);',
-        '  vec3 col = mix(uBody, uEdge, f);',
-        '  col += uGlow * (f * 0.75 + band * 0.07) * uPulse;',
-        // A floor on alpha: without it the shards only show where the surface
-        // turns away from the camera, which reads as an outline sketch.
-        '  float a = uOpacity * (0.42 + 0.58 * f);',
-        '  gl_FragColor = vec4(col, a);',
-        '}'
-    ].join('\n');
+    function buildEnvironment() {
+        var envScene = new THREE.Scene();
+        var junk = [];
 
-    function crystalMaterial(opts) {
-        return track(new THREE.ShaderMaterial({
-            uniforms: {
-                uBody: { value: new THREE.Color(opts.body) },
-                uEdge: { value: new THREE.Color(opts.edge) },
-                uGlow: { value: new THREE.Color(opts.glow) },
-                uOpacity: { value: opts.opacity },
-                uPower: { value: opts.power || 2.4 },
-                uTime: { value: 0 },
-                uPulse: { value: 0 }
-            },
-            vertexShader: CRYSTAL_VERT,
-            fragmentShader: CRYSTAL_FRAG,
-            transparent: true,
-            depthWrite: false,
-            side: THREE.DoubleSide,
-            /* Normal blending, not additive: five shards stacked additively
-               sum straight to white and the monogram dissolves. Alpha keeps
-               each facet reading as glass and preserves the silhouette. */
-            blending: THREE.NormalBlending
-        }));
+        function panel(color, intensity, w, h, pos, rot) {
+            var mat = new THREE.MeshBasicMaterial({
+                color: new THREE.Color(color).multiplyScalar(intensity),
+                side: THREE.DoubleSide
+            });
+            var geo = new THREE.PlaneGeometry(w, h);
+            var m = new THREE.Mesh(geo, mat);
+            m.position.set(pos[0], pos[1], pos[2]);
+            if (rot) m.rotation.set(rot[0], rot[1], rot[2]);
+            envScene.add(m);
+            junk.push(geo, mat);
+            return m;
+        }
+
+        /* Room shell — dark, so reflections have something to fall off into */
+        var roomGeo = new THREE.BoxGeometry(26, 26, 26);
+        var roomMat = new THREE.MeshBasicMaterial({ color: 0x05060c, side: THREE.BackSide });
+        envScene.add(new THREE.Mesh(roomGeo, roomMat));
+        junk.push(roomGeo, roomMat);
+
+        /* Large soft key from above-front — the main form-defining highlight */
+        panel(0xffd9a0, 0.48, 13, 9, [0, 8.5, 5], [Math.PI / 2.4, 0, 0]);
+        /* Cool rim from the left — separates the silhouette */
+        panel(0x3f7dff, 1.35, 7, 15, [-8.5, 1.5, -2.5], [0, Math.PI / 2.1, 0]);
+        /* Violet bounce from the right */
+        panel(0x7a3fff, 1.25, 7, 13, [8.5, 0.5, -3.5], [0, -Math.PI / 2.1, 0]);
+        /* Warm floor card — gives the lower mass a golden underside */
+        panel(0xff8a1a, 0.75, 9, 9, [1.5, -7.5, 2], [-Math.PI / 2.2, 0, 0]);
+        /* Tight specular strip — the crisp highlight along bevelled edges */
+        panel(0xffe9c4, 0.95, 1.2, 13, [-2.5, 4.5, 7.5], [0.2, 0.1, 0]);
+
+        var pmrem = new THREE.PMREMGenerator(renderer);
+        var rt = pmrem.fromScene(envScene, PROFILE.envSigma);
+        pmrem.dispose();
+
+        junk.forEach(function (o) {
+            if (o && o.dispose) o.dispose();
+        });
+
+        track(rt);
+        return rt.texture;
     }
 
-    /* Neural nodes: soft luminous discs, each with its own phase and reveal
-       order. The pointer raises a local excitement field, so the mesh answers
-       where the cursor is rather than leaning as a whole. */
-    var NODE_VERT = [
-        'attribute float aSize;',
-        'attribute float aPhase;',
-        'attribute float aOrder;',
-        'uniform float uTime;',
-        'uniform float uReveal;',
-        'uniform float uDpr;',
-        'uniform vec3 uPointer;',
-        'uniform float uExcite;',
-        'varying float vA;',
-        'varying float vE;',
-        'void main() {',
-        '  vec3 p = position;',
-        '  p += normalize(p + 0.0001) * sin(uTime * 0.7 + aPhase * 6.2831) * 0.05;',
-        '  vec4 mv = modelViewMatrix * vec4(p, 1.0);',
-        '  gl_Position = projectionMatrix * mv;',
-        '  float d = distance(p, uPointer);',
-        '  vE = smoothstep(2.6, 0.0, d) * uExcite;',
-        '  float appear = smoothstep(aOrder, aOrder + 0.14, uReveal);',
-        '  vA = appear * (0.55 + 0.35 * sin(uTime * 1.5 + aPhase * 6.2831));',
-        '  gl_PointSize = aSize * uDpr * (1.0 + vE * 0.7) * (150.0 / max(0.001, -mv.z));',
-        '}'
-    ].join('\n');
-
-    var NODE_FRAG = [
-        'uniform vec3 uColorA;',
-        'uniform vec3 uColorB;',
-        'varying float vA;',
-        'varying float vE;',
-        'void main() {',
-        '  vec2 uv = gl_PointCoord - 0.5;',
-        '  float r = length(uv);',
-        '  if (r > 0.5) discard;',
-        '  float soft = smoothstep(0.5, 0.0, r);',
-        '  float core = smoothstep(0.16, 0.0, r);',
-        '  vec3 col = mix(uColorA, uColorB, vE);',
-        '  col += vec3(0.85) * core * 0.18;',
-        '  gl_FragColor = vec4(col, soft * vA);',
-        '}'
-    ].join('\n');
-
-    /* Pulsing edges: a highlight travels the length of each segment, which is
-       what makes the mesh read as traffic instead of a spiderweb. */
-    var PULSE_VERT = [
-        'attribute float aT;',
-        'attribute float aRand;',
-        'attribute float aOrder;',
-        'uniform float uReveal;',
-        'varying float vT;',
-        'varying float vR;',
-        'varying float vA;',
-        'void main() {',
-        '  vT = aT;',
-        '  vR = aRand;',
-        '  vA = smoothstep(aOrder, aOrder + 0.12, uReveal);',
-        '  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);',
-        '}'
-    ].join('\n');
-
-    var PULSE_FRAG = [
-        'uniform float uTime;',
-        'uniform vec3 uColorA;',
-        'uniform vec3 uColorB;',
-        'uniform float uSpeed;',
-        'uniform float uIntensity;',
-        'uniform float uExcite;',
-        'varying float vT;',
-        'varying float vR;',
-        'varying float vA;',
-        'void main() {',
-        '  float p = fract(uTime * uSpeed + vR);',
-        '  float d = abs(vT - p);',
-        '  d = min(d, 1.0 - d);',
-        '  float pulse = smoothstep(0.18, 0.0, d);',
-        '  vec3 col = mix(uColorA, uColorB, pulse);',
-        '  float a = (0.10 + pulse * 0.55) * vA * uIntensity * (1.0 + uExcite * 0.4);',
-        '  gl_FragColor = vec4(col, a);',
-        '}'
-    ].join('\n');
-
-    function pulseMaterial(colorA, colorB, speed, intensity) {
-        return track(new THREE.ShaderMaterial({
-            uniforms: {
-                uTime: { value: 0 },
-                uColorA: { value: new THREE.Color(colorA) },
-                uColorB: { value: new THREE.Color(colorB) },
-                uSpeed: { value: speed },
-                uIntensity: { value: intensity },
-                uExcite: { value: 0 },
-                uReveal: { value: 0 }
-            },
-            vertexShader: PULSE_VERT,
-            fragmentShader: PULSE_FRAG,
-            transparent: true,
-            depthWrite: false,
-            blending: THREE.AdditiveBlending
-        }));
+    try {
+        envMap = buildEnvironment();
+        scene.environment = envMap;
+    } catch (e) {
+        envMap = null;
     }
 
     /* ------------------------------------------------------------------
-       A. The crystal — an abstract H monogram
-       ------------------------------------------------------------------
-       Two tapered uprights, a bridging bar, and two slanted splinters that
-       break the symmetry so it never reads as a letter extruded by a
-       machine. Five-sided prisms give genuinely faceted crystal faces.
+       Geometry helpers
        ------------------------------------------------------------------ */
 
-    var core = new THREE.Group();
-    world.add(core);
+    /* Superellipse point. n=2 is a circle, higher n approaches a square.
+       n between 6 and 9 gives the flat machined face with a tight radius
+       that reads as a milled edge rather than a soft primitive. */
+    function squircle(theta, rx, rz, n) {
+        var ct = Math.cos(theta), st = Math.sin(theta);
+        var sx = Math.sign(ct) * Math.pow(Math.abs(ct), 2 / n);
+        var sz = Math.sign(st) * Math.pow(Math.abs(st), 2 / n);
+        return [rx * sx, rz * sz];
+    }
 
-    var shardGeo = track(new THREE.CylinderGeometry(1, 1, 1, 5, 1, false));
+    /* Loft a stack of squircle rings into a closed solid. Each ring is
+       { y, rx, rz, n, ox, oz, twist }. Returns BufferGeometry with flat
+       faces on the sides and proper caps, which is what lets the bevelled
+       highlight run along an edge. */
+    function loft(rings, segs) {
+        var pos = [], norm = [], idx = [];
+        var cols = segs;
 
-    function shard(opts) {
-        var m = new THREE.Mesh(shardGeo, crystalMaterial(opts.mat));
-        m.scale.set(opts.w, opts.h, opts.d);
-        m.position.set(opts.x, opts.y, opts.z);
-        m.rotation.set(opts.rx || 0, opts.ry || 0, opts.rz || 0);
-        m.renderOrder = 0;
-        core.add(m);
+        /* Side surface */
+        for (var r = 0; r < rings.length; r++) {
+            var ring = rings[r];
+            for (var s = 0; s < cols; s++) {
+                var th = (s / cols) * Math.PI * 2 + (ring.twist || 0);
+                var p = squircle(th, ring.rx, ring.rz, ring.n);
+                pos.push(p[0] + (ring.ox || 0), ring.y, p[1] + (ring.oz || 0));
+                norm.push(0, 0, 0);
+            }
+        }
+        for (var r2 = 0; r2 < rings.length - 1; r2++) {
+            for (var s2 = 0; s2 < cols; s2++) {
+                var a = r2 * cols + s2;
+                var b = r2 * cols + ((s2 + 1) % cols);
+                var c = (r2 + 1) * cols + ((s2 + 1) % cols);
+                var d = (r2 + 1) * cols + s2;
+                idx.push(a, b, c, a, c, d);
+            }
+        }
+
+        var geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+        geo.setIndex(idx);
+        geo.computeVertexNormals();
+
+        /* Caps: fan from a centre vertex on the top and bottom rings */
+        var merged = mergeCap(geo, rings, cols, true);
+        merged = mergeCap(merged, rings, cols, false);
+        merged.computeVertexNormals();
+        return merged;
+    }
+
+    /* Append a flat cap at the top or bottom ring. Kept separate so the cap
+       normal is exactly the ring plane rather than an averaged bevel. */
+    function mergeCap(geo, rings, cols, top) {
+        var ring = top ? rings[rings.length - 1] : rings[0];
+        var y = ring.y;
+        var verts = [];
+        var indices = [];
+        var baseIdx = geo.attributes.position.count;
+
+        verts.push(ring.ox || 0, y, ring.oz || 0);
+        for (var s = 0; s < cols; s++) {
+            var th = (s / cols) * Math.PI * 2 + (ring.twist || 0);
+            var p = squircle(th, ring.rx, ring.rz, ring.n);
+            verts.push(p[0] + (ring.ox || 0), y, p[1] + (ring.oz || 0));
+        }
+        for (var s2 = 0; s2 < cols; s2++) {
+            var a = baseIdx + 1 + s2;
+            var b = baseIdx + 1 + ((s2 + 1) % cols);
+            if (top) indices.push(baseIdx, a, b);
+            else indices.push(baseIdx, b, a);
+        }
+
+        var g2 = new THREE.BufferGeometry();
+        var oldPos = geo.attributes.position.array;
+        var oldIdx = geo.index ? geo.index.array : [];
+        var allPos = new Float32Array(oldPos.length + verts.length);
+        allPos.set(oldPos, 0);
+        allPos.set(verts, oldPos.length);
+        var allIdx = new Uint32Array(oldIdx.length + indices.length);
+        allIdx.set(oldIdx, 0);
+        allIdx.set(indices, oldIdx.length);
+
+        g2.setAttribute('position', new THREE.BufferAttribute(allPos, 3));
+        g2.setIndex(new THREE.BufferAttribute(allIdx, 1));
+        geo.dispose();
+        return g2;
+    }
+
+    /* Extruded flat plate with a real bevel — used for the machined collars
+       and the spine. ExtrudeGeometry's bevel is what gives the crisp
+       highlight line along the edge. */
+    function plate(shapeFn, depth, bevel) {
+        var sh = new THREE.Shape();
+        shapeFn(sh);
+        var geo = new THREE.ExtrudeGeometry(sh, {
+            depth: depth,
+            bevelEnabled: true,
+            bevelThickness: bevel,
+            bevelSize: bevel,
+            bevelSegments: 2,
+            curveSegments: 6
+        });
+        geo.center();
+        return geo;
+    }
+
+    /* ------------------------------------------------------------------
+       Materials
+       ------------------------------------------------------------------ */
+
+    var matMetal = track(new THREE.MeshStandardMaterial({
+        color: 0x4a5a9e,
+        metalness: 0.92,
+        roughness: 0.30,
+        envMapIntensity: 1.15
+    }));
+
+    var matMetalDark = track(new THREE.MeshStandardMaterial({
+        color: 0x1d2140,
+        metalness: 0.9,
+        roughness: 0.46,
+        envMapIntensity: 0.9
+    }));
+
+    var matBrass = track(new THREE.MeshStandardMaterial({
+        color: 0xc08a2e,
+        metalness: 0.95,
+        roughness: 0.32,
+        envMapIntensity: 1.2
+    }));
+
+    /* The two glass masses. MeshPhysicalMaterial with transmission would be
+       ideal but costs a full extra scene render per frame; instead these are
+       thin, dark-tinted transmissive shells lit by the environment, which
+       reads as optical glass at this scale for a fraction of the cost. */
+    var matGlassLow = track(new THREE.MeshStandardMaterial({
+        color: 0x2f5ee0,
+        metalness: 0.35,
+        roughness: 0.16,
+        transparent: true,
+        opacity: 0.80,
+        envMapIntensity: 1.25,
+        emissive: new THREE.Color(C.deepBlue),
+        emissiveIntensity: 0.30,
+        flatShading: true,
+        side: THREE.DoubleSide
+    }));
+
+    var matGlassHigh = track(new THREE.MeshPhysicalMaterial({
+        color: C.purple,
+        metalness: 0.0,
+        roughness: 0.05,
+        transparent: true,
+        opacity: 0.8,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.05,
+        envMapIntensity: 2.0,
+        side: THREE.DoubleSide
+    }));
+
+    /* ------------------------------------------------------------------
+       The sculpture
+
+       Two masses, one fault. The lower mass is wide and stable, tapering
+       upward; the upper mass is narrower, displaced to the right and tilted,
+       as if the top of the column were caught mid-separation. A machined
+       spine runs up the back and holds them together, which is what makes
+       the asymmetry read as engineered rather than accidental.
+       ------------------------------------------------------------------ */
+
+    var sculpture = new THREE.Group();
+    world.add(sculpture);
+
+    var SEGS = PROFILE.ringSegs;
+
+    /* Lower mass — a plinth that rises and tapers */
+    var lowerRings = [
+        { y: -2.28, rx: 1.16, rz: 0.30, n: 12.0, ox:  0.14, oz: 0.00 },
+        { y: -2.14, rx: 1.34, rz: 0.34, n: 12.0, ox:  0.08, oz: 0.01 },
+        { y: -1.86, rx: 1.40, rz: 0.35, n: 11.0, ox:  0.00, oz: 0.02 },
+        { y: -1.44, rx: 1.34, rz: 0.34, n: 10.0, ox: -0.09, oz: 0.02 },
+        { y: -1.02, rx: 1.22, rz: 0.32, n: 9.4,  ox: -0.17, oz: 0.02 },
+        { y: -0.66, rx: 1.09, rz: 0.30, n: 9.0,  ox: -0.24, oz: 0.01 },
+        { y: -0.40, rx: 0.99, rz: 0.28, n: 8.8,  ox: -0.29, oz: 0.01 },
+        { y: -0.28, rx: 0.93, rz: 0.27, n: 8.8,  ox: -0.31, oz: 0.00 }
+    ];
+    var lowerMass = new THREE.Mesh(track(loft(lowerRings, SEGS)), matGlassLow);
+    lowerMass.position.x = -0.04;
+    lowerMass.rotation.z = 0.15;
+    sculpture.add(lowerMass);
+
+    /* Upper mass — narrower, displaced right, and rotated. Its underside is
+       angled to echo the fault plane. */
+    var upperRings = [
+        { y:  0.00, rx: 0.88, rz: 0.26, n: 8.8, ox: -0.04, oz: 0.00 },
+        { y:  0.14, rx: 0.97, rz: 0.28, n: 9.0, ox:  0.03, oz: 0.01 },
+        { y:  0.46, rx: 1.02, rz: 0.30, n: 9.4, ox:  0.12, oz: 0.01 },
+        { y:  0.88, rx: 0.98, rz: 0.29, n: 9.8, ox:  0.20, oz: 0.01 },
+        { y:  1.28, rx: 0.87, rz: 0.26, n: 10.0, ox: 0.26, oz: 0.01 },
+        { y:  1.62, rx: 0.70, rz: 0.22, n: 10.5, ox: 0.30, oz: 0.00 },
+        { y:  1.84, rx: 0.50, rz: 0.17, n: 11.0, ox: 0.33, oz: 0.00 }
+    ];
+    var upperMass = new THREE.Mesh(track(loft(upperRings, SEGS)), matGlassHigh);
+    upperMass.position.set(0.30, 0.30, -0.02);
+    upperMass.rotation.set(0.02, 0.07, 0.15);
+    sculpture.add(upperMass);
+
+    /* The fault plane: a thin machined slab spanning the gap, catching light
+       along its cut edge. This is the line the eye follows. */
+    var faultGeo = track(new THREE.BoxGeometry(1.62, 0.035, 0.52));
+    var faultPlate = new THREE.Mesh(faultGeo, matMetal);
+    faultPlate.position.set(0.03, 0.03, 0.0);
+    faultPlate.rotation.set(0.04, 0.03, 0.15);
+    sculpture.add(faultPlate);
+
+    /* Machined spine up the back — the engineering that holds the two masses.
+       A flat bar with a real bevel, so it takes a crisp highlight. */
+    var spineGeo = track(plate(function (sh) {
+        sh.moveTo(-0.30, -0.10);
+        sh.lineTo(0.30, -0.10);
+        sh.lineTo(0.20, 2.10);
+        sh.lineTo(-0.16, 2.10);
+        sh.closePath();
+    }, 0.14, 0.028));
+    var spine = new THREE.Mesh(spineGeo, matMetalDark);
+    spine.position.set(0.06, 0.16, -0.46);
+    spine.rotation.set(0, 0.06, 0.02);
+    sculpture.add(spine);
+
+    /* Collars: two precision rings clamping the spine to each mass. These are
+       the "mechanical elements" and they are what the upper mass pivots on. */
+    var collarGeo = track(plate(function (sh) {
+        var n = 44;
+        for (var i = 0; i < n; i++) {
+            var a = (i / n) * Math.PI * 2;
+            var r = 0.30 + Math.cos(a * 4) * 0.018;
+            var x = Math.cos(a) * r, y = Math.sin(a) * r;
+            if (i === 0) sh.moveTo(x, y); else sh.lineTo(x, y);
+        }
+        sh.closePath();
+        sh.holes.push((function () {
+            var p = new THREE.Path();
+            var m = 40;
+            for (var j = 0; j < m; j++) {
+                var b = (j / m) * Math.PI * 2;
+                var x2 = Math.cos(b) * 0.19, y2 = Math.sin(b) * 0.19;
+                if (j === 0) p.moveTo(x2, y2); else p.lineTo(x2, y2);
+            }
+            p.closePath();
+            return p;
+        })());
+    }, 0.10, 0.012));
+    var collarA = new THREE.Mesh(collarGeo, matBrass);
+    collarA.position.set(0.06, -0.44, -0.44);
+    collarA.rotation.x = Math.PI / 2;
+    sculpture.add(collarA);
+
+    var collarB = new THREE.Mesh(collarGeo, matBrass);
+    collarB.position.set(0.20, 0.66, -0.42);
+    collarB.rotation.x = Math.PI / 2;
+    collarB.scale.setScalar(0.86);
+    sculpture.add(collarB);
+
+    /* Base foot: a machined block that grounds the whole thing, so the
+       sculpture does not appear to float. */
+    var footGeo = track(plate(function (sh) {
+        sh.moveTo(-0.92, -0.26);
+        sh.lineTo(0.92, -0.26);
+        sh.lineTo(1.06, 0.26);
+        sh.lineTo(-1.06, 0.26);
+        sh.closePath();
+    }, 0.78, 0.04));
+    var foot = new THREE.Mesh(footGeo, matMetalDark);
+    foot.position.set(-0.10, -2.36, 0);
+    foot.rotation.x = -Math.PI / 2;
+    sculpture.add(foot);
+
+
+    /* ------------------------------------------------------------------
+       Machined detailing
+
+       Thin turned bands wrapping each mass. Every one of these is a place
+       where the surface turns through a hard angle, so it catches a crisp
+       horizontal highlight. Without them the masses read as smooth volume;
+       with them they read as components that were made.
+       ------------------------------------------------------------------ */
+
+    var matBand = track(new THREE.MeshStandardMaterial({
+        color: 0x7b85b4,
+        metalness: 0.94,
+        roughness: 0.33,
+        envMapIntensity: 1.05
+    }));
+
+    function band(y, r, thickness, tilt) {
+        var g = track(new THREE.CylinderGeometry(r, r, thickness, 44, 1, true));
+        var m = new THREE.Mesh(g, matBand);
+        m.position.y = y;
+        if (tilt) m.rotation.z = tilt;
         return m;
     }
 
-    var glassBlue = { body: C.deepBlue, edge: C.cyan, glow: C.cyan, opacity: 1.0, power: 1.75 };
-    var glassViolet = { body: C.purple, edge: C.violet, glow: C.magenta, opacity: 1.0, power: 2.0 };
-    var glassGold = { body: C.orange, edge: C.golden, glow: C.golden, opacity: 1.0, power: 1.45 };
+    /* Lower mass: three bands marking its taper */
+    sculpture.add(band(-1.86, 1.412, 0.032, 0.02));
+    sculpture.add(band(-1.44, 1.352, 0.028, 0.02));
+    sculpture.add(band(-1.02, 1.232, 0.026, 0.02));
 
-    /* Uprights and bridge — the H */
-    shard({ mat: glassBlue, w: 0.20, h: 2.35, d: 0.20, x: -0.62, y: 0.02, z: 0, rz: 0.055, ry: 0.3 });
-    shard({ mat: glassViolet, w: 0.19, h: 2.05, d: 0.19, x: 0.60, y: -0.10, z: 0.04, rz: -0.045, ry: -0.35 });
-    shard({ mat: glassGold, w: 0.14, h: 1.02, d: 0.14, x: 0, y: 0.16, z: 0, rz: Math.PI / 2, ry: 0.1 });
-    /* Asymmetric splinters */
-    shard({ mat: glassViolet, w: 0.10, h: 1.30, d: 0.10, x: -0.28, y: 0.72, z: 0.42, rz: 0.5, rx: 0.22 });
-    shard({ mat: glassBlue, w: 0.09, h: 1.05, d: 0.09, x: 0.34, y: -0.66, z: -0.38, rz: -0.42, rx: -0.18 });
+    /* Upper mass: two bands, carried with the mass so they travel with it */
+    var bandHiA = new THREE.Mesh(track(new THREE.CylinderGeometry(1.030, 1.030, 0.030, 40, 1, true)), matBand);
+    bandHiA.position.y = 0.46;
+    upperMass.add(bandHiA);
 
-    /* The heart — the intelligence itself */
-    /* Normal blending, not additive: an additive golden ball on top of the
-       glow sprite and the gold bridge summed to pure white and lost its
-       colour entirely. Alpha keeps it gold. */
-    var heartMat = track(new THREE.MeshBasicMaterial({
-        color: C.golden, transparent: true, opacity: 0.85, depthWrite: false
+    var bandHiB = new THREE.Mesh(track(new THREE.CylinderGeometry(0.878, 0.878, 0.026, 40, 1, true)), matBand);
+    bandHiB.position.y = 1.28;
+    upperMass.add(bandHiB);
+
+    /* Vertical flutes on the lower mass. Six machined grooves, each a thin
+       dark rib, giving the plinth a measured rhythm rather than a blank
+       face. Placed on the front arc only, so they catch the key light. */
+    var fluteGeo = track(new THREE.BoxGeometry(0.018, 0.62, 0.030));
+    var matFlute = track(new THREE.MeshStandardMaterial({
+        color: 0x14182e,
+        metalness: 0.7,
+        roughness: 0.55
     }));
-    var heart = new THREE.Mesh(track(new THREE.IcosahedronGeometry(0.46, 1)), heartMat);
-    heart.renderOrder = 1;
-    core.add(heart);
-
-    var heartWire = new THREE.Mesh(
-        track(new THREE.IcosahedronGeometry(0.68, 1)),
-        track(new THREE.MeshBasicMaterial({
-            color: C.orange, wireframe: true, transparent: true, opacity: 0.45,
-            depthWrite: false
-        }))
-    );
-    heartWire.renderOrder = 1;
-    core.add(heartWire);
-
-    /* Outer envelope: a faint refractive shell the shards sit inside */
-    var shellMat = crystalMaterial({
-        body: C.purple, edge: C.violet, glow: C.cyan, opacity: 0.045, power: 4.2
-    });
-    var shell = new THREE.Mesh(track(new THREE.IcosahedronGeometry(1.95, 1)), shellMat);
-    shell.renderOrder = -5;
-    core.add(shell);
-
-    /* Bloom as additive sprites — cheaper than a composer chain and it
-       composites correctly over the CSS gradient behind the canvas. Kept
-       deliberately restrained: a large bright halo is what turns a crystal
-       into a white blob, so the halo sits behind and stays faint. */
-    function glowSprite(color, size, opacity) {
-        var s = new THREE.Sprite(track(new THREE.SpriteMaterial({
-            map: glowTex, color: color, transparent: true, opacity: opacity,
-            blending: THREE.AdditiveBlending, depthWrite: false
-        })));
-        s.scale.set(size, size, 1);
-        return s;
+    for (var fl = 0; fl < 6; fl++) {
+        var ang = -0.62 + fl * 0.248;
+        var flute = new THREE.Mesh(fluteGeo, matFlute);
+        flute.position.set(
+            Math.sin(ang) * 1.24 - 0.12,
+            -1.46,
+            Math.cos(ang) * 0.34 + 0.12
+        );
+        flute.rotation.y = ang;
+        flute.rotation.z = 0.03;
+        sculpture.add(flute);
     }
-
-    /* The halo goes first and sits behind everything, so it tints the space
-       around the monogram instead of washing over it. */
-    var coreHalo = glowSprite(C.magenta, 9.5, 0.045);
-    coreHalo.position.z = -1.2;
-    coreHalo.renderOrder = -10;
-    core.add(coreHalo);
-
-    /* Slightly wider than the monogram's 2.1-unit width, so it lifts the
-       shards off the background without swallowing them. */
-    var coreGlow = glowSprite(C.golden, 1.5, 0.14);
-    coreGlow.position.z = -0.6;
-    coreGlow.renderOrder = -1;
-    core.add(coreGlow);
 
     /* ------------------------------------------------------------------
-       B. Neural network
-       ------------------------------------------------------------------
-       Nodes seeded on a flattened shell, then linked to their nearest
-       neighbours so the graph has local texture as well as visible hubs.
+       The chamber
+
+       The heart of the piece: a precision glass vessel suspended in the
+       fault, holding layered optical discs and a pool of light. This is
+       where incoming information is visibly processed before it leaves.
        ------------------------------------------------------------------ */
 
-    var neural = new THREE.Group();
-    neural.renderOrder = -2;
-    world.add(neural);
+    var chamber = new THREE.Group();
+    chamber.position.set(-0.02, 0.02, 0.20);
+    sculpture.add(chamber);
 
-    /* A fixed seed keeps the composition identical on every load, which
-       matters for a brand visual: it should be the same object every time. */
-    var seed = 20261125;
-    function rng() {
-        seed = (seed * 1664525 + 1013904223) % 4294967296;
-        return seed / 4294967296;
+    /* Outer vessel — a lathed capsule. Lathe gives a true turned profile,
+       which is what a machined glass part looks like. */
+    var vesselProfile = [];
+    (function () {
+        var pts = 18;
+        for (var i = 0; i <= pts; i++) {
+            var t = i / pts;
+            var y = -0.34 + t * 0.68;
+            var r = 0.30 * Math.sin(Math.PI * (0.12 + t * 0.76));
+            vesselProfile.push(new THREE.Vector2(Math.max(0.055, r), y));
+        }
+    })();
+
+    var matVessel = track(new THREE.MeshStandardMaterial({
+        color: 0xdfe8ff,
+        metalness: 0.5,
+        roughness: 0.06,
+        transparent: true,
+        opacity: 0.30,
+        envMapIntensity: 2.0,
+        side: THREE.DoubleSide
+    }));
+    var vessel = new THREE.Mesh(track(new THREE.LatheGeometry(vesselProfile, 40)), matVessel);
+    chamber.add(vessel);
+
+    /* Internal optical discs — thin stacked plates, each slightly rotated, so
+       light passing through reads as layers rather than a solid block. */
+    var discGeo = track(new THREE.CylinderGeometry(0.235, 0.235, 0.008, 32, 1, true));
+    var matDisc = track(new THREE.MeshStandardMaterial({
+        color: C.mustard,
+        metalness: 1.0,
+        roughness: 0.18,
+        transparent: true,
+        opacity: 0.55,
+        envMapIntensity: 1.8,
+        side: THREE.DoubleSide
+    }));
+    var discs = [];
+    for (var d = 0; d < 4; d++) {
+        var disc = new THREE.Mesh(discGeo, matDisc);
+        disc.position.y = -0.19 + d * 0.125;
+        disc.rotation.z = d * 0.16;
+        chamber.add(disc);
+        discs.push(disc);
     }
 
-    var NODE_COUNT = PROFILE.nodes;
-    var nodePositions = new Float32Array(NODE_COUNT * 3);
-    var nodeSizes = new Float32Array(NODE_COUNT);
-    var nodePhases = new Float32Array(NODE_COUNT);
-    var nodeOrders = new Float32Array(NODE_COUNT);
+    /* The light itself: a small emissive core plus one soft sprite. Restraint
+       matters here — the chamber should glow, not bloom. */
+    var matCore = track(new THREE.MeshBasicMaterial({
+        color: new THREE.Color(C.golden),
+        transparent: true,
+        opacity: 0.0
+    }));
+    var core = new THREE.Mesh(track(new THREE.SphereGeometry(0.085, 20, 16)), matCore);
+    chamber.add(core);
 
-    for (var n = 0; n < NODE_COUNT; n++) {
-        var theta = rng() * Math.PI * 2;
-        var phi = Math.acos(2 * rng() - 1);
-        var radius = 2.45 + rng() * 0.95;
-        nodePositions[n * 3] = radius * Math.sin(phi) * Math.cos(theta);
-        nodePositions[n * 3 + 1] = radius * Math.cos(phi) * 0.80;
-        nodePositions[n * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
-        nodeSizes[n] = 2.0 + rng() * 3.4 + (n % 7 === 0 ? 3.6 : 0);
-        nodePhases[n] = rng();
-        nodeOrders[n] = rng() * 0.6;
+    var glowTex = (function () {
+        var s = 128;
+        var cv = document.createElement('canvas');
+        cv.width = cv.height = s;
+        var ctx = cv.getContext('2d');
+        var g = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+        g.addColorStop(0.0, 'rgba(255,255,255,1)');
+        g.addColorStop(0.22, 'rgba(255,255,255,0.6)');
+        g.addColorStop(0.55, 'rgba(255,255,255,0.16)');
+        g.addColorStop(1.0, 'rgba(255,255,255,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, s, s);
+        var t = new THREE.CanvasTexture(cv);
+        t.needsUpdate = true;
+        return track(t);
+    })();
+
+    var matGlow = track(new THREE.SpriteMaterial({
+        map: glowTex,
+        color: new THREE.Color(C.golden),
+        transparent: true,
+        opacity: 0.0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+    }));
+    var glowSprite = new THREE.Sprite(matGlow);
+    glowSprite.scale.setScalar(1.25);
+    chamber.add(glowSprite);
+
+    /* ------------------------------------------------------------------
+       Lighting
+
+       Studio setup. One large key from upper front-left, a cool rim from
+       behind right to separate the silhouette, and a warm kicker low left.
+       The chamber contributes its own point light once it ignites.
+       ------------------------------------------------------------------ */
+
+    var keyLight = new THREE.DirectionalLight(0xfff4e2, 2.4);
+    keyLight.position.set(-4.2, 6.0, 5.2);
+    scene.add(keyLight);
+
+    var rimLight = new THREE.DirectionalLight(0x9fd0ff, 1.5);
+    rimLight.position.set(5.0, 2.2, -4.6);
+    scene.add(rimLight);
+
+    var warmLight = new THREE.DirectionalLight(0xffb066, 0.75);
+    warmLight.position.set(-3.0, -3.4, 2.6);
+    scene.add(warmLight);
+
+    var chamberLight = new THREE.PointLight(C.golden, 0.0, 6.0, 2.0);
+    chamber.add(chamberLight);
+
+    var fillLight = new THREE.HemisphereLight(0x9fb8ff, 0x1a1030, 0.35);
+    scene.add(fillLight);
+
+    /* ------------------------------------------------------------------
+       Living intelligence
+
+       Three open splines. None of them closes on itself: each enters the
+       sculpture from outside, passes through or near the chamber, and leaves
+       through a different surface. That is the metaphor — information goes
+       in as raw signal and comes out as an organised result.
+
+       Particles ride the curves with a per-particle phase offset, so the
+       motion reads as flow rather than a scrolling texture.
+       ------------------------------------------------------------------ */
+
+    var streamPaths = [
+        /* Enters low left, rises through the chamber, exits the upper mass
+           toward the top right. The primary pathway. */
+        [
+            [-2.55, -2.15, 0.55], [-1.70, -1.45, 0.42], [-0.95, -0.72, 0.30],
+            [-0.20, -0.10, 0.22], [0.16, 0.34, 0.16], [0.52, 0.92, 0.06],
+            [0.86, 1.52, -0.06], [1.14, 2.10, -0.18]
+        ],
+        /* Enters from behind the base, arcs up the left face, and terminates
+           at the chamber rim. A converging pathway. */
+        [
+            [-1.95, -2.30, -0.75], [-1.42, -1.62, -0.48], [-0.92, -0.98, -0.22],
+            [-0.52, -0.44, 0.02], [-0.22, 0.00, 0.10]
+        ],
+        /* Leaves the chamber and travels down the right flank to the foot.
+           An output pathway, deliberately going against the first. */
+        [
+            [0.14, 0.12, 0.14], [0.62, -0.22, 0.28], [1.08, -0.78, 0.40],
+            [1.46, -1.42, 0.50], [1.62, -2.05, 0.42]
+        ]
+    ];
+
+    var streamCurves = [];
+    for (var sp = 0; sp < streamPaths.length; sp++) {
+        var pts = [];
+        for (var pp = 0; pp < streamPaths[sp].length; pp++) {
+            var v = streamPaths[sp][pp];
+            pts.push(new THREE.Vector3(v[0], v[1], v[2]));
+        }
+        streamCurves.push(track(new THREE.CatmullRomCurve3(pts, false, 'catmullrom', 0.5)));
     }
 
-    var nodeGeo = track(new THREE.BufferGeometry());
-    nodeGeo.setAttribute('position', new THREE.BufferAttribute(nodePositions, 3));
-    nodeGeo.setAttribute('aSize', new THREE.BufferAttribute(nodeSizes, 1));
-    nodeGeo.setAttribute('aPhase', new THREE.BufferAttribute(nodePhases, 1));
-    nodeGeo.setAttribute('aOrder', new THREE.BufferAttribute(nodeOrders, 1));
+    var ACTIVE_STREAMS = Math.min(PROFILE.streams, streamCurves.length);
 
-    var nodeMat = track(new THREE.ShaderMaterial({
+    /* Faint guide tubes so the pathways are legible even when the particles
+       are between beats. Kept very thin and dim. */
+    var matGuide = track(new THREE.MeshBasicMaterial({
+        color: new THREE.Color(C.cyan),
+        transparent: true,
+        opacity: 0.0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+    }));
+    var guides = [];
+    for (var g = 0; g < ACTIVE_STREAMS; g++) {
+        var tube = new THREE.Mesh(
+            track(new THREE.TubeGeometry(streamCurves[g], 48, 0.0075, 5, false)),
+            matGuide
+        );
+        world.add(tube);
+        guides.push(tube);
+    }
+
+    /* Particle system. One Points object for all streams — a single draw call
+       instead of three. */
+    var P_COUNT = PROFILE.particles;
+
+    var pPos = new Float32Array(P_COUNT * 3);
+    var pColor = new Float32Array(P_COUNT * 3);
+    var pSize = new Float32Array(P_COUNT);
+    var pPhase = new Float32Array(P_COUNT);
+    var pSpeed = new Float32Array(P_COUNT);
+    var pStream = new Uint8Array(P_COUNT);
+
+    var colCyan = new THREE.Color(C.cyan);
+    var colGold = new THREE.Color(C.golden);
+    var colMagenta = new THREE.Color(C.magenta);
+
+    (function seedParticles() {
+        for (var i = 0; i < P_COUNT; i++) {
+            var s = i % ACTIVE_STREAMS;
+            pStream[i] = s;
+            pPhase[i] = Math.random();
+            /* Uneven speeds: a few fast couriers, many slow ones. */
+            pSpeed[i] = 0.055 + Math.random() * 0.10 + (i % 7 === 0 ? 0.06 : 0);
+            pSize[i] = 2.2 + Math.random() * 3.4;
+
+            /* Colour by role: inputs cyan, the through-path gold, outputs
+               magenta. The palette does the storytelling. */
+            var col = s === 0 ? colGold : (s === 1 ? colCyan : colMagenta);
+            var j = 0.85 + Math.random() * 0.3;
+            pColor[i * 3] = col.r * j;
+            pColor[i * 3 + 1] = col.g * j;
+            pColor[i * 3 + 2] = col.b * j;
+        }
+    })();
+
+    var particleGeo = track(new THREE.BufferGeometry());
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    particleGeo.setAttribute('aColor', new THREE.BufferAttribute(pColor, 3));
+    particleGeo.setAttribute('aSize', new THREE.BufferAttribute(pSize, 1));
+
+    var matParticles = track(new THREE.ShaderMaterial({
         uniforms: {
-            uTime: { value: 0 },
-            uReveal: { value: 0 },
+            uReveal: { value: 0.0 },
             uDpr: { value: Math.min(window.devicePixelRatio || 1, PROFILE.dpr) },
-            uPointer: { value: new THREE.Vector3(99, 99, 99) },
-            uExcite: { value: 0 },
-            uColorA: { value: new THREE.Color(C.cyan) },
-            uColorB: { value: new THREE.Color(C.golden) }
+            uTime: { value: 0.0 }
         },
-        vertexShader: NODE_VERT,
-        fragmentShader: NODE_FRAG,
+        vertexShader: [
+            'attribute vec3 aColor;',
+            'attribute float aSize;',
+            'uniform float uDpr;',
+            'uniform float uReveal;',
+            'varying vec3 vColor;',
+            'varying float vFade;',
+            'void main() {',
+            '  vColor = aColor;',
+            '  vec4 mv = modelViewMatrix * vec4(position, 1.0);',
+            '  gl_Position = projectionMatrix * mv;',
+            '  gl_PointSize = aSize * uDpr * (7.0 / max(0.001, -mv.z));',
+            '  vFade = uReveal;',
+            '}'
+        ].join('\n'),
+        fragmentShader: [
+            'varying vec3 vColor;',
+            'varying float vFade;',
+            'void main() {',
+            '  vec2 d = gl_PointCoord - vec2(0.5);',
+            '  float r = length(d);',
+            '  if (r > 0.5) discard;',
+            '  float soft = smoothstep(0.5, 0.06, r);',
+            '  float a = soft * vFade;',
+            '  gl_FragColor = vec4(vColor * (0.7 + soft * 0.9), a);',
+            '}'
+        ].join('\n'),
         transparent: true,
         depthWrite: false,
         blending: THREE.AdditiveBlending
     }));
 
-    neural.add(new THREE.Points(nodeGeo, nodeMat));
-
-    /* Edges: nearest-neighbour links, deduplicated, trimmed to budget */
-    var edgePairs = [];
-    var seen = {};
-    for (var a = 0; a < NODE_COUNT; a++) {
-        var dists = [];
-        for (var b = 0; b < NODE_COUNT; b++) {
-            if (a === b) continue;
-            var dx = nodePositions[a * 3] - nodePositions[b * 3];
-            var dy = nodePositions[a * 3 + 1] - nodePositions[b * 3 + 1];
-            var dz = nodePositions[a * 3 + 2] - nodePositions[b * 3 + 2];
-            dists.push({ i: b, d: dx * dx + dy * dy + dz * dz });
-        }
-        dists.sort(function (p, q) { return p.d - q.d; });
-        for (var k = 0; k < 2; k++) {
-            var j = dists[k].i;
-            var key = a < j ? a + ':' + j : j + ':' + a;
-            if (seen[key]) continue;
-            seen[key] = 1;
-            edgePairs.push([a, j]);
-        }
-    }
-
-    edgePairs.sort(function (p, q) {
-        var i0 = p[0] * 3, j0 = p[1] * 3, i1 = q[0] * 3, j1 = q[1] * 3;
-        var d0 = Math.pow(nodePositions[i0] - nodePositions[j0], 2) +
-                 Math.pow(nodePositions[i0 + 1] - nodePositions[j0 + 1], 2) +
-                 Math.pow(nodePositions[i0 + 2] - nodePositions[j0 + 2], 2);
-        var d1 = Math.pow(nodePositions[i1] - nodePositions[j1], 2) +
-                 Math.pow(nodePositions[i1 + 1] - nodePositions[j1 + 1], 2) +
-                 Math.pow(nodePositions[i1 + 2] - nodePositions[j1 + 2], 2);
-        return d0 - d1;
-    });
-    edgePairs = edgePairs.slice(0, PROFILE.edges);
-
-    var edgeCount = edgePairs.length;
-    var edgePos = new Float32Array(edgeCount * 6);
-    var edgeT = new Float32Array(edgeCount * 2);
-    var edgeRand = new Float32Array(edgeCount * 2);
-    var edgeOrder = new Float32Array(edgeCount * 2);
-
-    for (var e = 0; e < edgeCount; e++) {
-        var i0 = edgePairs[e][0], i1 = edgePairs[e][1];
-        edgePos[e * 6] = nodePositions[i0 * 3];
-        edgePos[e * 6 + 1] = nodePositions[i0 * 3 + 1];
-        edgePos[e * 6 + 2] = nodePositions[i0 * 3 + 2];
-        edgePos[e * 6 + 3] = nodePositions[i1 * 3];
-        edgePos[e * 6 + 4] = nodePositions[i1 * 3 + 1];
-        edgePos[e * 6 + 5] = nodePositions[i1 * 3 + 2];
-        edgeT[e * 2] = 0;
-        edgeT[e * 2 + 1] = 1;
-        var r = rng();
-        edgeRand[e * 2] = r;
-        edgeRand[e * 2 + 1] = r;
-        var o = 0.18 + rng() * 0.5;
-        edgeOrder[e * 2] = o;
-        edgeOrder[e * 2 + 1] = o;
-    }
-
-    var edgeGeo = track(new THREE.BufferGeometry());
-    edgeGeo.setAttribute('position', new THREE.BufferAttribute(edgePos, 3));
-    edgeGeo.setAttribute('aT', new THREE.BufferAttribute(edgeT, 1));
-    edgeGeo.setAttribute('aRand', new THREE.BufferAttribute(edgeRand, 1));
-    edgeGeo.setAttribute('aOrder', new THREE.BufferAttribute(edgeOrder, 1));
-
-    var edgeMat = pulseMaterial(C.magenta, C.cyan, 0.28, 0.9);
-    neural.add(new THREE.LineSegments(edgeGeo, edgeMat));
+    var particles = new THREE.Points(particleGeo, matParticles);
+    particles.frustumCulled = false;
+    world.add(particles);
 
     /* ------------------------------------------------------------------
-       C. Agent modules
-       ------------------------------------------------------------------
-       Each module is a different structure in a different hue, placed on a
-       tilted ring and linked back to the core, so they read as organs of one
-       system rather than floating icons.
+       Signature moment
+
+       Recurring beat: a pulse leaves the base, travels the primary pathway,
+       flares the chamber, and discharges out of the upper mass. It runs on a
+       slow cycle with long quiet stretches, so it reads as an event rather
+       than a loop.
        ------------------------------------------------------------------ */
 
-    var agents = new THREE.Group();
-    agents.renderOrder = 3;
-    world.add(agents);
-
-    var AGENT_KINDS = [
-        { kind: 'agent', color: C.violet, glow: C.violet },
-        { kind: 'automation', color: C.elecBlue, glow: C.cyan },
-        { kind: 'data', color: C.cyan, glow: C.cyan },
-        { kind: 'voice', color: C.magenta, glow: C.magenta },
-        { kind: 'document', color: C.golden, glow: C.golden },
-        { kind: 'workflow', color: C.orange, glow: C.orange },
-        { kind: 'analytics', color: C.mustard, glow: C.raspberry }
-    ].slice(0, PROFILE.agents);
-
-    var agentModules = [];
-
-    function basicMat(color, opacity, wire) {
-        return track(new THREE.MeshBasicMaterial({
-            color: color, transparent: true, opacity: opacity,
-            wireframe: !!wire, blending: THREE.AdditiveBlending, depthWrite: false
-        }));
-    }
-
-    function buildAgentModule(spec) {
-        var g = new THREE.Group();
-
-        if (spec.kind === 'agent') {
-            /* A trio of linked nodes: a miniature agent graph */
-            for (var i = 0; i < 3; i++) {
-                var s = new THREE.Mesh(track(new THREE.OctahedronGeometry(0.085, 0)), basicMat(spec.color, 0.95));
-                s.position.set(Math.cos(i * 2.094) * 0.19, Math.sin(i * 2.094) * 0.19, 0);
-                g.add(s);
-            }
-            var tp = [];
-            for (var t2 = 0; t2 < 3; t2++) {
-                var n2 = (t2 + 1) % 3;
-                tp.push(Math.cos(t2 * 2.094) * 0.19, Math.sin(t2 * 2.094) * 0.19, 0);
-                tp.push(Math.cos(n2 * 2.094) * 0.19, Math.sin(n2 * 2.094) * 0.19, 0);
-            }
-            var tg = track(new THREE.BufferGeometry());
-            tg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(tp), 3));
-            g.add(new THREE.LineSegments(tg, basicMat(spec.color, 0.5)));
-
-        } else if (spec.kind === 'automation') {
-            /* Concentric pathways: a loop that closes on itself */
-            g.add(new THREE.Mesh(track(new THREE.TorusGeometry(0.24, 0.012, 6, 40)), basicMat(spec.color, 0.85)));
-            var inner = new THREE.Mesh(track(new THREE.TorusGeometry(0.145, 0.01, 6, 30)), basicMat(spec.glow, 0.6));
-            inner.rotation.x = Math.PI / 2.4;
-            g.add(inner);
-
-        } else if (spec.kind === 'data') {
-            /* A compact particle cluster */
-            var dp = new Float32Array(14 * 3);
-            for (var d = 0; d < 14; d++) {
-                var th = rng() * 6.2831, ph = Math.acos(2 * rng() - 1), rr = 0.06 + rng() * 0.19;
-                dp[d * 3] = rr * Math.sin(ph) * Math.cos(th);
-                dp[d * 3 + 1] = rr * Math.cos(ph);
-                dp[d * 3 + 2] = rr * Math.sin(ph) * Math.sin(th);
-            }
-            var dg = track(new THREE.BufferGeometry());
-            dg.setAttribute('position', new THREE.BufferAttribute(dp, 3));
-            g.add(new THREE.Points(dg, track(new THREE.PointsMaterial({
-                color: spec.color, size: 0.075, transparent: true, opacity: 0.95,
-                blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
-            }))));
-
-        } else if (spec.kind === 'voice') {
-            /* A waveform: amplitude over time */
-            var vp = [];
-            for (var s2 = 0; s2 <= 28; s2++) {
-                var x = (s2 / 28 - 0.5) * 0.62;
-                var y = Math.sin(s2 * 0.62) * 0.115 * Math.sin(s2 / 28 * Math.PI);
-                vp.push(x, y, 0);
-            }
-            var vg = track(new THREE.BufferGeometry());
-            vg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vp), 3));
-            g.add(new THREE.Line(vg, basicMat(spec.color, 0.9)));
-
-        } else if (spec.kind === 'document') {
-            /* Stacked translucent data panels */
-            for (var p2 = 0; p2 < 3; p2++) {
-                var panel = new THREE.Mesh(
-                    track(new THREE.PlaneGeometry(0.34, 0.24)),
-                    basicMat(p2 === 2 ? spec.glow : spec.color, 0.3 - p2 * 0.06, true)
-                );
-                panel.position.set(p2 * 0.045 - 0.045, p2 * 0.055 - 0.055, p2 * 0.055 - 0.055);
-                panel.rotation.set(-0.35, 0.45, 0);
-                g.add(panel);
-            }
-
-        } else if (spec.kind === 'workflow') {
-            /* Connected blocks: orchestration */
-            [[-0.2, 0.09, 0], [0.02, -0.13, 0.05], [0.23, 0.11, -0.03]].forEach(function (p3) {
-                var bx = new THREE.Mesh(track(new THREE.BoxGeometry(0.11, 0.11, 0.11)), basicMat(spec.color, 0.85, true));
-                bx.position.set(p3[0], p3[1], p3[2]);
-                g.add(bx);
-            });
-            var wg = track(new THREE.BufferGeometry());
-            wg.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
-                -0.2, 0.09, 0, 0.02, -0.13, 0.05,
-                0.02, -0.13, 0.05, 0.23, 0.11, -0.03
-            ]), 3));
-            g.add(new THREE.LineSegments(wg, basicMat(spec.color, 0.45)));
-
-        } else if (spec.kind === 'analytics') {
-            /* A structured data formation: bars of rising height */
-            for (var b2 = 0; b2 < 4; b2++) {
-                var hgt = 0.08 + b2 * 0.055;
-                var bar = new THREE.Mesh(track(new THREE.BoxGeometry(0.05, hgt, 0.05)), basicMat(spec.color, 0.9));
-                bar.position.set((b2 - 1.5) * 0.09, hgt / 2 - 0.1, 0);
-                g.add(bar);
-            }
-        }
-
-        g.add(glowSprite(spec.glow, 0.44, 0.12));
-        return g;
-    }
-
-    for (var ag = 0; ag < AGENT_KINDS.length; ag++) {
-        var spec = AGENT_KINDS[ag];
-        var module = buildAgentModule(spec);
-
-        /* An ellipse tilted through Y, so modules sit at different depths and
-           the ring never reads as flat. */
-        var ang = (ag / AGENT_KINDS.length) * Math.PI * 2 - Math.PI / 2;
-        var px = Math.cos(ang) * 3.20;
-        var pz = Math.sin(ang) * 2.15;
-        var py = Math.sin(ang * 2) * 0.55;
-
-        /* The structures inside a module are drawn at roughly 0.5 units
-           across, which disappears next to a 3-unit monogram. Scale the
-           whole module up so each one reads as a distinct object. */
-        module.scale.setScalar(1.7);
-
-        module.position.set(px, py, pz);
-        module.userData = {
-            base: new THREE.Vector3(px, py, pz),
-            phase: ag * 1.7,
-            order: 0.42 + (ag / AGENT_KINDS.length) * 0.34
-        };
-        agents.add(module);
-        agentModules.push(module);
-
-        /* A curve back to the core, carrying a travelling pulse */
-        var start = new THREE.Vector3(px, py, pz);
-        var end = new THREE.Vector3(px * 0.18, py * 0.18, pz * 0.18);
-        var mid = start.clone().multiplyScalar(0.52);
-        mid.y += 0.42;
-        var pts = new THREE.QuadraticBezierCurve3(start, mid, end).getPoints(26);
-
-        var lp = [], lt = [];
-        for (var pi = 0; pi < pts.length - 1; pi++) {
-            lp.push(pts[pi].x, pts[pi].y, pts[pi].z);
-            lp.push(pts[pi + 1].x, pts[pi + 1].y, pts[pi + 1].z);
-            lt.push(pi / (pts.length - 1));
-            lt.push((pi + 1) / (pts.length - 1));
-        }
-        var vertCount = lp.length / 3;
-        var lg = track(new THREE.BufferGeometry());
-        lg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(lp), 3));
-        lg.setAttribute('aT', new THREE.BufferAttribute(new Float32Array(lt), 1));
-        lg.setAttribute('aRand', new THREE.BufferAttribute(new Float32Array(vertCount), 1));
-        var lo = new Float32Array(vertCount);
-        for (var li = 0; li < vertCount; li++) lo[li] = module.userData.order;
-        lg.setAttribute('aOrder', new THREE.BufferAttribute(lo, 1));
-
-        var linkMat = pulseMaterial(spec.color, spec.glow, 0.5 + ag * 0.06, 0.7);
-        agents.add(new THREE.LineSegments(lg, linkMat));
-        module.userData.linkMat = linkMat;
-    }
+    var pulse = { t: -1, active: false, next: 3.2 };
+    var PULSE_DUR = 4.6;
 
     /* ------------------------------------------------------------------
-       D. Information streams
-       ------------------------------------------------------------------
-       Particles ride curved paths in from the field, through the core, and
-       out again. Each frame samples the curve directly, which keeps the cost
-       linear in particle count and free of arc-length tables.
+       Camera framing
+
+       The sculpture is tall, so the camera sits slightly above centre and
+       looks a touch downward. Parallax is a few centimetres of travel at
+       most — enough to feel alive, never enough to feel like a turntable.
        ------------------------------------------------------------------ */
 
-    var streamCurves = [];
-    for (var sc = 0; sc < PROFILE.curves; sc++) {
-        var sAng = (sc / PROFILE.curves) * Math.PI * 2 + 0.4;
-        var outer = new THREE.Vector3(Math.cos(sAng) * 3.7, (rng() - 0.5) * 2.3, Math.sin(sAng) * 3.0);
-        var innerP = new THREE.Vector3(Math.cos(sAng + 1.1) * 0.5, (rng() - 0.5) * 0.5, Math.sin(sAng + 1.1) * 0.5);
-        var exit = new THREE.Vector3(Math.cos(sAng + 2.4) * 3.5, (rng() - 0.5) * 2.0, Math.sin(sAng + 2.4) * 2.7);
-        var ctrl = outer.clone().multiplyScalar(0.45);
-        ctrl.y += 0.9;
-        streamCurves.push(new THREE.CatmullRomCurve3([outer, ctrl, innerP, exit], false, 'catmullrom', 0.5));
-    }
-
-    var streamCount = PROFILE.curves * PROFILE.perCurve;
-    var streamSeed = new Float32Array(streamCount);
-    var streamCurveOf = new Uint8Array(streamCount);
-    for (var sp = 0; sp < streamCount; sp++) {
-        streamCurveOf[sp] = sp % PROFILE.curves;
-        streamSeed[sp] = rng();
-    }
-
-    var streamGeo = track(new THREE.BufferGeometry());
-    streamGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(streamCount * 3), 3));
-    var streamMat = track(new THREE.PointsMaterial({
-        color: C.cyan, size: 0.055, transparent: true, opacity: 0.7,
-        blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
-    }));
-    var streamPoints = new THREE.Points(streamGeo, streamMat);
-    streamPoints.renderOrder = 4;
-    world.add(streamPoints);
-
-    /* Ambient motes — depth dust, one draw call */
-    var motePos = new Float32Array(PROFILE.motes * 3);
-    for (var mt = 0; mt < PROFILE.motes; mt++) {
-        var mth = rng() * 6.2831, mph = Math.acos(2 * rng() - 1), mr = 2.9 + rng() * 1.6;
-        motePos[mt * 3] = mr * Math.sin(mph) * Math.cos(mth);
-        motePos[mt * 3 + 1] = mr * Math.cos(mph) * 0.6;
-        motePos[mt * 3 + 2] = mr * Math.sin(mph) * Math.sin(mth);
-    }
-    var moteGeo = track(new THREE.BufferGeometry());
-    moteGeo.setAttribute('position', new THREE.BufferAttribute(motePos, 3));
-    var motes = new THREE.Points(moteGeo, track(new THREE.PointsMaterial({
-        color: 0xf7f0df, size: 0.028, transparent: true, opacity: 0.20,
-        blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
-    })));
-    world.add(motes);
-
-    /* ------------------------------------------------------------------
-       Lighting — the shards are shader-lit; this gives the sprite glows and
-       the envelope something to sit against.
-       ------------------------------------------------------------------ */
-
-    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-    var keyLight = new THREE.PointLight(C.golden, 26, 24, 2);
-    keyLight.position.set(-3.4, 4.2, 5.2);
-    scene.add(keyLight);
-    var rimLight = new THREE.PointLight(C.violet, 22, 26, 2);
-    rimLight.position.set(4.2, -2.6, -4.4);
-    scene.add(rimLight);
-
-    /* ------------------------------------------------------------------
-       Interaction — a local field, not a global follow
-       ------------------------------------------------------------------ */
-
-    var pointer = { x: 0, y: 0 };
-    var target = { x: 0, y: 0 };
-    var excite = 0;
-    var exciteTarget = 0;
-    var pointerLocal = new THREE.Vector3(99, 99, 99);
+    var camBase = new THREE.Vector3(0, 0.12, 9.6);
+    var lookTarget = new THREE.Vector3(0, 0.05, 0);
+    var pointer = { x: 0, y: 0, tx: 0, ty: 0, active: false };
 
     function onPointerMove(ev) {
         var rect = root.getBoundingClientRect();
-        if (!rect.width || !rect.height) return;
-        target.x = ((ev.clientX - rect.left) / rect.width - 0.5) * 2;
-        target.y = ((ev.clientY - rect.top) / rect.height - 0.5) * 2;
-        exciteTarget = 1;
+        pointer.tx = ((ev.clientX - rect.left) / rect.width - 0.5) * 2;
+        pointer.ty = ((ev.clientY - rect.top) / rect.height - 0.5) * 2;
+        pointer.active = true;
     }
-
     function onPointerLeave() {
-        exciteTarget = 0;
-        target.x = 0;
-        target.y = 0;
+        pointer.tx = 0;
+        pointer.ty = 0;
+        pointer.active = false;
     }
-
     if (window.matchMedia('(pointer: fine)').matches) {
         window.addEventListener('pointermove', onPointerMove, { passive: true });
         document.addEventListener('pointerleave', onPointerLeave, { passive: true });
@@ -845,7 +896,7 @@
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
         renderer.setSize(w, h, false);
-        nodeMat.uniforms.uDpr.value = Math.min(window.devicePixelRatio || 1, PROFILE.dpr);
+        matParticles.uniforms.uDpr.value = Math.min(window.devicePixelRatio || 1, PROFILE.dpr);
     }
     window.addEventListener('resize', function () {
         clearTimeout(resizeTimer);
@@ -859,18 +910,60 @@
         }, { threshold: 0.01 }).observe(root);
     }
     document.addEventListener('visibilitychange', function () {
-        visible = !document.hidden;
+        if (document.hidden) visible = false;
     });
 
     /* ------------------------------------------------------------------
-       Entrance: five stages driven by one progress value
+       Theme application
+       ------------------------------------------------------------------ */
+
+    /* Base values the theme scales from. Keeping them in one place stops the
+       render loop and the theme from fighting over the same material. */
+    var BASE = {
+        glassLowOpacity: 0.72,
+        glassHighOpacity: 0.70,
+        glassLowEnv: 1.25,
+        glassHighEnv: 1.30,
+        glassLowEmissive: 0.30,
+        glassHighEmissive: 0.32,
+        metalEnv: 1.15,
+        metalDarkEnv: 0.90,
+        brassEnv: 1.20
+    };
+
+    function applyTheme() {
+        theme.t += ((theme.dark ? 1 : 0) - theme.t) * 0.05;
+        var t = theme.t;
+
+        /* Dark mode is not an inversion. The stage darkens, so the glass can
+           be a little more transparent and the rim does the separating work.
+           In light mode the glass stays more solid so it holds its own
+           against a brighter surround. */
+        matGlassLow.envMapIntensity = BASE.glassLowEnv * (1 - t * 0.22);
+        matGlassHigh.envMapIntensity = BASE.glassHighEnv * (1 - t * 0.20);
+        matGlassLow.emissiveIntensity = BASE.glassLowEmissive * (1 + t * 0.55);
+        matGlassHigh.emissiveIntensity = BASE.glassHighEmissive * (1 + t * 0.55);
+
+        keyLight.intensity = 2.4 + t * 0.35;
+        rimLight.intensity = 1.5 + t * 0.85;
+        warmLight.intensity = 0.75 + t * 0.3;
+        fillLight.intensity = 0.35 + t * 0.18;
+
+        matMetal.envMapIntensity = BASE.metalEnv * (1 + t * 0.25);
+        matMetalDark.envMapIntensity = BASE.metalDarkEnv * (1 + t * 0.2);
+        matBrass.envMapIntensity = BASE.brassEnv * (1 + t * 0.25);
+    }
+
+    /* ------------------------------------------------------------------
+       Intro: the sculpture wakes in five beats
        ------------------------------------------------------------------ */
 
     var intro = { t: 0, done: false };
+    var INTRO_DUR = 4.2;
 
-    function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
     function clamp01(x) { return x < 0 ? 0 : (x > 1 ? 1 : x); }
-    function stage(p, from, to) { return clamp01((p - from) / (to - from)); }
+    function easeOut(x) { return 1 - Math.pow(1 - x, 3); }
+    function seg(p, a, b) { return clamp01((p - a) / (b - a)); }
 
     /* ------------------------------------------------------------------
        Render loop
@@ -881,27 +974,55 @@
     var elapsed = 0;
     var frameInterval = 1 / PROFILE.fps;
     var frameAccum = 0;
-    var tmpVec = new THREE.Vector3();
 
-    function applyTheme() {
-        theme.t += ((theme.dark ? 1 : 0) - theme.t) * 0.06;
-        var t = theme.t;
+    var tmpA = new THREE.Vector3();
+    var tmpB = new THREE.Vector3();
 
-        edgeMat.uniforms.uIntensity.value = 0.72 + t * 0.4;
-        nodeMat.uniforms.uColorA.value.setHex(t > 0.5 ? C.cyan : C.violet);
-        shellMat.uniforms.uOpacity.value = 0.035 + t * 0.04;
-        keyLight.intensity = 22 + t * 10;
-        rimLight.intensity = 18 + t * 12;
+    function updateParticles(dt, reveal) {
+        matParticles.uniforms.uReveal.value = reveal;
+        if (reveal <= 0.001) return;
+
+        for (var i = 0; i < P_COUNT; i++) {
+            var curve = streamCurves[pStream[i] % streamCurves.length];
+            pPhase[i] += pSpeed[i] * dt;
+            if (pPhase[i] > 1) pPhase[i] -= 1;
+
+            curve.getPointAt(pPhase[i], tmpA);
+            pPos[i * 3] = tmpA.x;
+            pPos[i * 3 + 1] = tmpA.y;
+            pPos[i * 3 + 2] = tmpA.z;
+        }
+        particleGeo.attributes.position.needsUpdate = true;
+    }
+
+    function updatePulse(dt, t) {
+        if (!pulse.active) {
+            pulse.next -= dt;
+            if (pulse.next <= 0) {
+                pulse.active = true;
+                pulse.t = 0;
+            }
+            return 0;
+        }
+        pulse.t += dt;
+        if (pulse.t >= PULSE_DUR) {
+            pulse.active = false;
+            pulse.t = -1;
+            pulse.next = 9 + Math.random() * 7;
+            return 0;
+        }
+        /* One envelope: rise, peak at the chamber, fall away. */
+        var x = pulse.t / PULSE_DUR;
+        return Math.sin(Math.PI * clamp01(x));
     }
 
     function frame() {
         rafId = requestAnimationFrame(frame);
-        if (!visible) { clock.getDelta(); return; }
 
-        var dt = Math.min(clock.getDelta(), 0.05);
+        var dt = clock.getDelta();
+        if (!visible) return;
 
-        /* Frame budget on weak devices: skip the expensive work but keep time
-           advancing, so animation speed stays honest. */
+        /* Frame cap keeps a 120 Hz display from burning battery for no gain */
         frameAccum += dt;
         if (frameAccum < frameInterval) return;
         var step = frameAccum;
@@ -910,120 +1031,63 @@
 
         applyTheme();
 
+        /* Intro progression */
         if (!intro.done) {
-            intro.t = Math.min(1, intro.t + step / 3.4);
-            if (intro.t >= 1) intro.done = true;
+            intro.t += step / INTRO_DUR;
+            if (intro.t >= 1) { intro.t = 1; intro.done = true; }
         }
-        var p = intro.t;
+        var p = easeOut(intro.t);
 
-        /* Stage 1 — the core awakens */
-        var s1 = easeOutCubic(stage(p, 0.0, 0.26));
-        core.scale.setScalar(0.35 + s1 * 0.65);
-        heartMat.opacity = 0.85 * s1;
-        coreGlow.material.opacity = (0.4 + theme.t * 0.24) * s1;
-        coreHalo.material.opacity = (0.16 + theme.t * 0.16) * s1;
+        /* 1. Structure resolves — the masses fade up from the dark */
+        var s1 = seg(p, 0.0, 0.34);
+        matGlassLow.opacity = BASE.glassLowOpacity * (1 - theme.t * 0.14) * s1;
+        matGlassHigh.opacity = BASE.glassHighOpacity * (1 - theme.t * 0.12) * s1;
 
-        /* Stage 2 — the mesh lights outward from the centre */
-        var s2 = easeOutCubic(stage(p, 0.14, 0.60));
-        nodeMat.uniforms.uReveal.value = s2;
-        edgeMat.uniforms.uReveal.value = s2;
+        /* 2. Chamber ignites */
+        var s2 = seg(p, 0.22, 0.58);
+        var breath = 0.88 + Math.sin(elapsed * 1.15) * 0.12;
+        var pulseGain = updatePulse(step, elapsed);
+        var coreLevel = s2 * breath + pulseGain * 0.55;
+        matCore.opacity = clamp01(coreLevel) * 0.95;
+        matGlow.opacity = clamp01(s2 * (0.30 + pulseGain * 0.5));
+        glowSprite.scale.setScalar(1.15 + pulseGain * 0.55);
+        chamberLight.intensity = clamp01(s2 * 1.1 + pulseGain * 0.9) * 2.4;
 
-        /* Stage 3 — agent modules come online one at a time */
-        var s3 = stage(p, 0.42, 0.88);
-        agentModules.forEach(function (m) {
-            var startAt = (m.userData.order - 0.42) / 0.46 * 0.5;
-            var local = clamp01((s3 - startAt) / 0.5);
-            m.scale.setScalar(1.7 * (0.2 + easeOutCubic(local) * 0.8));
-            m.userData.linkMat.uniforms.uReveal.value = clamp01(local);
-        });
-
-        /* Stage 4 — streams begin to flow */
-        var s4 = easeOutCubic(stage(p, 0.68, 1.0));
-        streamMat.opacity = (0.7 + theme.t * 0.25) * s4;
-        motes.material.opacity = (0.34 + theme.t * 0.16) * (0.3 + s4 * 0.7);
-
-        /* Once the entrance is done, the heart and its bloom follow the theme
-           rather than the intro clock, so a mid-session toggle still lands. */
-        if (intro.done) {
-            heartMat.opacity = 0.85 + theme.t * 0.08;
-            coreGlow.material.opacity = 0.4 + theme.t * 0.24;
-            coreHalo.material.opacity = 0.16 + theme.t * 0.16;
+        /* 3. Optics align — the discs settle into their resting offsets */
+        var s3 = seg(p, 0.34, 0.72);
+        for (var i = 0; i < discs.length; i++) {
+            var rest = i * 0.16;
+            discs[i].rotation.z = rest + Math.sin(elapsed * 0.35 + i) * 0.05;
+            discs[i].position.y = (-0.19 + i * 0.125) + Math.sin(elapsed * 0.5 + i * 1.3) * 0.006;
         }
+        matDisc.opacity = 0.55 * s3;
 
-        /* Pointer easing */
-        pointer.x += (target.x - pointer.x) * Math.min(1, step * 2.6);
-        pointer.y += (target.y - pointer.y) * Math.min(1, step * 2.6);
-        excite += (exciteTarget - excite) * Math.min(1, step * 3.0);
+        /* 4. Streams appear */
+        var s4 = seg(p, 0.48, 0.86);
+        matGuide.opacity = 0.055 * s4;
+        updateParticles(step, s4);
 
-        pointerLocal.set(pointer.x * 3.4, -pointer.y * 3.4, 0);
-        nodeMat.uniforms.uPointer.value.copy(pointerLocal);
-        nodeMat.uniforms.uExcite.value = excite;
+        /* 5. Structure breathes — a very slight counter-motion between the
+           two masses, as if held apart by force rather than resting. */
+        var s5 = seg(p, 0.60, 1.0);
+        upperMass.position.y = 0.30 + Math.sin(elapsed * 0.42) * 0.012 * s5;
+        upperMass.rotation.z = -0.075 + Math.sin(elapsed * 0.31) * 0.008 * s5;
+        chamber.position.y = 0.06 + Math.sin(elapsed * 0.42 + 0.4) * 0.008 * s5;
 
-        var t = elapsed;
+        /* Camera: slow drift plus damped parallax. Never a full rotation. */
+        pointer.x += (pointer.tx - pointer.x) * 0.045;
+        pointer.y += (pointer.ty - pointer.y) * 0.045;
+        var driftX = Math.sin(elapsed * 0.16) * 0.10;
+        var driftY = Math.cos(elapsed * 0.13) * 0.05;
 
-        world.rotation.y = t * 0.055 + pointer.x * 0.16;
-        world.rotation.x = -0.06 + pointer.y * 0.10 + Math.sin(t * 0.22) * 0.02;
+        camera.position.x = camBase.x + driftX + pointer.x * 0.42;
+        camera.position.y = camBase.y + driftY - pointer.y * 0.26;
+        camera.position.z = camBase.z - Math.abs(pointer.x) * 0.10;
+        camera.lookAt(lookTarget);
 
-        /* The core drifts on its own axis, independent of the mesh, so the
-           two never feel mechanically locked together. */
-        /* Oscillate, never spin: a monogram that rotates through 360° is
-           edge-on and illegible for half of every cycle. */
-        core.rotation.y = Math.sin(t * 0.26) * 0.34;
-        core.rotation.x = Math.sin(t * 0.34) * 0.10;
-        heart.rotation.y -= step * 0.9;
-        heart.rotation.z += step * 0.4;
-        heartWire.rotation.y += step * 0.5;
-        heartWire.rotation.x -= step * 0.3;
-
-        heart.scale.setScalar(1 + Math.sin(t * 1.5) * 0.06);
-        heartWire.scale.setScalar(1 + Math.sin(t * 1.5 + 1.2) * 0.08);
-        coreGlow.scale.setScalar(1.5 * (1 + Math.sin(t * 1.1) * 0.05));
-        shellMat.uniforms.uPulse.value = 1 + Math.sin(t * 0.9) * 0.12;
-
-        nodeMat.uniforms.uTime.value = t;
-        edgeMat.uniforms.uTime.value = t;
-        core.traverse(function (o) {
-            if (o.material && o.material.uniforms && o.material.uniforms.uTime) {
-                o.material.uniforms.uTime.value = t;
-            }
-        });
-
-        neural.rotation.y = -t * 0.075;
-        neural.rotation.x = Math.sin(t * 0.18) * 0.05;
-
-        agentModules.forEach(function (m, idx) {
-            var ph = m.userData.phase;
-            var b0 = m.userData.base;
-            m.position.set(
-                b0.x + Math.sin(t * 0.31 + ph) * 0.14,
-                b0.y + Math.sin(t * 0.44 + ph * 1.3) * 0.16,
-                b0.z + Math.cos(t * 0.27 + ph) * 0.14
-            );
-            m.rotation.y += step * (0.3 + idx * 0.045);
-            m.rotation.x = Math.sin(t * 0.4 + ph) * 0.25;
-            m.userData.linkMat.uniforms.uTime.value = t;
-            m.userData.linkMat.uniforms.uExcite.value = excite * 0.5;
-        });
-        agents.rotation.y = t * 0.035;
-
-        /* Streams advance along their curves */
-        var posAttr = streamGeo.getAttribute('position');
-        for (var i = 0; i < streamCount; i++) {
-            var ci = streamCurveOf[i];
-            var u = (elapsed * (0.09 + streamSeed[i] * 0.10) + streamSeed[i]) % 1;
-            streamCurves[ci].getPoint(u, tmpVec);
-            posAttr.array[i * 3] = tmpVec.x;
-            posAttr.array[i * 3 + 1] = tmpVec.y;
-            posAttr.array[i * 3 + 2] = tmpVec.z;
-        }
-        posAttr.needsUpdate = true;
-
-        motes.rotation.y += step * 0.02;
-
-        /* Camera parallax: a few centimetres, no more */
-        camera.position.x = pointer.x * 0.34;
-        camera.position.y = -pointer.y * 0.24;
-        camera.lookAt(0, 0, 0);
+        /* The object itself barely turns — this is parallax, not a turntable */
+        sculpture.rotation.y = pointer.x * 0.10 + Math.sin(elapsed * 0.11) * 0.03;
+        sculpture.rotation.x = -pointer.y * 0.045;
 
         renderer.render(scene, camera);
     }
@@ -1036,6 +1100,8 @@
         if (rafId) cancelAnimationFrame(rafId);
         rafId = null;
         if (themeObserver) themeObserver.disconnect();
+        window.removeEventListener('pointermove', onPointerMove);
+        document.removeEventListener('pointerleave', onPointerLeave);
         disposables.forEach(function (d) {
             if (d && typeof d.dispose === 'function') {
                 try { d.dispose(); } catch (e) {}
@@ -1048,7 +1114,6 @@
     }
     window.addEventListener('pagehide', dispose, { once: true });
 
-    /* A lost context must not leave a dead canvas behind */
     renderer.domElement.addEventListener('webglcontextlost', function (ev) {
         ev.preventDefault();
         if (rafId) cancelAnimationFrame(rafId);
@@ -1056,7 +1121,6 @@
         goStatic();
     });
 
-    /* A visitor who turns reduced-motion on mid-session gets the still frame */
     if (reduceMotion.addEventListener) {
         reduceMotion.addEventListener('change', function () {
             if (reduceMotion.matches) {
@@ -1073,6 +1137,5 @@
 
     root.classList.add('has-webgl');
     if (fallback) fallback.setAttribute('aria-hidden', 'true');
-    resize();
     frame();
 })();
