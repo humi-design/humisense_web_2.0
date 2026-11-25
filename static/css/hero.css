@@ -183,9 +183,9 @@
     place-items: center;
 }
 
-/* The static composition: three orbital bands and a warm core, drawn in SVG.
-   It is visible until WebGL takes over, and it is what reduced-motion users
-   and low-power devices see permanently. */
+/* The static composition: the Intelligence Core at rest — an H monogram in a
+   neural field. It is visible until WebGL takes over, and it is what
+   reduced-motion users and low-power devices see permanently. */
 [data-sculpture-fallback] {
     position: absolute;
     inset: 0;
@@ -206,30 +206,55 @@
     overflow: visible;
 }
 
-.sculpt-ring {
-    fill: none;
-    stroke-width: 2.4;
-    transform-origin: center;
+/* The neural field breathes very slowly so the still composition is not
+   dead, but nothing travels or rotates — it must read as composed, not
+   animated. Reduced motion stops even this. */
+.sculpt-net {
+    animation: sculpt-breathe 9s ease-in-out infinite;
 }
 
-.sculpt-ring--1 { stroke: var(--c-elec-blue); animation: sculpt-spin 26s linear infinite; }
-.sculpt-ring--2 { stroke: var(--c-violet); animation: sculpt-spin 34s linear infinite reverse; }
-.sculpt-ring--3 { stroke: var(--c-golden); animation: sculpt-spin 20s linear infinite; }
-.sculpt-ring--4 { stroke: var(--c-magenta); opacity: 0.75; animation: sculpt-spin 42s linear infinite reverse; }
+.sculpt-agents circle {
+    animation: sculpt-node 5.5s ease-in-out infinite;
+}
+.sculpt-agents circle:nth-child(2) { animation-delay: 0.9s; }
+.sculpt-agents circle:nth-child(3) { animation-delay: 1.8s; }
+.sculpt-agents circle:nth-child(4) { animation-delay: 2.7s; }
+.sculpt-agents circle:nth-child(5) { animation-delay: 3.6s; }
+.sculpt-agents circle:nth-child(6) { animation-delay: 4.5s; }
 
-@keyframes sculpt-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+.sculpt-h {
+    animation: sculpt-float 11s ease-in-out infinite;
+    transform-origin: 200px 200px;
 }
 
-/* No canvas and no motion: hold the rings still rather than spinning them. */
-#hero-sculpture.is-static .sculpt-ring,
-.is-static .sculpt-ring {
+@keyframes sculpt-breathe {
+    0%, 100% { opacity: 0.38; }
+    50% { opacity: 0.62; }
+}
+
+@keyframes sculpt-node {
+    0%, 100% { opacity: 0.65; }
+    50% { opacity: 1; }
+}
+
+@keyframes sculpt-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(0.6deg); }
+}
+
+/* No canvas and no motion: hold the composition completely still. */
+#hero-sculpture.is-static .sculpt-net,
+#hero-sculpture.is-static .sculpt-agents circle,
+#hero-sculpture.is-static .sculpt-h {
     animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .sculpt-ring { animation: none; }
+    .sculpt-net,
+    .sculpt-agents circle,
+    .sculpt-h {
+        animation: none;
+    }
 }
 
 /* --- Scroll cue ---------------------------------------------------------- */

@@ -40,38 +40,90 @@
             <div id="hero-sculpture">
                 <div data-sculpture-canvas aria-hidden="true"></div>
 
-                {# Static composition. Designed to stand alone: four orbital
-                   bands in the brand hues around a warm core. #}
+                {# Static composition — the Intelligence Core at rest. Designed to
+                   stand on its own: an H monogram of glass shards inside a neural
+                   field, ringed by agent nodes. This is what renders before WebGL
+                   mounts, and permanently for reduced-motion and weak devices.
+                   Proportions mirror the 3D scene so the handover is invisible:
+                   monogram dominant, mesh subordinate, agents on the outer ring. #}
                 <div data-sculpture-fallback aria-hidden="true">
                     <svg viewBox="0 0 400 400" role="presentation">
                         <defs>
-                            <radialGradient id="sculptCore">
-                                <stop offset="0%" stop-color="#F3C94F"/>
-                                <stop offset="55%" stop-color="#FF941A" stop-opacity="0.85"/>
+                            <radialGradient id="coreHeart">
+                                <stop offset="0%" stop-color="#FFE9A8" stop-opacity="0.75"/>
+                                <stop offset="32%" stop-color="#F3C94F" stop-opacity="0.5"/>
+                                <stop offset="62%" stop-color="#FF941A" stop-opacity="0.34"/>
                                 <stop offset="100%" stop-color="#E82D68" stop-opacity="0"/>
                             </radialGradient>
-                            <linearGradient id="sculptRingA" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0%" stop-color="#2867E8"/>
-                                <stop offset="100%" stop-color="#7545E8"/>
+                            <linearGradient id="shardBlue" x1="0" y1="0" x2="1" y2="0.6">
+                                <stop offset="0%" stop-color="#1B47B8"/>
+                                <stop offset="62%" stop-color="#2867E8"/>
+                                <stop offset="100%" stop-color="#23D8F2"/>
                             </linearGradient>
-                            <linearGradient id="sculptRingB" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0%" stop-color="#F3C94F"/>
+                            <linearGradient id="shardViolet" x1="1" y1="0" x2="0" y2="0.6">
+                                <stop offset="0%" stop-color="#4A22B4"/>
+                                <stop offset="60%" stop-color="#7545E8"/>
                                 <stop offset="100%" stop-color="#E82D68"/>
+                            </linearGradient>
+                            <linearGradient id="shardGold" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="#F3C94F"/>
+                                <stop offset="50%" stop-color="#FFD978"/>
+                                <stop offset="100%" stop-color="#F3C94F"/>
                             </linearGradient>
                         </defs>
 
-                        <circle cx="200" cy="200" r="92" fill="url(#sculptCore)" opacity="0.9"/>
+                        {# Atmosphere: a faint field, not a shape #}
+                        <circle cx="200" cy="200" r="138" fill="url(#coreHeart)" opacity="0.26"/>
 
-                        <ellipse class="sculpt-ring sculpt-ring--1" cx="200" cy="200" rx="168" ry="64"
-                                 transform="rotate(-18 200 200)" stroke="url(#sculptRingA)"/>
-                        <ellipse class="sculpt-ring sculpt-ring--2" cx="200" cy="200" rx="150" ry="118"
-                                 transform="rotate(34 200 200)"/>
-                        <ellipse class="sculpt-ring sculpt-ring--3" cx="200" cy="200" rx="176" ry="46"
-                                 transform="rotate(-52 200 200)" stroke="url(#sculptRingB)"/>
-                        <ellipse class="sculpt-ring sculpt-ring--4" cx="200" cy="200" rx="122" ry="152"
-                                 transform="rotate(76 200 200)"/>
+                        {# Neural web — thin, low contrast, clearly behind the monogram #}
+                        <g class="sculpt-net" stroke="#23D8F2" stroke-width="0.8" opacity="0.3" fill="none">
+                            <path d="M200 58 L266 92 L288 162 L258 232 L196 262 L130 226 L112 154 L148 78 Z"/>
+                            <path d="M200 58 L288 162 L196 262 M266 92 L258 232 M112 154 L258 232 M148 78 L196 262"/>
+                        </g>
+                        <g fill="#23D8F2" opacity="0.5">
+                            <circle cx="200" cy="58" r="2.6"/><circle cx="266" cy="92" r="2.2"/>
+                            <circle cx="288" cy="162" r="2.6"/><circle cx="258" cy="232" r="2.2"/>
+                            <circle cx="196" cy="262" r="2.6"/><circle cx="130" cy="226" r="2.2"/>
+                            <circle cx="112" cy="154" r="2.6"/><circle cx="148" cy="78" r="2.2"/>
+                        </g>
 
-                        <circle cx="200" cy="200" r="26" fill="#F7F0DF" opacity="0.92"/>
+                        {# Agent nodes on the outer ring, each in its own brand hue #}
+                        <g class="sculpt-agents">
+                            <circle cx="200" cy="26" r="5" fill="#7545E8"/>
+                            <circle cx="351" cy="140" r="4" fill="#2867E8"/>
+                            <circle cx="351" cy="260" r="4" fill="#23D8F2"/>
+                            <circle cx="200" cy="374" r="5" fill="#E82D68"/>
+                            <circle cx="49" cy="260" r="4" fill="#F3C94F"/>
+                            <circle cx="49" cy="140" r="4" fill="#FF941A"/>
+                        </g>
+
+                        {# The heart: warm core sitting in the H's negative space #}
+                        <circle cx="200" cy="200" r="34" fill="url(#coreHeart)" opacity="0.8"/>
+                        <circle cx="200" cy="200" r="8" fill="#FFF6DE" opacity="0.85"/>
+
+                        {# The H monogram — the subject. Two uprights, a bridge,
+                           and two splinters that break the symmetry. #}
+                        <g class="sculpt-h">
+                            <path d="M152 96 L186 88 L180 306 L146 314 Z"
+                                  fill="url(#shardBlue)" opacity="0.96"/>
+                            <path d="M214 104 L248 96 L242 298 L208 306 Z"
+                                  fill="url(#shardViolet)" opacity="0.94"/>
+                            <path d="M178 186 L222 180 L224 222 L180 228 Z"
+                                  fill="url(#shardGold)" opacity="0.97"/>
+                            <path d="M186 100 L204 94 L212 152 L194 158 Z"
+                                  fill="url(#shardViolet)" opacity="0.72"/>
+                            <path d="M208 250 L224 244 L220 292 L204 298 Z"
+                                  fill="url(#shardBlue)" opacity="0.72"/>
+                        </g>
+
+                        {# Edge highlights: the fresnel rim that makes it read as glass #}
+                        <g stroke="#7FE9FA" stroke-width="1.6" opacity="0.85" fill="none" stroke-linecap="round">
+                            <path d="M186 89 L180 305"/>
+                            <path d="M248 97 L242 297"/>
+                        </g>
+                        <g stroke="#FFE9A8" stroke-width="1.4" opacity="0.9" fill="none" stroke-linecap="round">
+                            <path d="M179 187 L223 181"/>
+                        </g>
                     </svg>
                 </div>
             </div>
