@@ -482,7 +482,11 @@
    composition and never pay for the library. #}
 <script>
   (function () {
-    var capable = window.matchMedia('(min-width: 721px)').matches &&
+    /* 1025, not 721: below this width the hero is one full-width column, so a
+       rendered object would sit behind the copy. The static composition
+       handles that range instead. Keep this in step with the layout
+       breakpoint in home-system.css. */
+    var capable = window.matchMedia('(min-width: 1025px)').matches &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
       !(navigator.deviceMemory && navigator.deviceMemory < 4) &&
       !(navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) &&

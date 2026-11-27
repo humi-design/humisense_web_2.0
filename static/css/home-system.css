@@ -548,12 +548,23 @@ body.hs-home.dark {
     .hs-hero { min-height: auto; }
 }
 
-@media (max-width: 720px) {
+/* Once the hero collapses to one column the copy runs full width, so the
+   object can no longer sit beside it. The fallback becomes a faint piece of
+   background art at the bottom of the viewport instead of a bright object
+   behind the text. */
+@media (max-width: 1024px) {
     .hs-stage__fallback {
         top: auto;
         bottom: -6vw;
         right: 50%;
         transform: translateX(50%);
+        width: min(84vw, 440px);
+        opacity: 0.32;
+    }
+}
+
+@media (max-width: 720px) {
+    .hs-stage__fallback {
         width: min(84vw, 380px);
         opacity: 0.5;
     }
