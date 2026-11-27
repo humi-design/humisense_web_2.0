@@ -80,7 +80,7 @@ HOME_SERVICES = [
         ),
     },
     {
-        'name': 'Data Science & Analytics',
+        'name': 'Data Science',
         'summary': (
             'Analysis and modelling where the question is genuinely open: forecasting, '
             'segmentation, anomaly detection, demand planning.'
@@ -94,7 +94,7 @@ HOME_SERVICES = [
         ),
     },
     {
-        'name': 'Power BI & Business Intelligence',
+        'name': 'Business Intelligence & Power BI',
         'summary': (
             'Reporting layers over the systems you already run, with a modelled semantic '
             'layer so numbers reconcile across reports.'
@@ -108,7 +108,7 @@ HOME_SERVICES = [
         ),
     },
     {
-        'name': 'Custom Software & Integrations',
+        'name': 'Custom AI Solutions',
         'summary': (
             'Problems that do not fit a product category: bespoke systems designed around '
             'a specific constraint in your operation.'

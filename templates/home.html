@@ -1,286 +1,87 @@
 {% extends 'base.html' %}
 
-{% block body_class %}hs-home{% endblock %}
-
-{% block page_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/home-system.css') }}">
-{% endblock %}
-
 {% block content %}
 
 {# ===================================================================
-   THE HUMISENSE INTELLIGENCE SYSTEM
-
-   One continuous environment, not a stack of colour bands. The stage is a
-   fixed layer behind everything (see components/hs_stage.html); the ground
-   below it carries the page when the stage is unavailable.
+   HERO — liquid-glass wordmark
    =================================================================== #}
+{% include 'components/home_hero.html' %}
 
-<div class="hs-ground">
-{% include 'components/hs_stage.html' %}
-
-{# -------------------------------------------------------------------
-   01 — OPENING
-   ------------------------------------------------------------------- #}
-<section class="hs-hero" aria-labelledby="hero-heading">
+{# ===================================================================
+   CAPABILITY STRIP
+   =================================================================== #}
+<section class="section section--tight env env--paper" aria-label="What we do">
     <div class="shell">
-        <div class="hs-hero__grid">
+        <dl class="capstrip" data-reveal>
             <div>
-                <p class="hs-hero__eyebrow">Global AI automation &amp; intelligent systems</p>
-                <h1 class="hs-hero__title" id="hero-heading">
-                    Intelligence, engineered<br>
-                    to <em>make things happen.</em>
-                </h1>
-                <p class="hs-hero__lead">
-                    Humisense designs and builds AI automation, custom agents and document
-                    systems for businesses worldwide — then hands over something your team
-                    can actually run.
-                </p>
-                <div class="hs-hero__cta">
-                    <a href="{{ url_for('contact') }}" class="btn btn--primary btn--lg">
-                        Discuss a project
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                             stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                    </a>
-                    <a href="#automation" class="btn btn--ghost btn--lg">See how it works</a>
-                </div>
-                <span class="hs-hero__tagline">Make it happen.</span>
+                <dt>Products</dt>
+                <dd>AI interfaces, voice layers and agent systems built for real use.</dd>
             </div>
-
-            {# Reserves the object column on desktop; the object itself lives on
-               the fixed stage behind this page. #}
-            <div class="hs-hero__object" aria-hidden="true"></div>
-        </div>
+            <div>
+                <dt>Automation</dt>
+                <dd>Operational workflows that read, decide and route work.</dd>
+            </div>
+            <div>
+                <dt>Engineering</dt>
+                <dd>Web, application and data platforms delivered end to end.</dd>
+            </div>
+            <div>
+                <dt>Research</dt>
+                <dd>Applied experimentation that feeds back into delivery.</dd>
+            </div>
+        </dl>
     </div>
 </section>
 
-{# -------------------------------------------------------------------
-   02 — WHAT WE BUILD  (the eight modules; each lights a socket on the stage)
-   ------------------------------------------------------------------- #}
-<section class="hs-section" id="services" aria-labelledby="services-heading">
+{# ===================================================================
+   SERVICES
+   =================================================================== #}
+<section class="section env env--cream env--textured" id="services" aria-labelledby="services-heading">
     <div class="shell">
-        <div class="hs-split">
-            <div class="hs-copy">
-                <p class="eyebrow">What we build</p>
-                <h2 id="services-heading">
-                    Eight disciplines.<br>
-                    <span class="muted">One engineering team.</span>
-                </h2>
-                <p class="lede">
-                    We pick the approach that fits the problem rather than the one that is
-                    easiest to sell. Rules where rules are enough; models only where
-                    judgement is genuinely needed.
-                </p>
-                <p style="margin-top:1.5rem;">
-                    <a class="link-arrow" href="{{ url_for('services') }}">
-                        All services
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                             fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
-                             stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                    </a>
-                </p>
-            </div>
-
-            <div class="hs-modules">
-                {% for svc in home_services %}
-                <a class="hs-module" href="{{ svc.url }}" data-hs-module="{{ loop.index0 }}">
-                    <div class="hs-module__top">
-                        <span class="hs-module__icon">{{ svc.icon | safe }}</span>
-                        <span class="hs-module__index">{{ '%02d' % loop.index }}</span>
-                    </div>
-                    <h3>{{ svc.name }}</h3>
-                    <p>{{ svc.summary }}</p>
-                    <span class="hs-module__more">
-                        Learn more
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
-                             fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
-                             stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                    </span>
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</section>
-
-{# -------------------------------------------------------------------
-   03 — HOW A WORKFLOW ACTUALLY RUNS
-   ------------------------------------------------------------------- #}
-<section class="hs-section" id="automation" aria-labelledby="automation-heading">
-    <div class="shell">
-        <div class="hs-split hs-split--rev">
-            <div class="hs-copy hs-plate">
-                <p class="eyebrow">Inside the system</p>
-                <h2 id="automation-heading">
-                    What “AI automation” actually means here.
-                </h2>
-                <p class="lede">
-                    Not a chatbot bolted onto a form. A pipeline that reads incoming work,
-                    applies your rules, routes it, and hands anything uncertain to a person
-                    with the context to decide.
-                </p>
-                <p>
-                    The steps below are the same shape whether the input is an RFQ, a supplier
-                    invoice, a purchase order or a support request.
-                </p>
-                <p style="margin-top:1.5rem;">
-                    <a class="link-arrow" href="{{ url_for('ai_automation') }}">
-                        AI automation services
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                             fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
-                             stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                    </a>
-                </p>
-            </div>
-
-            <div class="hs-flow">
-                <div class="hs-flow__step">
-                    <span class="hs-flow__n">01</span>
-                    <div>
-                        <h3>Intake</h3>
-                        <p>Email, PDF, spreadsheet or portal submission arrives and is read into
-                           structured fields — including scanned documents and inconsistent formats.</p>
-                    </div>
-                </div>
-                <div class="hs-flow__step">
-                    <span class="hs-flow__n">02</span>
-                    <div>
-                        <h3>Interpret</h3>
-                        <p>Line items, quantities, specifications and entities are matched against
-                           your catalogue, pricing rules and customer records.</p>
-                    </div>
-                </div>
-                <div class="hs-flow__step hs-flow__step--active">
-                    <span class="hs-flow__n">03</span>
-                    <div>
-                        <h3>Decide</h3>
-                        <p>Deterministic rules handle the routine majority. Where confidence is
-                           low, the item is flagged rather than guessed at.</p>
-                    </div>
-                </div>
-                <div class="hs-flow__step">
-                    <span class="hs-flow__n">04</span>
-                    <div>
-                        <h3>Act</h3>
-                        <p>A quotation is drafted, a record is written to your ERP or CRM, a
-                           supplier is contacted, or a task is created for the right person.</p>
-                    </div>
-                </div>
-                <div class="hs-flow__step">
-                    <span class="hs-flow__n">05</span>
-                    <div>
-                        <h3>Review</h3>
-                        <p>Every step is logged with its inputs and confidence. Anything the system
-                           was unsure about waits in a review queue with the original document attached.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{# -------------------------------------------------------------------
-   04 — WHERE IT APPLIES  (industries)
-   ------------------------------------------------------------------- #}
-<section class="hs-section" id="industries" aria-labelledby="industries-heading">
-    <div class="shell">
-        <div class="section-head">
-            <p class="eyebrow">Where it applies</p>
-            <h2 id="industries-heading">
-                Built for operations that run on documents.
+        <div class="section-head" data-reveal>
+            <p class="eyebrow">What we build</p>
+            <h2 id="services-heading">
+                Technology should solve problems.<br>
+                <span class="muted">Not create more of them.</span>
             </h2>
             <p class="lede">
-                The pattern is the same across sectors: high volumes of semi-structured input,
-                a decision that follows rules, and a person who currently does that work by hand.
+                Eight disciplines, one engineering team. We pick the approach that fits the
+                problem rather than the one that is easiest to sell.
             </p>
         </div>
 
-        <div class="hs-industries">
-            <a class="hs-industry" href="{{ url_for('industry_page', slug='manufacturing') }}">
-                <h3>Manufacturing</h3>
-                <p>RFQs, supplier correspondence, purchase orders, quality documentation and
-                   production reporting.</p>
+        <div class="tiles" data-reveal data-reveal-delay="1">
+            {% for svc in home_services %}
+            <a class="tile tile--link" href="{{ svc.url }}">
+                <div class="tile__top">
+                    <span class="tile__icon">{{ svc.icon | safe }}</span>
+                    <span class="index-label">{{ '%02d' % loop.index }}</span>
+                </div>
+                <h3>{{ svc.name }}</h3>
+                <p>{{ svc.summary }}</p>
+                {% if svc.caps %}
+                <ul class="tile__caps">
+                    {% for cap in svc.caps %}<li>{{ cap }}</li>{% endfor %}
+                </ul>
+                {% endif %}
+                <span class="tile__more">
+                    Learn more
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                         stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
             </a>
-            <a class="hs-industry" href="{{ url_for('industry_page', slug='industrial-distribution') }}">
-                <h3>Industrial distribution</h3>
-                <p>Customer RFQs, multi-supplier comparison, quotation preparation, product
-                   matching and follow-up.</p>
-            </a>
-            <a class="hs-industry" href="{{ url_for('industry_page', slug='wholesale') }}">
-                <h3>Wholesale &amp; B2B</h3>
-                <p>Lead qualification, enquiry handling, quotation management and order
-                   administration.</p>
-            </a>
-            <a class="hs-industry" href="{{ url_for('industry_page', slug='professional-services') }}">
-                <h3>Professional services</h3>
-                <p>Document intake, engagement drafting, reporting and client communication
-                   at volume.</p>
-            </a>
-            <a class="hs-industry" href="{{ url_for('industry_page', slug='small-businesses') }}">
-                <h3>Small businesses</h3>
-                <p>One or two workflows automated properly, rather than a platform nobody
-                   has time to run.</p>
-            </a>
-            <a class="hs-industry" href="{{ url_for('industry_page', slug='b2b-businesses') }}">
-                <h3>B2B businesses</h3>
-                <p>Sales pipeline automation, lead routing and the paperwork between
-                   enquiry and order.</p>
-            </a>
+            {% endfor %}
         </div>
     </div>
 </section>
 
-{# -------------------------------------------------------------------
-   05 — HOW WE WORK  (five stages)
-   ------------------------------------------------------------------- #}
-<section class="hs-section" id="process" aria-labelledby="process-heading">
+{# ===================================================================
+   PRODUCTS
+   =================================================================== #}
+<section class="section env env--deepblue" id="products" aria-labelledby="products-heading">
     <div class="shell">
-        <div class="section-head">
-            <p class="eyebrow">How we work</p>
-            <h2 id="process-heading">From possibility to reality.</h2>
-            <p class="lede">
-                Five stages. The first two decide whether the project is worth building at
-                all, which is why we do not skip them.
-            </p>
-        </div>
-
-        <div class="hs-process">
-            <div class="hs-process__step">
-                <h3>Discover</h3>
-                <p>Understand the process, measure the current baseline and identify where
-                   automation actually pays back.</p>
-            </div>
-            <div class="hs-process__step">
-                <h3>Design</h3>
-                <p>Choose the architecture and the experience. Rules where rules suffice,
-                   models only where judgement is needed.</p>
-            </div>
-            <div class="hs-process__step">
-                <h3>Build</h3>
-                <p>Engineer the system, integrate it with your existing tools and test it
-                   against real inputs, not samples.</p>
-            </div>
-            <div class="hs-process__step">
-                <h3>Deploy</h3>
-                <p>Ship behind a review path, monitor the first weeks and tune the thresholds
-                   against actual output.</p>
-            </div>
-            <div class="hs-process__step">
-                <h3>Evolve</h3>
-                <p>Improve and extend. Handover includes the logging and review paths needed
-                   to run it without us.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-{# -------------------------------------------------------------------
-   06 — PRODUCTS  (honest staging, unchanged data)
-   ------------------------------------------------------------------- #}
-<section class="hs-section" id="products" aria-labelledby="products-heading">
-    <div class="shell">
-        <div class="section-head">
+        <div class="section-head" data-reveal>
             <p class="eyebrow">The ecosystem</p>
             <h2 id="products-heading">
                 Ideas become products.<br>
@@ -294,7 +95,8 @@
 
         <div class="product-grid">
             {% for product in home_products %}
-            <a class="product-card" href="{{ url_for('product_detail', product_id=product.id) }}">
+            <a class="product-card" href="{{ url_for('product_detail', product_id=product.id) }}"
+               data-reveal data-reveal-delay="{{ loop.index0 % 3 + 1 }}">
                 <span class="product-card__badge {{ 'product-card__badge--live' if product.stage == 'live' else 'product-card__badge--proto' }}">
                     {{ product.stage_label }}
                 </span>
@@ -313,7 +115,7 @@
             {% endfor %}
         </div>
 
-        <p style="margin-top:2rem;">
+        <p style="margin-top:2rem;" data-reveal>
             <a class="link-arrow" href="{{ url_for('products') }}">
                 All products and their current status
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
@@ -324,13 +126,58 @@
     </div>
 </section>
 
-{# -------------------------------------------------------------------
-   07 — ACADEMY + RESEARCH
-   ------------------------------------------------------------------- #}
-<section class="hs-section" id="academy" aria-labelledby="academy-heading">
+{# ===================================================================
+   PROCESS
+   =================================================================== #}
+<section class="section env env--golden" id="process" aria-labelledby="process-heading">
     <div class="shell">
-        <div class="hs-split">
-            <div class="hs-copy">
+        <div class="section-head" data-reveal>
+            <p class="eyebrow">How we work</p>
+            <h2 id="process-heading">From possibility to reality.</h2>
+            <p class="lede">
+                Four stages. The first two decide whether the project is worth building at all,
+                which is why we do not skip them.
+            </p>
+        </div>
+
+        <div class="process" data-process>
+            <div class="process__line" aria-hidden="true"></div>
+
+            <div class="step">
+                <div class="step__node">01</div>
+                <h3>Discover</h3>
+                <p>Understand the problem, measure the current process and identify where
+                   automation actually pays back.</p>
+            </div>
+            <div class="step">
+                <div class="step__node">02</div>
+                <h3>Design</h3>
+                <p>Choose the architecture and the experience. Rules where rules suffice,
+                   models only where judgement is needed.</p>
+            </div>
+            <div class="step">
+                <div class="step__node">03</div>
+                <h3>Build</h3>
+                <p>Engineer the product or automation, integrate it with your systems and
+                   test it against real inputs.</p>
+            </div>
+            <div class="step">
+                <div class="step__node">04</div>
+                <h3>Evolve</h3>
+                <p>Monitor, improve and scale. Handover includes the logging and review
+                   paths needed to run it without us.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ===================================================================
+   ACADEMY
+   =================================================================== #}
+<section class="section env env--paper" id="academy" aria-labelledby="academy-heading">
+    <div class="shell">
+        <div class="split">
+            <div class="split__sticky" data-reveal>
                 <p class="eyebrow">Humisense Academy</p>
                 <h2 id="academy-heading">Learn. Experiment. Build.</h2>
                 <p class="lede" style="margin-top:1.25rem;">
@@ -349,7 +196,8 @@
 
             <div class="product-grid" style="grid-template-columns:1fr 1fr;">
                 {% for course in home_courses %}
-                <a class="course-card" href="{{ url_for('course_detail', course_id=course.id) }}">
+                <a class="course-card" href="{{ url_for('course_detail', course_id=course.id) }}"
+                   data-reveal data-reveal-delay="{{ loop.index0 % 2 + 1 }}">
                     <span class="level">{{ course.level }}</span>
                     <h3>{{ course.name }}</h3>
                     <p>{{ course.blurb }}</p>
@@ -360,9 +208,12 @@
     </div>
 </section>
 
-<section class="hs-section hs-section--tight" id="research" aria-labelledby="research-heading">
+{# ===================================================================
+   RESEARCH
+   =================================================================== #}
+<section class="section env env--charcoal" id="research" aria-labelledby="research-heading">
     <div class="shell">
-        <div class="section-head">
+        <div class="section-head" data-reveal>
             <p class="eyebrow">Research &amp; innovation</p>
             <h2 id="research-heading">Curiosity creates what's next.</h2>
             <p class="lede">
@@ -372,7 +223,7 @@
             </p>
         </div>
 
-        <div>
+        <div data-reveal>
             {% for item in home_research %}
             <a class="research-row" href="{{ url_for('research') }}">
                 <span class="index-label">{{ '%02d' % loop.index }}</span>
@@ -385,7 +236,7 @@
             {% endfor %}
         </div>
 
-        <p style="margin-top:2rem;">
+        <p style="margin-top:2rem;" data-reveal>
             <a class="link-arrow" href="{{ url_for('research') }}">
                 Read and submit research
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
@@ -396,13 +247,13 @@
     </div>
 </section>
 
-{# -------------------------------------------------------------------
-   08 — ABOUT
-   ------------------------------------------------------------------- #}
-<section class="hs-section" id="about" aria-labelledby="about-heading">
+{# ===================================================================
+   ABOUT
+   =================================================================== #}
+<section class="section env env--cream" aria-labelledby="about-heading">
     <div class="shell">
-        <div class="hs-split hs-split--rev">
-            <div class="hs-copy">
+        <div class="split split--rev">
+            <div data-reveal>
                 <p class="eyebrow">About Humisense</p>
                 <h2 id="about-heading">We believe technology should make things possible.</h2>
                 <p class="lede" style="margin-top:1.25rem;">
@@ -414,7 +265,7 @@
                     deliverable is a running system your team can operate, not a licence and a
                     roadmap. Where a problem does not justify AI, we say so.
                 </p>
-                <p style="margin-top:1.5rem;">
+                <p>
                     <a class="link-arrow" href="{{ url_for('about') }}">
                         More about how we work
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
@@ -424,7 +275,7 @@
                 </p>
             </div>
 
-            <div class="hs-plate">
+            <div class="glass" style="padding:clamp(1.75rem,3vw,2.75rem);" data-reveal data-reveal-delay="1">
                 <h3 style="font-size:1.05rem;margin-bottom:1.25rem;">What we are good at</h3>
                 <dl class="capstrip" style="grid-template-columns:1fr;border:0;background:transparent;">
                     <div style="padding:0 0 1.1rem;background:transparent;border-bottom:1px solid var(--line);">
@@ -445,48 +296,48 @@
     </div>
 </section>
 
-{# -------------------------------------------------------------------
-   09 — CLOSING
-   ------------------------------------------------------------------- #}
-<section class="hs-final" id="contact-cta" aria-labelledby="cta-heading">
+{# ===================================================================
+   CONTACT
+   =================================================================== #}
+<section class="section env env--orange env--textured" id="contact-cta" aria-labelledby="cta-heading">
     <div class="shell">
-        <div class="hs-final__inner">
-            <p class="eyebrow" style="justify-content:center;">Start here</p>
-            <h2 id="cta-heading">Have an idea?<br>Let's make it happen.</h2>
-            <p>
-                Tell us what you are trying to solve. If automation is not the right answer,
-                we will tell you that too.
-            </p>
-            <div class="hs-final__cta">
-                <a href="{{ url_for('contact') }}" class="btn btn--primary btn--lg">
-                    Start a conversation
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                         stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-                <a href="mailto:info@humisense.com" class="btn btn--ghost btn--lg">info@humisense.com</a>
+        <div class="glass" style="padding:clamp(2rem,5vw,4.5rem);position:relative;overflow:hidden;"
+             data-reveal>
+            <div class="ambient ambient--blue" style="width:32vw;height:32vw;top:-40%;right:-8%;" aria-hidden="true"></div>
+            <div style="position:relative;">
+                <p class="eyebrow">Start here</p>
+                <h2 id="cta-heading" style="max-width:26ch;">
+                    Have an idea?<br>Let's make it happen.
+                </h2>
+                <p class="lede" style="margin-top:1.25rem;">
+                    Tell us what you are trying to solve. If automation is not the right answer,
+                    we will tell you that too.
+                </p>
+                <div class="cta-buttons" style="justify-content:flex-start;margin-top:2rem;">
+                    <a href="{{ url_for('contact') }}" class="btn btn--primary btn--lg">
+                        Start a conversation
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                             stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </a>
+                    <a href="mailto:info@humisense.com" class="btn btn--ghost btn--lg">info@humisense.com</a>
+                </div>
             </div>
-            <span class="hs-final__tagline">Make it happen.</span>
         </div>
     </div>
 </section>
-</div>
 
 {% endblock %}
 
 {% block hero_scripts %}
 {# Three.js is 600 KB. It is only worth downloading on a device that can
-   actually render the scene, so the fetch itself is gated on the same
-   conditions the controller uses. Small screens, low-memory and low-core
-   devices, and visitors who asked for reduced motion keep the designed static
-   composition and never pay for the library. #}
+   actually render the sculpture, so the fetch itself is gated on the same
+   conditions the hero uses. Small screens, low-memory, low-core devices and
+   visitors who asked for reduced motion keep the designed static composition
+   and never pay for the library. #}
 <script>
   (function () {
-    /* 1025, not 721: below this width the hero is one full-width column, so a
-       rendered object would sit behind the copy. The static composition
-       handles that range instead. Keep this in step with the layout
-       breakpoint in home-system.css. */
-    var capable = window.matchMedia('(min-width: 1025px)').matches &&
+    var capable = window.matchMedia('(min-width: 721px)').matches &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
       !(navigator.deviceMemory && navigator.deviceMemory < 4) &&
       !(navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) &&
@@ -506,35 +357,14 @@
       }
     } catch (e) { return; }
 
-    var files = [
-      '{{ url_for('static', filename='js/system/hs-geo.js') }}',
-      '{{ url_for('static', filename='js/system/hs-materials.js') }}',
-      '{{ url_for('static', filename='js/system/hs-structure.js') }}',
-      '{{ url_for('static', filename='js/system/hs-lighting.js') }}',
-      '{{ url_for('static', filename='js/system/hs-scene.js') }}'
-    ];
-    var three = '{{ url_for('static', filename='vendor/three.min.js') }}';
-
-    /* Load in order: three, then the system modules, then start. */
-    function chain(list, done) {
-      if (!list.length) return done();
+    var load = function (src, next) {
       var s = document.createElement('script');
-      s.src = list[0];
-      s.onload = function () { chain(list.slice(1), done); };
-      s.onerror = function () { /* leave the static composition in place */ };
+      s.src = src; s.defer = true;
+      if (next) s.onload = next;
       document.head.appendChild(s);
-    }
-
-    chain([three].concat(files), function () {
-      var host = document.querySelector('[data-hs-canvas]');
-      var fb = document.querySelector('[data-hs-fallback]');
-      if (!host || !window.HSScene) return;
-      try {
-        window.__hsSystem = window.HSScene.init({ canvasHost: host, fallback: fb });
-      } catch (e) {
-        host.setAttribute('hidden', '');
-        if (fb) fb.removeAttribute('aria-hidden');
-      }
+    };
+    load('{{ url_for('static', filename='vendor/three.min.js') }}', function () {
+      load('{{ url_for('static', filename='js/hero-3d.js') }}');
     });
   })();
 </script>

@@ -1,0 +1,199 @@
+{# ==========================================================================
+   home_hero — the signature first screen.
+
+   Type left, sculpture right. The static SVG composition inside
+   [data-sculpture-fallback] is what renders first and is the permanent view
+   for reduced-motion and low-power devices; the WebGL canvas is layered over
+   it only when hero-3d.js confirms it can run.
+   ========================================================================== #}
+<section class="hero" aria-labelledby="hero-heading">
+    <div class="hero__inner">
+        <div class="hero__col">
+            <p class="hero__eyebrow">{{ eyebrow | default('AI automation &amp; intelligent systems') }}</p>
+
+            <span class="hero__wordmark" aria-hidden="true">HUMISENSE</span>
+
+            <h1 id="hero-heading" class="hero__title" data-hero-title>
+                We build what's <em>next.</em>
+            </h1>
+
+            <span class="hero__tagline">Make it happen.</span>
+
+            <p class="hero__lead">
+                Humisense is a global AI automation and intelligent solutions company.
+                We design, build and run the systems that move work forward — agents,
+                workflows, document pipelines and products.
+            </p>
+
+            <div class="hero__cta">
+                <a href="{{ url_for('services') }}" class="btn btn--primary btn--lg">
+                    Explore what we build
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                         stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+                <a href="{{ url_for('contact') }}" class="btn btn--ghost btn--lg">Let's work together</a>
+            </div>
+        </div>
+
+        <div class="hero__object">
+            <div id="hero-sculpture">
+                <div data-sculpture-canvas aria-hidden="true"></div>
+
+                {# Static composition — CONFLUENCE at rest. The same sculpture the
+                   WebGL scene builds: one column cleaved by a fault, its upper
+                   mass sheared and displaced above the lower, a glass chamber
+                   suspended in the gap. This renders before WebGL mounts and is
+                   the permanent view for reduced-motion and weak devices, so it
+                   must carry the composition on its own. #}
+                <div data-sculpture-fallback aria-hidden="true">
+                    <svg viewBox="0 0 400 400" role="presentation">
+                        <defs>
+                            <linearGradient id="cfLower" x1="0.1" y1="0" x2="0.95" y2="1">
+                                <stop offset="0%" stop-color="#1B2F80"/>
+                                <stop offset="30%" stop-color="#2C4FC4"/>
+                                <stop offset="66%" stop-color="#4A6FE0"/>
+                                <stop offset="100%" stop-color="#93AEFF"/>
+                            </linearGradient>
+                            <linearGradient id="cfUpper" x1="0.95" y1="0" x2="0.05" y2="1">
+                                <stop offset="0%" stop-color="#241059"/>
+                                <stop offset="30%" stop-color="#43209E"/>
+                                <stop offset="66%" stop-color="#6B3BE0"/>
+                                <stop offset="100%" stop-color="#AE8CFF"/>
+                            </linearGradient>
+                            <linearGradient id="cfBand" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="#5E6A9E"/>
+                                <stop offset="42%" stop-color="#FFFFFF"/>
+                                <stop offset="100%" stop-color="#8A96C8"/>
+                            </linearGradient>
+                            <radialGradient id="cfHeart">
+                                <stop offset="0%" stop-color="#FFF3C9" stop-opacity="0.95"/>
+                                <stop offset="34%" stop-color="#F3C94F" stop-opacity="0.55"/>
+                                <stop offset="68%" stop-color="#FF941A" stop-opacity="0.28"/>
+                                <stop offset="100%" stop-color="#E82D68" stop-opacity="0"/>
+                            </radialGradient>
+                            <linearGradient id="cfStreamIn" x1="0" y1="1" x2="1" y2="0">
+                                <stop offset="0%" stop-color="#23D8F2" stop-opacity="0"/>
+                                <stop offset="55%" stop-color="#23D8F2" stop-opacity="0.85"/>
+                                <stop offset="100%" stop-color="#F3C94F" stop-opacity="0.9"/>
+                            </linearGradient>
+                            <linearGradient id="cfStreamOut" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#F3C94F" stop-opacity="0.9"/>
+                                <stop offset="100%" stop-color="#E82D68" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+
+                        {# Chamber bloom behind the fault — the light the cleft reveals #}
+                        <ellipse cx="196" cy="196" rx="52" ry="40" fill="url(#cfHeart)" opacity="0.62"/>
+
+                        {# Lower mass — a blade seen slightly off-axis, leaning right.
+                           The lean is the same 0.15 rad the scene uses. #}
+                        <g transform="rotate(8.6 200 260)">
+                            <path d="M150 268 L196 258 L188 122 L146 130 Z"
+                                  fill="url(#cfLower)" opacity="0.97"/>
+                            <path d="M196 258 L243 249 L240 116 L188 122 Z"
+                                  fill="#101A3E" opacity="0.94"/>
+                            <path d="M146 130 L188 122 L196 258 L150 268 Z"
+                                  fill="url(#cfLower)" opacity="0.55"/>
+                        </g>
+
+                        {# Machined bands on the lower mass #}
+                        <g stroke="url(#cfBand)" stroke-width="3.4" opacity="0.9" stroke-linecap="round">
+                            <path d="M150 236 L240 219"/>
+                            <path d="M148 196 L239 180"/>
+                            <path d="M146 156 L238 141"/>
+                        </g>
+
+                        {# Bright arris down the outer edge of each mass — the
+                           single most effective separator against a coloured
+                           stage. Without these the object reads as a smudge. #}
+                        <g fill="none" stroke-linecap="round">
+                            <path d="M146 130 L150 268" stroke="#BFD4FF" stroke-width="2.2" opacity="0.85"
+                                  transform="rotate(8.6 200 260)"/>
+                            <path d="M192 50 L186 178" stroke="#C7AEFF" stroke-width="2.0" opacity="0.8"
+                                  transform="rotate(8.6 232 120)"/>
+                        </g>
+
+                        {# The cleave: a thin bright plate across the gap #}
+                        <g transform="rotate(8.6 200 190)">
+                            <path d="M141 196 L256 175 L257 181 L142 202 Z"
+                                  fill="url(#cfBand)" opacity="0.95"/>
+                        </g>
+
+                        {# Upper mass — narrower, offset right, leaning the same way,
+                           so the cut faces stay parallel and the gap reads as one
+                           cleave rather than two separate shapes. #}
+                        <g transform="rotate(8.6 232 120)">
+                            <path d="M186 178 L236 169 L224 44 L192 50 Z"
+                                  fill="url(#cfUpper)" opacity="0.96"/>
+                            <path d="M236 169 L258 165 L243 48 L224 44 Z"
+                                  fill="#150A33" opacity="0.94"/>
+                            <path d="M192 50 L224 44 L236 169 L186 178 Z"
+                                  fill="url(#cfUpper)" opacity="0.5"/>
+                        </g>
+                        <g stroke="url(#cfBand)" stroke-width="2.8" opacity="0.85" stroke-linecap="round">
+                            <path d="M188 140 L257 128"/>
+                            <path d="M192 92 L254 82"/>
+                        </g>
+
+                        {# The chamber: a lathed glass vessel in the cleft, holding
+                           stacked optical discs. The heart of the piece. #}
+                        <g>
+                            <ellipse cx="199" cy="188" rx="28" ry="32" fill="#0A1330" opacity="0.82"/>
+                            <ellipse cx="199" cy="188" rx="27" ry="31" fill="none"
+                                     stroke="#BFE4FF" stroke-width="1.3" opacity="0.8"/>
+                            <g stroke="#D9A928" stroke-width="1.6" opacity="0.85">
+                                <ellipse cx="199" cy="176" rx="17" ry="5"/>
+                                <ellipse cx="199" cy="186" rx="19" ry="5.5"/>
+                                <ellipse cx="199" cy="196" rx="17" ry="5"/>
+                            </g>
+                            <circle cx="199" cy="186" r="9" fill="url(#cfHeart)"/>
+                            <circle cx="199" cy="186" r="3.4" fill="#FFF6DE" opacity="0.95"/>
+                        </g>
+
+                        {# Living information: one path in from lower left, one out
+                           through the upper mass. Open curves, never closed loops. #}
+                        <g fill="none" stroke-linecap="round">
+                            <path d="M96 300 C132 268 150 232 176 204 C188 192 192 190 199 187"
+                                  stroke="url(#cfStreamIn)" stroke-width="1.7" opacity="0.9"/>
+                            <path d="M199 187 C214 168 226 132 236 96 C241 78 244 66 248 52"
+                                  stroke="url(#cfStreamOut)" stroke-width="1.7" opacity="0.9"/>
+                        </g>
+                        <g fill="#23D8F2">
+                            <circle cx="118" cy="284" r="1.9" opacity="0.9"/>
+                            <circle cx="146" cy="242" r="1.5" opacity="0.75"/>
+                            <circle cx="170" cy="210" r="1.7" opacity="0.85"/>
+                        </g>
+                        <g fill="#F3C94F">
+                            <circle cx="214" cy="158" r="1.6" opacity="0.85"/>
+                            <circle cx="228" cy="120" r="1.9" opacity="0.9"/>
+                        </g>
+                        <g fill="#E82D68">
+                            <circle cx="240" cy="80" r="1.5" opacity="0.7"/>
+                        </g>
+
+                        {# Machined foot, grounding the column #}
+                        <g>
+                            <path d="M132 292 L268 274 L272 292 L128 311 Z"
+                                  fill="#0B0F22" opacity="0.95"/>
+                            <path d="M132 292 L268 274 L268 278 L132 296 Z"
+                                  fill="#8A94C4" opacity="0.5"/>
+                        </g>
+
+                        {# Spine behind the column — the engineering holding the two
+                           masses, visible as a dark bar just off the right edge #}
+                        <path d="M262 286 L276 283 L268 96 L255 99 Z"
+                              fill="#101530" opacity="0.9"/>
+                        <g stroke="#C08A2E" stroke-width="2.2" opacity="0.8">
+                            <path d="M258 244 L275 241"/>
+                            <path d="M260 136 L274 133"/>
+                        </g>
+                    </svg>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <span class="hero__scroll" aria-hidden="true">Scroll</span>
+</section>
