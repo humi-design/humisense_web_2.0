@@ -24,6 +24,37 @@
    01. TOKENS
    ========================================================================== */
 
+/* Metric-matched fallbacks.
+
+   Until the webfonts arrive, the browser renders with the local system face.
+   Inter and Sora are noticeably narrower than Arial/Segoe UI, so swapping
+   late reflows every paragraph and registers as layout shift. Declaring a
+   fallback whose ascent/descent/size are scaled to match the webfont keeps
+   the line boxes almost identical, so the swap moves nothing.
+
+   size-adjust is the measured ratio of the webfont's advance width to Arial's
+   (Sora 0.90, Inter 0.93 at the sizes used here), so a fallback line occupies
+   the same width as the webfont line that replaces it. */
+@font-face {
+    font-family: 'Inter Fallback';
+    src: local('Arial'), local('Helvetica'), local('Segoe UI'),
+         local('Liberation Sans'), local('DejaVu Sans'), local('sans-serif');
+    size-adjust: 93%;
+    ascent-override: 90%;
+    descent-override: 22.4%;
+    line-gap-override: 0%;
+}
+
+@font-face {
+    font-family: 'Sora Fallback';
+    src: local('Arial'), local('Helvetica'), local('Segoe UI'),
+         local('Liberation Sans'), local('DejaVu Sans'), local('sans-serif');
+    size-adjust: 90%;
+    ascent-override: 100%;
+    descent-override: 25%;
+    line-gap-override: 0%;
+}
+
 :root {
     /* Surfaces — warm white, not clinical grey */
     --bg: #fbfaf8;
@@ -110,8 +141,8 @@
     --r-pill: 999px;
 
     /* Type */
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-display: 'Sora', 'Inter', sans-serif;
+    --font-sans: 'Inter', 'Inter Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-display: 'Sora', 'Sora Fallback', 'Inter', 'Inter Fallback', sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
     /* Fluid type scale */
