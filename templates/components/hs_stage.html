@@ -1,0 +1,109 @@
+{# ==========================================================================
+   THE HUMISENSE INTELLIGENCE SYSTEM — persistent stage.
+
+   One canvas, fixed behind the whole homepage. It does not belong to the hero
+   section: the object persists and re-composes through every section.
+
+   The authored SVG below is THE FRAME at rest. It is what reduced-motion,
+   mobile, software-rendered and no-WebGL visitors see permanently, so it has
+   to carry the composition on its own — same silhouette as the 3D scene:
+   tapered core, upper arm reaching right, counter-arm left, fin crown,
+   chamber in the lower third.
+   ========================================================================== #}
+
+<div class="hs-stage" aria-hidden="true">
+    <div class="hs-stage__canvas" data-hs-canvas></div>
+
+    <div class="hs-stage__fallback" data-hs-fallback aria-hidden="true">
+        <svg viewBox="0 0 420 420" role="presentation" focusable="false">
+            <defs>
+                <linearGradient id="frCore" x1="0.1" y1="0" x2="0.95" y2="1">
+                    <stop offset="0%" stop-color="#1B2F80"/>
+                    <stop offset="34%" stop-color="#2C4FC4"/>
+                    <stop offset="72%" stop-color="#4A6FE0"/>
+                    <stop offset="100%" stop-color="#8FA9FF"/>
+                </linearGradient>
+                <linearGradient id="frArm" x1="0" y1="0" x2="1" y2="0.6">
+                    <stop offset="0%" stop-color="#241059"/>
+                    <stop offset="52%" stop-color="#43209E"/>
+                    <stop offset="100%" stop-color="#6B3BE0"/>
+                </linearGradient>
+                <linearGradient id="frBezel" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#5E6A9E"/>
+                    <stop offset="46%" stop-color="#FFFFFF"/>
+                    <stop offset="100%" stop-color="#8A96C8"/>
+                </linearGradient>
+                <radialGradient id="frHeart">
+                    <stop offset="0%" stop-color="#FFF3C9" stop-opacity="0.95"/>
+                    <stop offset="36%" stop-color="#23D8F2" stop-opacity="0.5"/>
+                    <stop offset="72%" stop-color="#2867E8" stop-opacity="0.24"/>
+                    <stop offset="100%" stop-color="#5429C7" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="frSignal" x1="0" y1="1" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#23D8F2" stop-opacity="0"/>
+                    <stop offset="60%" stop-color="#23D8F2" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#F3C94F" stop-opacity="0.85"/>
+                </linearGradient>
+            </defs>
+
+            {# Chamber bloom — the light the aperture reveals #}
+            <ellipse cx="210" cy="268" rx="58" ry="46" fill="url(#frHeart)" opacity="0.55"/>
+
+            {# Plinth: asymmetric footprint #}
+            <path d="M176 348 L252 348 L262 366 L166 366 Z" fill="url(#frBezel)" opacity="0.92"/>
+            <path d="M186 340 L244 340 L250 349 L180 349 Z" fill="#2C4FC4" opacity="0.55"/>
+
+            {# Core: tapered vertical mass with a mid-height collar #}
+            <path d="M198 122 L222 122 L228 150 L228 232 L236 240 L236 300
+                     L228 308 L222 340 L198 340 L192 308 L184 300 L184 240
+                     L192 232 L192 150 Z" fill="url(#frCore)"/>
+
+            {# Upper arm: leaves high on the core and reaches right, angled down #}
+            <path d="M218 136 L292 156 L294 176 L216 158 Z" fill="url(#frArm)"/>
+            <path d="M288 150 L316 158 L316 186 L288 180 Z" fill="url(#frBezel)" opacity="0.95"/>
+
+            {# Counter-arm: shorter, opposite side, lower — the asymmetry that
+               stops the silhouette reading as an L bracket #}
+            <path d="M198 206 L136 194 L134 212 L198 222 Z" fill="url(#frArm)" opacity="0.9"/>
+            <path d="M140 190 L116 186 L116 210 L140 212 Z" fill="url(#frBezel)" opacity="0.9"/>
+
+            {# Crown: four fins of varied height, leaning #}
+            <path d="M196 124 L200 62 L205 62 L203 124 Z" fill="url(#frBezel)" opacity="0.9"/>
+            <path d="M204 122 L210 34 L216 34 L214 122 Z" fill="url(#frBezel)"/>
+            <path d="M215 124 L223 72 L228 72 L224 124 Z" fill="url(#frBezel)" opacity="0.85"/>
+            <path d="M224 126 L233 96 L237 96 L231 126 Z" fill="url(#frBezel)" opacity="0.75"/>
+
+            {# Chamber: squared machined bezel around the glass #}
+            <rect x="184" y="242" width="52" height="56" rx="3" fill="none"
+                  stroke="url(#frBezel)" stroke-width="7" opacity="0.95"/>
+            <rect x="192" y="250" width="36" height="40" rx="2" fill="#9FD4FF" opacity="0.3"/>
+            <g opacity="0.85">
+                <rect x="196" y="254" width="28" height="5" rx="2" fill="#6F7BFF" opacity="0.9"/>
+                <rect x="196" y="265" width="28" height="5" rx="2" fill="#6F7BFF" opacity="0.8"/>
+                <rect x="196" y="276" width="28" height="5" rx="2" fill="#6F7BFF" opacity="0.7"/>
+                <rect x="196" y="287" width="28" height="4" rx="2" fill="#6F7BFF" opacity="0.6"/>
+            </g>
+
+            {# Module sockets: eight, distributed along the core and arms #}
+            <g fill="url(#frBezel)">
+                <rect x="232" y="132" width="9" height="12" rx="2" opacity="0.95"/>
+                <rect x="180" y="146" width="9" height="12" rx="2" opacity="0.9"/>
+                <rect x="262" y="152" width="9" height="12" rx="2" opacity="0.95"/>
+                <rect x="231" y="184" width="9" height="12" rx="2" opacity="0.85"/>
+                <rect x="181" y="196" width="9" height="12" rx="2" opacity="0.8"/>
+                <rect x="142" y="196" width="9" height="12" rx="2" opacity="0.8"/>
+                <rect x="231" y="226" width="9" height="12" rx="2" opacity="0.75"/>
+                <rect x="181" y="316" width="9" height="12" rx="2" opacity="0.7"/>
+            </g>
+
+            {# Signal runs: thin machined conduits, warm-to-cyan #}
+            <g stroke="url(#frSignal)" stroke-width="2" stroke-linecap="round" opacity="0.75">
+                <path d="M228 140 L236 134"/>
+                <path d="M190 154 L184 148"/>
+                <path d="M228 192 L236 186"/>
+                <path d="M190 204 L184 198"/>
+                <path d="M228 234 L236 228"/>
+            </g>
+        </svg>
+    </div>
+</div>

@@ -102,9 +102,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/environments.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/hero.css') }}">
 
+    {# Homepage environment system. Loaded only on the home page: it defines the
+       continuous ground and the persistent 3D stage, which no other page uses. #}
+    {% block page_css %}{% endblock %}
+
     {% block extra_head %}{% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJKSCNR3"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

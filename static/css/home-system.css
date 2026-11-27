@@ -1,0 +1,651 @@
+/* ==========================================================================
+   home-system — the continuous homepage environment.
+
+   Replaces the old approach of stacking nine full-bleed colour bands. The
+   page now has one ground that carries the whole scroll, with the 3D stage
+   layered behind the content.
+
+   Critical constraint: the page must look finished with the canvas hidden.
+   Reduced-motion, mobile, software-rendered and no-WebGL visitors never see
+   the stage, so the ground, the section rhythm and the type have to carry the
+   design on their own. The stage is depth, not the design.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Stage
+   -------------------------------------------------------------------------- */
+
+.hs-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.hs-stage__canvas {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 900ms ease;
+}
+
+.has-webgl .hs-stage__canvas {
+    opacity: 1;
+}
+
+.hs-stage__canvas[hidden] {
+    display: none;
+}
+
+.hs-stage__fallback {
+    position: absolute;
+    top: 50%;
+    right: max(2vw, env(safe-area-inset-right));
+    width: min(46vw, 620px);
+    aspect-ratio: 1;
+    transform: translateY(-50%);
+    opacity: 0.9;
+    transition: opacity 500ms ease;
+}
+
+.has-webgl .hs-stage__fallback {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Ground — the single continuous page surface
+   -------------------------------------------------------------------------- */
+
+/* The ground itself must stay transparent: the stage paints behind it at
+   z-index 0, so an opaque background here would hide the object entirely.
+   The page surface is set on <body> instead, below the stage. */
+.hs-ground {
+    position: relative;
+    z-index: 1;
+    background: none;
+}
+
+body.hs-home {
+    background:
+        radial-gradient(120% 80% at 78% 8%, rgba(40, 103, 232, 0.09), transparent 62%),
+        radial-gradient(90% 60% at 12% 42%, rgba(117, 69, 232, 0.07), transparent 66%),
+        radial-gradient(70% 50% at 88% 78%, rgba(35, 216, 242, 0.05), transparent 70%),
+        var(--bg);
+    background-attachment: fixed;
+}
+
+.dark body.hs-home,
+body.hs-home.dark {
+    background:
+        radial-gradient(120% 80% at 78% 8%, rgba(40, 103, 232, 0.16), transparent 62%),
+        radial-gradient(90% 60% at 12% 42%, rgba(117, 69, 232, 0.13), transparent 66%),
+        radial-gradient(70% 50% at 88% 78%, rgba(35, 216, 242, 0.07), transparent 70%),
+        var(--bg);
+    background-attachment: fixed;
+}
+
+/* Fine machined grid: gives the ground structure so it does not read as a
+   flat gradient wash. Very low contrast on purpose. */
+.hs-ground::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(to right, var(--line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+    background-size: 88px 88px;
+    mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 78%);
+    -webkit-mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 78%);
+    opacity: 0.55;
+}
+
+/* --------------------------------------------------------------------------
+   Section rhythm
+   -------------------------------------------------------------------------- */
+
+.hs-section {
+    position: relative;
+    padding-block: clamp(5rem, 11vw, 10rem);
+}
+
+.hs-section--tight {
+    padding-block: clamp(3rem, 6vw, 5rem);
+}
+
+/* Content that sits over the stage needs its own ground to stay readable.
+   This is the layered overlap the brief asks for: the plate is translucent,
+   so the scene shows through at the edges but never under the text. */
+.hs-plate {
+    position: relative;
+    padding: clamp(1.75rem, 4vw, 3.5rem);
+    border-radius: var(--r-xl);
+    border: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(14px) saturate(1.15);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+    box-shadow: var(--shadow-md);
+}
+
+.dark .hs-plate {
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    border-color: var(--line-strong);
+}
+
+/* Two-column editorial split used by most sections: copy left, object right. */
+.hs-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+}
+
+.hs-split--rev > :first-child { order: 2; }
+.hs-split--rev > :last-child { order: 1; }
+
+/* Copy that deliberately sits beside the stage with no plate, because the
+   scene is composed to leave that area clear. */
+.hs-copy {
+    max-width: 46ch;
+}
+
+.hs-copy--wide { max-width: 58ch; }
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+
+.hs-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: clamp(640px, 92svh, 980px);
+    padding-block: clamp(4rem, 9vw, 7rem);
+}
+
+.hs-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+    width: 100%;
+}
+
+.hs-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.hs-hero__eyebrow::before {
+    content: '';
+    width: 26px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+}
+
+.hs-hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5.6vw, 4.75rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 600;
+    text-wrap: balance;
+    margin-bottom: clamp(1.25rem, 2.5vw, 1.85rem);
+}
+
+.hs-hero__title em {
+    font-style: normal;
+    background: linear-gradient(100deg, var(--blue) 0%, var(--violet) 52%, var(--magenta) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.hs-hero__lead {
+    font-size: clamp(1.02rem, 1.35vw, 1.2rem);
+    line-height: 1.62;
+    color: var(--ink-soft);
+    /* rem, not ch: the ch unit is derived from the font's own metrics, so a
+       ch-based measure changes width when the webfont swaps in and the
+       paragraph reflows. */
+    max-width: 33rem;
+    margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.hs-hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    align-items: center;
+}
+
+.hs-hero__tagline {
+    display: inline-block;
+    margin-top: clamp(2rem, 4vw, 3rem);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+}
+
+/* The hero's object column is a spacer: the real object is on the fixed
+   stage behind. It exists so the grid reserves the space. */
+.hs-hero__object {
+    position: relative;
+    min-height: clamp(320px, 46vw, 620px);
+}
+
+/* --------------------------------------------------------------------------
+   Module / service grid
+   -------------------------------------------------------------------------- */
+
+.hs-modules {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 255px), 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+}
+
+.hs-module {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: clamp(1.35rem, 2.4vw, 1.9rem);
+    background: var(--bg);
+    text-decoration: none;
+    color: inherit;
+    transition: background 240ms ease;
+}
+
+.hs-module:hover { background: var(--bg-deep); }
+
+.hs-module__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.35rem;
+}
+
+.hs-module__icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--line-strong);
+    color: var(--blue);
+    background: var(--bg-deep);
+}
+
+.dark .hs-module__icon { color: var(--cyan); }
+
+.hs-module__index {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+}
+
+.hs-module h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.02rem, 1.3vw, 1.16rem);
+    line-height: 1.24;
+    letter-spacing: -0.012em;
+    font-weight: 600;
+}
+
+.hs-module p {
+    font-size: 0.9rem;
+    line-height: 1.58;
+    color: var(--ink-mute);
+}
+
+.hs-module__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: auto;
+    padding-top: 0.9rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--blue);
+}
+
+.dark .hs-module__more { color: var(--cyan); }
+
+.hs-module__more svg { transition: transform 200ms ease; }
+.hs-module:hover .hs-module__more svg { transform: translateX(3px); }
+
+/* --------------------------------------------------------------------------
+   Workflow (section 03) — the automation pipeline
+   -------------------------------------------------------------------------- */
+
+.hs-flow {
+    display: grid;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+}
+
+.hs-flow__step {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(1rem, 2vw, 1.6rem);
+    align-items: start;
+    padding: clamp(1.1rem, 2vw, 1.5rem) clamp(1.2rem, 2.2vw, 1.7rem);
+    background: var(--bg);
+}
+
+.hs-flow__n {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--ink-mute);
+}
+
+.hs-flow__step--active .hs-flow__n {
+    border-color: var(--blue);
+    color: var(--blue);
+    box-shadow: 0 0 0 4px rgba(40, 103, 232, 0.1);
+}
+
+.dark .hs-flow__step--active .hs-flow__n {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 0 4px rgba(35, 216, 242, 0.12);
+}
+
+.hs-flow__step h3 {
+    font-family: var(--font-display);
+    font-size: 0.98rem;
+    font-weight: 600;
+    letter-spacing: -0.008em;
+    margin-bottom: 0.3rem;
+}
+
+.hs-flow__step p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--ink-mute);
+    max-width: 62ch;
+}
+
+/* --------------------------------------------------------------------------
+   Process (section 05)
+   -------------------------------------------------------------------------- */
+
+.hs-process {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    counter-reset: hs-proc;
+}
+
+.hs-process__step {
+    position: relative;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-strong);
+}
+
+.hs-process__step::before {
+    counter-increment: hs-proc;
+    content: '0' counter(hs-proc);
+    position: absolute;
+    top: -1px;
+    left: 0;
+    transform: translateY(-50%);
+    padding-right: 0.7rem;
+    background: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+}
+
+.hs-process__step h3 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.45rem;
+}
+
+.hs-process__step p {
+    font-size: 0.88rem;
+    line-height: 1.58;
+    color: var(--ink-mute);
+}
+
+/* --------------------------------------------------------------------------
+   Industries
+   -------------------------------------------------------------------------- */
+
+.hs-industries {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+}
+
+.hs-industry {
+    display: block;
+    padding: clamp(1.25rem, 2.2vw, 1.75rem);
+    background: var(--bg);
+    text-decoration: none;
+    color: inherit;
+    transition: background 240ms ease;
+}
+
+.hs-industry:hover { background: var(--bg-deep); }
+
+.hs-industry h3 {
+    font-family: var(--font-display);
+    font-size: 0.98rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.hs-industry p {
+    font-size: 0.86rem;
+    line-height: 1.52;
+    color: var(--ink-mute);
+}
+
+/* --------------------------------------------------------------------------
+   Final CTA
+   -------------------------------------------------------------------------- */
+
+.hs-final {
+    position: relative;
+    padding-block: clamp(6rem, 13vw, 12rem);
+    text-align: center;
+}
+
+.hs-final__inner {
+    max-width: 54ch;
+    margin-inline: auto;
+}
+
+.hs-final h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.6vw, 3.6rem);
+    line-height: 1.06;
+    letter-spacing: -0.032em;
+    font-weight: 600;
+    text-wrap: balance;
+    margin-bottom: clamp(1.1rem, 2.2vw, 1.6rem);
+}
+
+.hs-final p {
+    font-size: clamp(1rem, 1.3vw, 1.12rem);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: clamp(1.9rem, 3.2vw, 2.6rem);
+}
+
+.hs-final__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+}
+
+.hs-final__tagline {
+    display: block;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+    .hs-split,
+    .hs-hero__grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hs-split--rev > :first-child { order: 0; }
+    .hs-split--rev > :last-child { order: 0; }
+
+    /* Below this width the object would sit under the copy, so the hero
+       spacer collapses and the stage centres behind everything. */
+    .hs-hero__object { display: none; }
+
+    .hs-hero { min-height: auto; }
+}
+
+/* Once the hero collapses to one column the copy runs full width, so the
+   object can no longer sit beside it. The fallback becomes a faint piece of
+   background art at the bottom of the viewport instead of a bright object
+   behind the text. */
+@media (max-width: 1024px) {
+    .hs-stage__fallback {
+        top: auto;
+        bottom: -6vw;
+        right: 50%;
+        transform: translateX(50%);
+        width: min(84vw, 440px);
+        opacity: 0.32;
+    }
+}
+
+@media (max-width: 720px) {
+    .hs-stage__fallback {
+        width: min(84vw, 380px);
+        opacity: 0.5;
+    }
+
+    .hs-ground::before { background-size: 56px 56px; }
+
+    .hs-hero__cta .btn { width: 100%; justify-content: center; }
+
+    .hs-final__cta .btn { width: 100%; justify-content: center; }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion: the stage is hidden by the controller, so everything here
+   must already be in its final state.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    /* Hide the canvas only. The authored SVG is static by definition, so
+       reduced-motion visitors should still get the composition rather than
+       an empty right-hand column. */
+    .hs-stage__canvas { display: none; }
+
+    .hs-stage__fallback {
+        opacity: 0.5;
+        transition: none;
+    }
+
+    .hs-module,
+    .hs-industry,
+    .hs-module__more svg {
+        transition: none;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Readability scrim
+
+   The stage is fixed and the object occupies the right of the viewport, so
+   some copy will pass over it while scrolling. Rather than boxing every
+   section in a card — which would undo the continuous-environment design —
+   text blocks that can overlap the object get a soft local wash in the page
+   colour. It is a blurred halo, not a panel: invisible as an edge, but it
+   guarantees contrast wherever the object passes behind.
+
+   Scoped to .has-webgl so visitors without the stage never pay for it.
+   -------------------------------------------------------------------------- */
+
+.has-webgl .section-head,
+.has-webgl .hs-copy:not(.hs-plate) {
+    position: relative;
+}
+
+.has-webgl .section-head::before,
+.has-webgl .hs-copy:not(.hs-plate)::before {
+    content: '';
+    position: absolute;
+    inset: -1.75rem -2.25rem;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+        115% 100% at 30% 50%,
+        var(--bg) 0%,
+        color-mix(in srgb, var(--bg) 90%, transparent) 52%,
+        transparent 82%
+    );
+    filter: blur(14px);
+}
+
+.dark.has-webgl .section-head::before,
+.dark.has-webgl .hs-copy:not(.hs-plate)::before {
+    background: radial-gradient(
+        115% 100% at 30% 50%,
+        var(--bg) 0%,
+        color-mix(in srgb, var(--bg) 92%, transparent) 52%,
+        transparent 82%
+    );
+}
+
+/* The scrim is unnecessary where the layout has already stacked copy above
+   the object, and it would only add weight. */
+@media (max-width: 1024px) {
+    .has-webgl .section-head::before,
+    .has-webgl .hs-copy:not(.hs-plate)::before { display: none; }
+}

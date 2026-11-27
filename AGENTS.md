@@ -144,15 +144,28 @@ so the team section correctly renders nothing.
 
 ## Home hero (3D sculpture)
 
-`static/js/hero-3d.js` is an IIFE that mounts into `#hero-sculpture`, using
-`[data-sculpture-canvas]` as the canvas host and `[data-sculpture-fallback]` as the
-static SVG. It must keep exporting `goStatic`, `dispose` and `resize`.
+The homepage uses the persistent stage in `static/js/system/`, not the old per-hero
+sculpture. Load order matters and is enforced by the loader at the bottom of
+`templates/home.html`: `three.min.js`, then `hs-geo`, `hs-materials`, `hs-structure`,
+`hs-lighting`, `hs-scene`. `HSScene.init({canvasHost, fallback})` returns the live
+controller on `window.__hsSystem`.
 
 Jinja gotcha that cost real debugging time: **never declare `{% block hero_scripts %}`
 inside `{% block content %}`**. Jinja renders a nested block both in place *and* where
 `base.html` calls it, so the loader runs twice — two canvases, two copies of Three.js,
 and a page error from the second scene reading a disposed buffer. The block belongs at
 top level in `templates/home.html`.
+
+The stage is a fixed layer at `z-index: 0`; `.hs-ground` sits above it at `z-index: 1`
+and **must stay `background: none`**. The page surface is painted on
+`body.hs-home` instead. An opaque ground silently hides the entire object, which is
+easy to misdiagnose as a WebGL failure because the canvas still reports as present and
+opaque.
+
+Camera framing is tuned against the copy column: targets sit left of the object so it
+composes into the right half of the viewport. `tests`-style probe: project
+`Box3.setFromObject(structure.root)` through the camera and check the object stays
+inside the viewport with margin and clears `#hero-heading`'s right edge.
 
 The scene's render loop and the theme handler both write material properties. They
 disagree unless everything derives from the single `BASE` table in the scene; an
